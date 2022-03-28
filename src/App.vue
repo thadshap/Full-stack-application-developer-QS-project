@@ -1,5 +1,6 @@
 <template>
   <div id="nav">
+    <img alt="logo" src="assets/logo_for_qs.png" />
     <router-link to="/">Log in as student</router-link> |
     <router-link to="/administrator">Log in as administrator</router-link>
   </div>
