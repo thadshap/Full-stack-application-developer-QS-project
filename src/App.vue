@@ -1,8 +1,9 @@
 <template>
   <div id="nav">
-    <img id="logo" alt="logo" src="./assets/logo_for_qs.png"/><br>
     <router-link to="/">student</router-link> |
     <router-link to="/administrator">administrator</router-link>
+    <br>
+    <img id="logo" alt="logo" src="./assets/logo_white_qs.png"/><br>
   </div>
   <router-view />
 </template>
@@ -17,16 +18,13 @@
 }
 
 #nav {
-  padding: 30px;
+  padding: 30px 30px 0 30px;
 }
 body{
   background-color: #202020;
   height: 825px;
   display: grid;
   align-items: center;
-  align-content: center;
-  justify-content: center;
-  justify-items: center;
 }
 #nav a {
   font-weight: bold;
@@ -38,7 +36,8 @@ body{
 }
 
 #logo{
-  width: 150px;
+  width: 100px;
   height: auto;
+  margin: 30px 0 0 0;
 }
 </style>

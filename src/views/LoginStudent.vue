@@ -40,4 +40,7 @@ export default {
   #loginPage{
     color: white;
   }
+  input{
+    margin-top: 10px;
+  }
 </style>
