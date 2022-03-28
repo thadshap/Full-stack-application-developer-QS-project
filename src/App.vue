@@ -1,6 +1,6 @@
 <template>
   <div id="nav">
-    <img alt="logo" src="assets/logo_for_qs.png" />
+    <img id="logo" alt="logo" src="./assets/logo_for_qs.png"/><br>
     <router-link to="/">Log in as student</router-link> |
     <router-link to="/administrator">Log in as administrator</router-link>
   </div>
@@ -27,5 +27,10 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+#logo{
+  width: 200px;
+  height: auto;
 }
 </style>
