@@ -1,8 +1,8 @@
 <template>
   <div id="nav">
     <img id="logo" alt="logo" src="./assets/logo_for_qs.png"/><br>
-    <router-link to="/">Log in as student</router-link> |
-    <router-link to="/administrator">Log in as administrator</router-link>
+    <router-link to="/">student</router-link> |
+    <router-link to="/administrator">administrator</router-link>
   </div>
   <router-view />
 </template>
@@ -19,18 +19,26 @@
 #nav {
   padding: 30px;
 }
-
+body{
+  background-color: #202020;
+  height: 825px;
+  display: grid;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+}
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: white;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #4682b4;
 }
 
 #logo{
-  width: 200px;
+  width: 150px;
   height: auto;
 }
 </style>

@@ -37,5 +37,7 @@ export default {
 </script>
 
 <style scoped>
-
+#loginPage{
+  color: white;
+}
 </style>
