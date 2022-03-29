@@ -44,8 +44,9 @@ public class StudentInQueue {
     private boolean type;
 
     // Can be available, taken, waiting (when you have to close the machine and not be taken out of the queue)
-    @Column(name = "status_in_queue", nullable = false) // todo check out ENUM here...
-    private int statusInQueue;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "status_in_queue", nullable = false)
+    private Status statusInQueue; // todo check all types
 
     // todo foreign key
     @Column(name = "student_id", nullable = false)
@@ -56,3 +57,4 @@ public class StudentInQueue {
     @JoinColumn(name = "student_id")
     private Student student;
 }
+

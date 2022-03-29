@@ -13,8 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "courses") //todo check out which tables should be nullable
-// todo what should the generation type in id actually be ?
+@Table(name = "courses")
 /**
  * This table has a many-to-many relationship with teachers
  * This table has a many-to-many relationship with students

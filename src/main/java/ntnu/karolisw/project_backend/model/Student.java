@@ -21,21 +21,6 @@ import java.util.Set;
  * This table has a many-to-many connection with assignment (this table = parent entity)
  */
 public class Student extends Person {
-    /**
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_id")
-    private long studentId; // autoIncrement
-
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column(name = "email", nullable = false)
-    private String email;
-    */
 
     // Many-to-many connection with assignment
     @ManyToMany(cascade = {CascadeType.ALL} )

@@ -35,7 +35,7 @@ public class GroupOfAssignment {
     @Column(name = "approved_assignments", nullable = false)
     private int approvedAssignments;
 
-    // * This table has a many-to-one relationship with course
+    // This table has a many-to-one relationship with course
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
