@@ -7,8 +7,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
+//@AllArgsConstructor
 @Entity
 /**
  * This table extends the Teacher class using the Single Table Inheritance strategy. In this strategy,

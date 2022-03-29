@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "student_in_queue")
 /**
@@ -36,25 +35,21 @@ public class StudentInQueue {
     @Column(name = "room")
     private String room;
 
-    @Column(name = "table")
+    @Column(name = "tableNumber")
     private int table;
 
     // Help or approved
-    @Column(name = "type", nullable = false)
+    @Column(name = "assessmentHelp", nullable = false)
     private boolean type;
 
     // Can be available, taken, waiting (when you have to close the machine and not be taken out of the queue)
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status_in_queue", nullable = false)
-    private Status statusInQueue; // todo check all types
-
-    // todo foreign key
-    @Column(name = "student_id", nullable = false)
-    private long studentId;
+    private Status statusInQueue;
 
     // One-to-one connection with student
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "id")
     private Student student;
 }
 
