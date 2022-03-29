@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,32 +15,70 @@ import java.util.Date;
 @Entity
 @Table(name = "courses") //todo check out which tables should be nullable
 // todo what should the generation type in id actually be ?
+/**
+ * This table has a many-to-many relationship with teachers
+ * This table has a many-to-many relationship with students
+ * This table has a many-to-one relationship with administrator (teacher)
+ * This table has a one-to-many relationship with queues
+ */
 public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long course_nr;
+    @Column(name = "course_id", nullable = false)
+    private long courseId;
 
     @Column(name = "course_code", nullable = false)
-    private String course_code;
+    private String courseCode;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "start_data", nullable = false)
-    private Date start_date;
+    @Column(name = "start_date", nullable = false)
+    private Date startDate;
+
+    @Column(name = "expected_end_date", nullable = false)
+    private Date expectedEndDate;
 
     @Column(name = "number_of_assignments", nullable = false)
-    private int number_of_assignments;
+    private int numberOfAssignments;
 
     @Column(name = "min_approved_assignments", nullable = false)
-    private int min_approved_assignments;
+    private int minApprovedAssignments;
 
-    // todo this name could probably be better? original: ant_deler_øvinger
     @Column(name = "number_parts_assignments", nullable = false)
-    private int number_parts_assignments;
+    private int numberPartsAssignments;
 
-    // todo foreign key + should it be int and administrator_id
-    @Column(name = "administrator", nullable = false)
-    private String administrator;
+    @Column(name = "archived", nullable = false)
+    private boolean archived;
+
+    // Many-to-many with student
+    @ManyToMany(mappedBy = "courses")
+    private Set<Student> students = new HashSet<>();
+
+    // Many-to-many with teacher
+    @ManyToMany(mappedBy = "courses")
+    private Set<Teacher> teachers = new HashSet<>();
+
+    // Many-to-many with student in a student assistant relationship
+    @ManyToMany(mappedBy = "courses")
+    private Set<Student> studentAssistants = new HashSet<>();
+
+    // One-to-many relationship with group of assignments
+    @OneToMany(mappedBy = "course")
+    private Set<GroupOfAssignment> groupsOfAssignments = new HashSet<>();
+
+    // Many-to-one relationship with administrator
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Administrator administrator;
+
+    // One-to-many relationship with queue
+    @OneToMany(mappedBy = "course")
+    private Set<Queue> queues = new HashSet<>();
+
+
+    // Administrator + todo foreign key
+    @Column(name = "teacher_id", nullable = false)
+    private long teacherId;
 }
