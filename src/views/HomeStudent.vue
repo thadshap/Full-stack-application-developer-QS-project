@@ -5,7 +5,7 @@
   <div id="tabs-bar">
     <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
     <button id="middle-btn"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
-    <button id="right-btn"><img id="archive-img" src="./../assets/archive.png">Arkivert</button>
+    <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
   </div>
   <div id="active-subject-container">
        <div id="sub-name-container">
@@ -70,6 +70,13 @@ export default {
   position: relative; 
   top: -7px;
  }
+
+#adjust-archive{
+  position: relative; 
+  top: -3px;
+
+}
+
 #active-subject-container{
   width: 295px;
   height: 130px;
@@ -157,7 +164,10 @@ export default {
   width: 23px;
   margin-right: 5px;
 }
-
+#archive-img{
+    position: relative;
+    top: 5px;
+}
 
 
 
