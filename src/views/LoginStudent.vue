@@ -45,12 +45,9 @@ export default {
 
 <style scoped>
 @import './../styles/navBar.css';
-  #loginPage{
-    color: white;
-    display: grid;
-    justify-items: center;
+
+  #logo{
+    margin: 30px 0 0 0;
   }
-  input{
-    margin-top: 10px;
-  }
+
 </style>
