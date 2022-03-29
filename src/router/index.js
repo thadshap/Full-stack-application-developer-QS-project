@@ -3,6 +3,8 @@ import LoginStudent from "../views/LoginStudent.vue";
 import LoginAdministrator from "../views/LoginAdministrator.vue";
 import HomeAdministrator from "@/views/HomeAdministrator";
 import Footer from "@/components/Footer";
+import HomeStudent from "../views/HomeStudent.vue";
+
 
 const routes = [
   {
@@ -24,6 +26,11 @@ const routes = [
     path: "/test",
     name: "t",
     component: Footer,
+  },
+  {
+    path: "/student",
+    name: "student",
+    component: HomeStudent,
   },
 ];
 
