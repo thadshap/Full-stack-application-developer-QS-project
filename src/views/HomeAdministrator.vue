@@ -35,7 +35,6 @@ export default {
   display: grid;
   color: white;
   justify-items: center;
-  margin: -8px;
 }
 #container{
   display: grid;

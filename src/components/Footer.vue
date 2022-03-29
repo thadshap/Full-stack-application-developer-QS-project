@@ -23,6 +23,7 @@ export default {
   text-align: center;
   font-weight: normal;
   color: white;
+  margin: 10px;
 }
 
 .footer-bold-letter{

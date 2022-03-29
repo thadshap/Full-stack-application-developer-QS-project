@@ -23,7 +23,8 @@ export default {
 
 <style scoped>
   body{
-    color:white
+    color:white;
+    width: 100%;
   }
   #header{
     color:white;
