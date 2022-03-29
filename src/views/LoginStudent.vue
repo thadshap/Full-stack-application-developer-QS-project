@@ -1,6 +1,13 @@
 <template>
   <div id="loginPage">
-    <router-view />
+    <div id="nav">
+      <router-link to="/">student</router-link> |
+      <router-link to="/LogInAdministrator">administrator</router-link>
+      <router-view />
+      <router-view />
+      <br>
+    </div>
+    <img id="logo" alt="logo" src="./../assets/logo_white_qs.png"/><br>
     <h3 id="head">{{ header }}</h3>
     Email:<br>
     <input
@@ -37,8 +44,11 @@ export default {
 </script>
 
 <style scoped>
+@import './../styles/navBar.css';
   #loginPage{
     color: white;
+    display: grid;
+    justify-items: center;
   }
   input{
     margin-top: 10px;
