@@ -1,6 +1,26 @@
 <template>
-<div>
-
+<div id="student-home-page">
+  <div id="tabs-bar">
+    <button id="left-btn">Student</button>
+    <button id="middle-btn">Student.ass.</button>
+    <button id="right-btn">Arkivert</button>
+  </div>
+  <div id="active-subject-container">
+       <div id="sub-name-container">
+         <p id="sub-name">Fullstack</p>
+         <p id="sub-code">IDATT2105</p>
+       </div>
+    <div id="que-details-container">
+      <p id="que-details">
+        <img id="amount-of-students-img" src="./../assets/amount-students.png">
+        100
+      </p>
+    </div>
+    <div id="sub-feature-tabs">
+      <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
+      <button id="que-btn"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+    </div>
+  </div>
 </div>
 </template>
 <script>
@@ -10,4 +30,114 @@ export default {
 </script>
 
 <style scoped>
+#student-home-page{
+  height: 850px;
+  width: 398px;
+}
+#tabs-bar{
+  height: 47px;
+  margin: 50px 10px 0 10px;
+  background-color: #011c39;
+}
+#left-btn,#middle-btn,#right-btn {
+  display: inline;
+  width: 126px;
+  height: 46px;
+  background: rgb(40, 40, 40);
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: .2em;
+  font-size: 1.1rem;
+  font-family: sans-serif;
+  position: relative;
+  top: -3px;
+}
+#active-subject-container{
+  width: 295px;
+  height: 130px;
+  background-color: rgba(255, 255, 255, 0.82);
+  margin: 30px 10px 0 18px;
+  border-radius: .3em;
+  border-style: solid;
+  border-color: #03A403FF;
+  border-width: 2.5px;
+  font-family: sans-serif;
+  padding: 30px;
+ 
+}
+#sub-name,#sub-code,#que-details{
+  margin: 3px;
+  letter-spacing: 1px;
+  font-weight: lighter;
+}
+#sub-name,#sub-code{
+  font-size: 22px;
+}
+ #que-details{
+   margin-left: 20px;
+ }
+
+#sub-name{
+  color: #011c39;
+}
+#sub-name-container, #que-details-container{
+  width: 140px;
+  height: 80px;
+  display: inline-block;
+}
+#sub-name-container{
+  margin-right: 10px;
+}
+#que-details-container{
+  position: relative;  
+  top: -30px;
+}
+#sub-feature-tabs{
+  height: 40px;
+  position: relative;
+  
+}
+#assigment-btn,#que-btn{
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.01);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: .3em;
+  font-weight: lighter;
+  font-size: 14px;
+
+}
+#assigment-btn{
+  margin-left: 15px;
+  margin-right: 37px;
+  border-color: #011c39;
+  width: 92px;
+}
+#que-btn{
+  margin-left: 60px;
+  margin-right: 10px;
+  border-color: green;
+  width: 72px;
+}
+#amount-of-students-img{
+  position: relative;
+  top: 5px;
+  margin-left: 38px;
+}
+#assigment-img,#in-to-que-img{
+  width: 15px;
+  position: relative;
+  top: 2px;
+}
 </style>
