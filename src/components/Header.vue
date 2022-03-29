@@ -4,10 +4,10 @@
       <img id="logo" alt="logo" src="./../assets/logo_white_qs.png"/><br>
     </div>
     <div id="email">{{email}}</div>
-    <button id="settings">
+    <button id="settings" class="button">
       Instillinger
     </button>
-    <button id="logout"></button>
+    <button id="logout" class="button">Log out</button>
   </div>
 </template>
 
@@ -26,28 +26,46 @@ export default {
     color:white
   }
   #header{
-    color: #2c3e50;
+    color:white;
+    background-color: #011c39;
     display: grid;
-    grid-template-rows: 1fr 100px 70px 1fr;
-    grid-template-columns: 1fr;
+    width: 100%;
+    grid-template-rows: 1fr;
+    grid-template-columns: max-content auto min-content max-content;
     grid-template-areas:
     'picture email settings logout';
   }
   #logo{
     width: auto;
-    height: 100px;
-    margin: 30px 0 0 0;
+    height: 32px;
+    padding: 5px;
   }
   #picture{
     grid-area: picture;
+    padding: 10px;
   }
   #email{
     grid-area: email;
+    color:white;
+    text-align: center;
+    margin: auto;
   }
   #settings{
     grid-area: settings;
   }
+  .button {
+    text-align: center;
+    background: transparent;
+    border: none !important;
+    cursor: pointer;
+    color:white;
+    transition: 0.3s;
+  }
   #logout{
     grid-area: logout;
   }
+  #settings:hover, #logout:hover{
+    background-color: steelblue;
+  }
+
 </style>

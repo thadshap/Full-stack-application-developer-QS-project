@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginStudent from "../views/LoginStudent.vue";
 import LoginAdministrator from "../views/LoginAdministrator.vue";
 import HomeAdministrator from "@/views/HomeAdministrator";
+import Footer from "@/components/Footer";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/administrator",
     name: "administrator",
     component: HomeAdministrator,
+  },
+  {
+    path: "/test",
+    name: "t",
+    component: Footer,
   },
 ];
 
