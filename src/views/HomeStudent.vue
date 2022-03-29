@@ -1,9 +1,9 @@
 <template>
 <div id="student-home-page">
   <div id="tabs-bar">
-    <button id="left-btn">Student</button>
-    <button id="middle-btn">Student.ass.</button>
-    <button id="right-btn">Arkivert</button>
+    <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
+    <button id="middle-btn"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
+    <button id="right-btn"><img id="archive-img" src="./../assets/archive.png">Arkivert</button>
   </div>
   <div id="active-subject-container">
        <div id="sub-name-container">
@@ -50,13 +50,18 @@ export default {
   font: inherit;
   cursor: pointer;
   outline: inherit;
-  color: rgba(255, 255, 255, 0.7);
+  color: white;
   border-radius: .2em;
   font-size: 1.1rem;
   font-family: sans-serif;
   position: relative;
-  top: -3px;
+  top: -4px;
 }
+
+#left-btn,#middle-btn{
+  position: relative; 
+  top: -7px;
+ }
 #active-subject-container{
   width: 295px;
   height: 130px;
@@ -64,7 +69,7 @@ export default {
   margin: 30px 10px 0 18px;
   border-radius: .3em;
   border-style: solid;
-  border-color: #03A403FF;
+  border-color: #0a64c2;
   border-width: 2.5px;
   font-family: sans-serif;
   padding: 30px;
@@ -140,4 +145,12 @@ export default {
   position: relative;
   top: 2px;
 }
+#student-img,#student-ass-img,#archive-img{
+  width: 23px;
+  margin-right: 5px;
+}
+
+
+
+
 </style>
