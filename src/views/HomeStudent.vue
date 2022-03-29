@@ -1,7 +1,8 @@
 <template>
-<div></div>
-</template>
+<div>
 
+</div>
+</template>
 <script>
 export default {
   name: "StudentSite"
@@ -9,5 +10,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
