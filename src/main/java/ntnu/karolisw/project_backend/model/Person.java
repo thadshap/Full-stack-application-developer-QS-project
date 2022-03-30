@@ -2,6 +2,7 @@ package ntnu.karolisw.project_backend.model;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,7 +20,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -30,7 +31,7 @@ public class Person {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "pronouns", nullable = false)
+    @Column(name = "pronouns")
     private String pronouns;
 
 

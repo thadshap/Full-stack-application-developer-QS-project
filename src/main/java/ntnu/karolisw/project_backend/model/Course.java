@@ -1,6 +1,7 @@
 package ntnu.karolisw.project_backend.model;
 
 import lombok.*;
+import org.apache.tomcat.jni.Address;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,7 +25,7 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "course_id", nullable = false)
-    private long courseId;
+    private Long courseId;
 
     @Column(name = "course_code", nullable = false)
     private String courseCode;
@@ -66,17 +67,6 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private Set<GroupOfAssignment> groupsOfAssignments = new HashSet<>();
 
-    // Many-to-one relationship with administrator
-    @ManyToOne
-    @JoinColumn(name = "id")
-    private Administrator administrator;
-
-    // One-to-many relationship with queue
-    @OneToMany(mappedBy = "course")
-    private Set<Queue> queues = new HashSet<>();
-
-
-    // Administrator + todo foreign key
-    @Column(name = "teacher_id", nullable = false)
-    private long teacherId;
+    @OneToOne(mappedBy = "course")
+    private Queue queue;
 }

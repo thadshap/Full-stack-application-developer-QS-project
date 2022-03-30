@@ -17,7 +17,7 @@ public class StudentInQueue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "queue_id", nullable = false)
-    private long queue_id;
+    private Long queue_id;
 
     @Column(name = "placement_in_queue", nullable = false)
     private int placementInQueue;

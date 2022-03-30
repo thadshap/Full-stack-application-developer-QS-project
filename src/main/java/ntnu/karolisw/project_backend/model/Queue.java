@@ -1,6 +1,7 @@
 package ntnu.karolisw.project_backend.model;
 
 import lombok.*;
+import org.apache.tomcat.jni.Address;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Queue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "queue_id", nullable = false)
-    private long queueId;
+    private Long queueId;
 
     @Column(name = "number_of_waiting_students", nullable = false)
     private int numberOfWaitingStudents;
@@ -27,9 +28,8 @@ public class Queue {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    //  Many-to-one relationship with course
-    @ManyToOne
+    // One-to-one relationship with course
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
-
 }

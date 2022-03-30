@@ -22,7 +22,7 @@ public class GroupOfAssignment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "group_id", nullable = false)
-    private long groupId;
+    private Long groupId;
 
     // Ex: If number of assignment == 3, then order_nr can be 1, 2, or 3
     @Column(name = "order_nr", nullable = false)

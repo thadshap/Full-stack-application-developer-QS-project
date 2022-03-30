@@ -2,6 +2,7 @@ package ntnu.karolisw.project_backend.model;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,10 +25,24 @@ public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "assignment_id", nullable = false)
-    private long assignmentId;
+    private Long assignmentId;
 
     @Column(name = "assignment_number", nullable = false)
     private int assignmentNumber;
+
+    @Column(name = "approved", nullable = false)
+    private boolean approved;
+
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date")
+    private Date createDate;
+
+    // Shows when the assignment was updated last (for use with approved)
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "modify_date")
+    private Date modifyDate;
 
     // Many-to-many relationship with student --> middle table = assignment_student
     @ManyToMany(mappedBy = "assignments")
@@ -43,5 +58,4 @@ public class Assignment {
     @CreationTimestamp
     @Column(name = "created_on")
     private Date createdOn;
-
 }

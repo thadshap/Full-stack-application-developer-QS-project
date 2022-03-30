@@ -14,4 +14,5 @@ import javax.persistence.Entity;
  * all the classes - only administrator in this case - in a hierarchy are mapped to a single table.
  */
 public class Administrator extends Person {
+
 }
