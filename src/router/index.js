@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginStudent from "../views/LoginStudent.vue";
 import LoginAdministrator from "../views/LoginAdministrator.vue";
 import HomeAdministrator from "@/views/HomeAdministrator";
-import Footer from "@/components/Footer";
+import AddNewCourse from "@/views/AddNewCourse";
 import HomeStudent from "../views/HomeStudent.vue";
 
 
@@ -23,9 +23,9 @@ const routes = [
     component: HomeAdministrator,
   },
   {
-    path: "/test",
-    name: "t",
-    component: Footer,
+    path: "/addNewCourse",
+    name: "addNewCourse",
+    component: AddNewCourse,
   },
   {
     path: "/student",

@@ -1,13 +1,29 @@
 <template>
     <div id="HomePage">
       <Header></Header><br>
+      <menu-bar-administrator></menu-bar-administrator>
       <div id="container">
-        <div id="buttons">
-        <button id="newCourse">+ Nytt emne</button>
-        <button id="title">Dine fag</button>
-        </div>
         <div id="courses">
-          <h3>hallo</h3>
+          <div id="active-subject-container">
+            <div id="sub-name-container">
+              <p id="sub-name">Fullstack</p>
+              <p id="sub-code">IDATT2105</p>
+            </div>
+            <div id="que-details-container">
+              <div id="que-details">
+                <img id="amount-of-students-img" src="./../assets/amount-students.png">
+                100 <br>
+                Startdato: 20.03.01
+                Forventet sluttdato: 25.31.12
+              </div>
+            </div>
+            <div id="sub-feature-tabs">
+              <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png"> Arkiver fag</button>
+              <button id="allStudents"> Se studenter</button>
+              <button id="que-btn"><img id="in-to-que-img"> Slett fag</button>
+
+            </div>
+          </div>
         </div><br>
       </div>
       <Footer></Footer>
@@ -18,11 +34,17 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MenuBarAdministrator from "@/components/menuBarAdministrator";
 export default {
   name: "HomeAdministrator",
-  components: {Footer, Header},
+  components: {MenuBarAdministrator, Footer, Header},
   data() {
     return {
+
+    }
+  },
+  methods: {
+    makeNewCourse: {
 
     }
   }
@@ -31,58 +53,14 @@ export default {
 
 <style scoped>
 @import './../styles/navBar.css';
+@import './../styles/courses.css';
 #HomePage{
-  display: grid;
   color: white;
+}
+
+#courses{
+  display: grid;
   justify-items: center;
 }
-#container{
-  display: grid;
-  gap:1rem;
-  grid-template-rows:  min-content;
-  grid-template-columns: max-content min-content;
-  grid-template-areas:
-    'buttons'
-    'courses';
-}
-#newCourse{
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  border-width: 0 0 2px 0;
-  border-color: steelblue;
-}
-#title{
-  font-size: 28px;
-  font-weight: bold;
-  border-width: 0 0 2px 2px;
-  border-color: steelblue;
-}
-#courses{
-  grid-area: courses;
-  text-align: center;
-}
-#newCourse, #title{
-  height: 100%;
-  background: transparent;
-  cursor: pointer;
-  color:white;
-}
-#buttons{
-  background-color: #2d2c2c;
-  grid-area: buttons;
-  border-radius: 20px 20px 0px 0px;
-}
-#newCourse:hover{
-  background-color: steelblue;
-  border-radius: 20px 0px 0px 0px;
 
-}
-#title:hover{
-  background-color: steelblue;
-  border-radius: 0px 20px 0px 0px;
-}
-input{
-  margin-top: 10px;
-}
 </style>
