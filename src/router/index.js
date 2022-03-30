@@ -4,6 +4,8 @@ import LoginAdministrator from "../views/LoginAdministrator.vue";
 import HomeAdministrator from "@/views/HomeAdministrator";
 import Footer from "@/components/Footer";
 import HomeStudent from "../views/HomeStudent.vue";
+import HomeStudentAss from "../views/HomeStudentAss";
+import Queue from "../views/Queue";
 
 
 const routes = [
@@ -31,6 +33,16 @@ const routes = [
     path: "/student",
     name: "student",
     component: HomeStudent,
+  },
+  {
+    path: "/studentAss",
+    name: "studentAss",
+    component: HomeStudentAss,
+  },
+  {
+    path: "/queue",
+    name: "queue",
+    component: Queue,
   },
 ];
 
