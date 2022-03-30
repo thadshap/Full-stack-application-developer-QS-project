@@ -1,11 +1,18 @@
 package ntnu.karolisw.project_backend.repository;
 
+import ntnu.karolisw.project_backend.model.Assignment;
 import ntnu.karolisw.project_backend.model.Course;
+import ntnu.karolisw.project_backend.model.GroupOfAssignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AssignmentRepository extends JpaRepository<Course, Long> {
+import java.util.List;
+
+public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
+
     // get assignment by assignmentNumber
-    // get all assignments with assignmentNumber
-    // add assignment
-    // add assignment to group of assignment
+    List<Assignment> findByAssignmentNumber(int assignmentNumber);
+
+    // get all approved assignments
+    List<Assignment> findByApprovedTrue(long groupId);
+
 }

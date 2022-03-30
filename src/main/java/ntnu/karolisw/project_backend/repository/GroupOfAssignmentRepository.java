@@ -1,14 +1,24 @@
 package ntnu.karolisw.project_backend.repository;
 
+import ntnu.karolisw.project_backend.model.Assignment;
+import ntnu.karolisw.project_backend.model.Course;
 import ntnu.karolisw.project_backend.model.GroupOfAssignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
+
 public interface GroupOfAssignmentRepository extends JpaRepository<GroupOfAssignment, Long> {
-    // get all where order_nr
-    // update order_nr
-    // update number of assignment --> must also update order_nr for all the other objects
-    // update number of approved assignments
-    // get all groups of assignment where course id =
 
+    // get all where order_nr and id
+    List<GroupOfAssignment> findByGroupIdAndOrderNr(long groupId, int orderNr);
 
+    // get all groups of assignment where courseId = id
+    List<GroupOfAssignment> findByCourse(Course course);
+
+    // find all assignments where groupId = id
+    List<GroupOfAssignment> findByGroupId(long groupId);
+
+    // get how many assignments are approved
+    int findApprovedAssignmentsWhereGroupId(long groupId);
 }

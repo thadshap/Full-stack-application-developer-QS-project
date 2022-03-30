@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,7 +16,7 @@ import java.util.Date;
 @Entity
 @Table(name = "queues")
 /**
- * This table has a many-to-one relationship with course
+ * This table has a one-to-one relationship with course
  */
 public class Queue {
     @Id
@@ -32,4 +34,8 @@ public class Queue {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    // One-to-many relationship with StudentInQueue
+    @OneToMany(mappedBy = "queue")
+    private Set<StudentInQueue> studentInQueues = new HashSet<>();
 }

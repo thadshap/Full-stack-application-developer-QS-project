@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class StudentInQueue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "queue_id", nullable = false)
+    @Column(name = "student_in_queue_id", nullable = false)
     private Long queue_id;
 
     @Column(name = "placement_in_queue", nullable = false)
@@ -36,7 +36,7 @@ public class StudentInQueue {
     private String room;
 
     @Column(name = "tableNumber")
-    private int table;
+    private int tableNumber;
 
     // Help or approved
     @Column(name = "assessmentHelp", nullable = false)
@@ -51,5 +51,10 @@ public class StudentInQueue {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private Student student;
+
+    // Many-to-one connection with queue
+    @ManyToOne
+    @JoinColumn(name = "queue_id")
+    private Queue queue;
 }
 

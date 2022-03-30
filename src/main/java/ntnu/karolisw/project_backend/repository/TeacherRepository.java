@@ -1,11 +1,23 @@
 package ntnu.karolisw.project_backend.repository;
 
+import ntnu.karolisw.project_backend.model.Course;
 import ntnu.karolisw.project_backend.model.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Set;
 
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
-    // get teacher where email =
-    // get all courses where teacher id =
-    // get all teachers where course id =
+    Teacher findByEmailAndLastName(String email, String lastName);
+    Teacher findByEmail(String email, String lastName);
+    Teacher findByEmailAndPassword(String email, String password);
 
+    // get all teachers where course id = y
+    List<Teacher> findAllWhereCourseId(long courseId);
+
+    // get all courses where teacher id = x
+    @Query("SELECT t.courses FROM Teacher t WHERE t.id = :id")
+    Set<Course> getCoursesByTeacherId(@Param("id") long id);
 }

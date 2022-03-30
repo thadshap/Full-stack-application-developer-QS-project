@@ -43,7 +43,7 @@ public class Student extends Person {
     @ManyToMany(cascade = {CascadeType.ALL} )
     @JoinTable(
             name = "student_assistant",
-            joinColumns = { @JoinColumn(name = "student_id") },
+            joinColumns = { @JoinColumn(name = "student_id") }, // todo should this maybe be just "id"
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
     private Set<Assignment> studentAssistants = new HashSet<>();
