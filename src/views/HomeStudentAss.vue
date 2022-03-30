@@ -20,9 +20,7 @@
       <div id="sub-feature-tabs">
         <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
         <button id="que-btn"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
-        <button id="active-que-btn">
-          <p id="active-que-name">Aktiver kø</p>
-        </button>
+        <button id="active-que-btn" @click="changeActivityStatus()">Aktiver kø</button>
       </div>
     </div>
     <Footer></Footer>
@@ -35,6 +33,19 @@ import Header from "../components/Header";
 export default {
   name: "HomeStudentAss",
   components: {Footer, Header},
+        methods:{
+        changeActivityStatus(){
+          if(document.getElementById("active-que-btn").innerHTML === "Aktiver kø"){
+            document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
+            document.getElementById("active-que-btn").style.position='relative'
+            document.getElementById("active-que-btn").style.top='-30px'
+          }else{
+            document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
+            document.getElementById("active-que-btn").style.position='relative'
+            document.getElementById("active-que-btn").style.top='0'
+          }
+        }
+        },
 };
 
 </script>
@@ -167,9 +178,6 @@ export default {
 #active-que-btn{
   float: right;
   border-color: #0a64c2;
-
-}
-#active-que-name{
-  margin: 5px;
+  padding: 5px;
 }
 </style>
