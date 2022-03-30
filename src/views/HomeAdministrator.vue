@@ -62,5 +62,10 @@ export default {
   display: grid;
   justify-items: center;
 }
+#active-subject-container{
+  color:black;
+  background-color: grey;
+  border-color:  #011c39;
+}
 
 </style>

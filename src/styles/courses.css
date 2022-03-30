@@ -1,27 +1,22 @@
 #active-subject-container{
-    color:black;
-    background-color: grey;
-    margin: 30px 10px 0 18px;
+    margin: 30px 5px 0 25px;
     border-radius: .3em;
     border-style: solid;
-    border-color:  #011c39;
-    border-width: 3px;
+    border-width: 2.5px;
     font-family: sans-serif;
     padding: 30px;
-
-
 }
 #sub-name,#sub-code,#que-details{
     margin: 3px;
     letter-spacing: 1px;
     font-weight: lighter;
 }
+
 #sub-name,#sub-code{
     font-size: 22px;
 }
 #que-details{
-    margin-left: 200px;
-    padding-top: 20px;
+    margin-left: 20px;
 }
 
 #sub-name{
@@ -31,13 +26,11 @@
     width: 140px;
     height: 80px;
     display: inline-block;
-    position: relative;
-    top: -40px;
 }
 #sub-name-container{
     margin-right: 10px;
-    margin-top: -100px;
 }
+
 #que-details-container{
     position: relative;
     top: -30px;
@@ -45,9 +38,9 @@
 #sub-feature-tabs{
     height: 40px;
     position: relative;
-
 }
-#assigment-btn,#que-btn, #allStudents{
+
+#assigment-btn,#que-btn,#allStudents{
     color: inherit;
     padding: 0;
     font: inherit;
@@ -68,6 +61,7 @@
     border-color: #011c39;
     width: 92px;
 }
+
 #assigment-btn{
     margin-left: 15px;
     margin-right: 37px;
@@ -77,16 +71,20 @@
 #que-btn{
     margin-left: 60px;
     margin-right: 10px;
-    border-color: darkred;
+    border-color: green;
     width: 72px;
 }
 #amount-of-students-img{
     position: relative;
-
-
+    top: 5px;
+    margin-left: 38px;
 }
 #assigment-img,#in-to-que-img{
     width: 15px;
     position: relative;
     top: 2px;
+}
+#student-img,#student-ass-img,#archive-img{
+    width: 23px;
+    margin-right: 5px;
 }

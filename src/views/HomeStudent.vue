@@ -36,6 +36,7 @@ export default {
 </script>
 
 <style scoped>
+@import './../styles/courses.css';
 #student-home-page{
   height: 850px;
   width: 412px;
@@ -77,90 +78,7 @@ export default {
   width: 295px;
   height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
-  margin: 30px 5px 0 25px;
-  border-radius: .3em;
-  border-style: solid;
   border-color: #0a64c2;
-  border-width: 2.5px;
-  font-family: sans-serif;
-  padding: 30px;
- 
 }
-#sub-name,#sub-code,#que-details{
-  margin: 3px;
-  letter-spacing: 1px;
-  font-weight: lighter;
-}
-#sub-name,#sub-code{
-  font-size: 22px;
-}
- #que-details{
-   margin-left: 20px;
- }
-#sub-name{
-  color: #011c39;
-}
-#sub-name-container, #que-details-container{
-  width: 140px;
-  height: 80px;
-  display: inline-block;
-}
-#sub-name-container{
-  margin-right: 10px;
-}
-#que-details-container{
-  position: relative;  
-  top: -30px;
-}
-#sub-feature-tabs{
-  height: 40px;
-  position: relative;
-  
-}
-#assigment-btn,#que-btn{
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  height: 30px;
-  background-color: rgba(255, 255, 255, 0.01);
-  border-style: solid;
-  border-width: 2px;
-  border-radius: .3em;
-  font-weight: lighter;
-  font-size: 14px;
 
-}
-#assigment-btn{
-  margin-left: 15px;
-  margin-right: 37px;
-  border-color: #011c39;
-  width: 92px;
-}
-#que-btn{
-  margin-left: 60px;
-  margin-right: 10px;
-  border-color: green;
-  width: 72px;
-}
-#amount-of-students-img{
-  position: relative;
-  top: 5px;
-  margin-left: 38px;
-}
-#assigment-img,#in-to-que-img{
-  width: 15px;
-  position: relative;
-  top: 2px;
-}
-#student-img,#student-ass-img,#archive-img{
-  width: 23px;
-  margin-right: 5px;
-}
-#archive-img{
-    position: relative;
-    top: 5px;
-}
 </style>
