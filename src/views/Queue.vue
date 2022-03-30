@@ -5,6 +5,9 @@
     <p id="sub-name">Fullstack</p>
     <p id="sub-code">IDATT2105</p>
     </div>
+    <p id="status">Status: Ikke godkjent</p>
+    <hr id="line-under-status">
+    <p id="oving">Øvingsregler</p>
     <Footer></Footer>
   </div>
 </template>
@@ -37,4 +40,18 @@ export default {
   border-width: 2.5px;
   margin: 0 20px 0 20px;
 }
+#status,#oving{
+  color: rgba(255, 255, 255, 0.89);
+  letter-spacing: 1px;
+  font-weight: lighter;
+  text-align: center;
+  font-size: 24px;
+}
+#line-under-status{
+  margin: 0 20px 0 20px;
+  height: 2.5px;
+  background-color: #0a64c2;
+  border: none;
+}
+
 </style>
