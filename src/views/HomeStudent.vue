@@ -30,7 +30,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 export default {
-  name: "StudentSite",
+  name: "Student",
   components: {Footer, Header},
 };
 </script>

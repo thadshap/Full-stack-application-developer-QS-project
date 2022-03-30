@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import HomeStudent from "../views/HomeStudent.vue";
 import HomeStudentAss from "../views/HomeStudentAss";
 import AssigmentView from "../views/AssigmentView";
-
+import RegisterInLine from "../views/RegisterInLine";
 
 const routes = [
   {
@@ -43,6 +43,11 @@ const routes = [
     path: "/assigmentView",
     name: "assigmentView",
     component: AssigmentView,
+  },
+  {
+    path: "/registerInLine",
+    name: "registerInLine",
+    component: RegisterInLine,
   },
 ];
 
