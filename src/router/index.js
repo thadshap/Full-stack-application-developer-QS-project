@@ -6,6 +6,7 @@ import AddNewCourse from "@/views/AddNewCourse";
 import HomeStudent from "../views/HomeStudent.vue";
 import HomeStudentAss from "../views/HomeStudentAss";
 import Queue from "../views/Queue";
+import Settings from "@/views/Settings";
 
 
 const routes = [
@@ -43,6 +44,11 @@ const routes = [
     path: "/queue",
     name: "queue",
     component: Queue,
+  },
+  {
+    path: "/settings",
+    name: "settings",
+    component: Settings,
   },
 ];
 

@@ -49,7 +49,6 @@ export default {
     font-weight: bold;
     border-width: 0 0 2px 2px;
     border-color: steelblue;
-    margin-right: 65px;
     border-radius: 0px 20px 0px 0px;
   }
 

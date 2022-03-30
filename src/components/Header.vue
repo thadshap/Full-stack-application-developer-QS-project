@@ -4,10 +4,10 @@
       <img id="logo" alt="logo" src="./../assets/logo_white_qs.png"/><br>
     </div>
     <div id="email">{{email}}</div>
-    <button id="settings" class="button">
+    <button id="settings" class="button" v-on:click="showSettings">
       Instillinger
     </button>
-    <button id="logout" class="button">Log out</button>
+    <button id="logout" class="button" v-on:click="logOut">Log out</button>
   </div>
 </template>
 
@@ -18,6 +18,18 @@ export default {
       email: '',
     }
   },
+  methods : {
+    showSettings(){
+      this.$router.push({
+        name: 'settings'
+      })
+    },
+    logOut(){
+      this.$router.push({
+        name: 'Log in as student'
+      })
+    }
+  }
 }
 </script>
 
