@@ -136,7 +136,7 @@ export default {
 #assigment-btn{
   margin-left: 15px;
   margin-right: 37px;
-  border-color: #011c39;
+  border-color: rgba(1, 28, 57, 0.75);
   width: 92px;
 }
 #que-btn{

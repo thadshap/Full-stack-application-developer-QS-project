@@ -20,6 +20,9 @@
       <div id="sub-feature-tabs">
         <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
         <button id="que-btn"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+        <button id="active-que-btn">
+          <p id="active-que-name">Aktiver kø</p>
+        </button>
       </div>
     </div>
     <Footer></Footer>
@@ -33,9 +36,11 @@ export default {
   name: "HomeStudentAss",
   components: {Footer, Header},
 };
+
 </script>
 
 <style scoped>
+
 #student-home-page{
   height: 850px;
   width: 412px;
@@ -114,10 +119,9 @@ export default {
 }
 #sub-feature-tabs{
   height: 40px;
-  position: relative;
-
 }
-#assigment-btn,#que-btn{
+#assigment-btn,#que-btn, #active-que-btn{
+  display: inline;
   color: inherit;
   border: none;
   padding: 0;
@@ -131,19 +135,16 @@ export default {
   border-radius: .3em;
   font-weight: lighter;
   font-size: 14px;
-
 }
 #assigment-btn{
-  margin-left: 15px;
-  margin-right: 37px;
-  border-color: #011c39;
+  float: left;
+  border-color: rgba(1, 28, 57, 0.75);
   width: 92px;
 }
 #que-btn{
-  margin-left: 60px;
-  margin-right: 10px;
   border-color: green;
   width: 72px;
+  margin: 0 9% 0 9%;
 }
 #amount-of-students-img{
   position: relative;
@@ -162,5 +163,13 @@ export default {
 #archive-img{
   position: relative;
   top: 5px;
+}
+#active-que-btn{
+  float: right;
+  border-color: #0a64c2;
+
+}
+#active-que-name{
+  margin: 5px;
 }
 </style>
