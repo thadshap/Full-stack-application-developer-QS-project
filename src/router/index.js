@@ -5,7 +5,7 @@ import HomeAdministrator from "@/views/HomeAdministrator";
 import Footer from "@/components/Footer";
 import HomeStudent from "../views/HomeStudent.vue";
 import HomeStudentAss from "../views/HomeStudentAss";
-import Queue from "../views/Queue";
+import AssigmentView from "../views/AssigmentView";
 
 
 const routes = [
@@ -40,9 +40,9 @@ const routes = [
     component: HomeStudentAss,
   },
   {
-    path: "/queue",
-    name: "queue",
-    component: Queue,
+    path: "/assigmentView",
+    name: "assigmentView",
+    component: AssigmentView,
   },
 ];
 
