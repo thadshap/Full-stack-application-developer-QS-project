@@ -7,6 +7,8 @@ import HomeStudent from "../views/HomeStudent.vue";
 import HomeStudentAss from "../views/HomeStudentAss";
 import AssigmentView from "../views/AssigmentView";
 import RegisterInLine from "../views/RegisterInLine";
+import QueueStudent from "../views/QueueStudent";
+import QueueStudentAss from "../views/QueueStudentAss";
 
 const routes = [
   {
@@ -48,6 +50,16 @@ const routes = [
     path: "/registerInLine",
     name: "registerInLine",
     component: RegisterInLine,
+  },
+  {
+    path: "/queueStudent",
+    name: "queueStudent",
+    component: QueueStudent,
+  },
+  {
+    path: "/queueStudentAss",
+    name: "queueStudentAss",
+    component: QueueStudentAss,
   },
 ];
 
