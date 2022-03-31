@@ -4,7 +4,6 @@ import ntnu.karolisw.project_backend.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -46,7 +45,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query("SELECT c.groupsOfAssignments FROM Course c WHERE c.courseId = :id")
     List<GroupOfAssignment> getAllGroupsOfAssignmentByCourseId(@Param("id") long courseId);
 
-    // todo get the queue --> one-to-one
+    // get queue using qourse id
     @Query("SELECT c.queue FROM Course c WHERE c.courseId = :id")
     Queue getQueueByCourseId(@Param("id") long courseId);
 }

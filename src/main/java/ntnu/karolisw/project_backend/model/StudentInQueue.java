@@ -17,7 +17,7 @@ public class StudentInQueue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "student_in_queue_id", nullable = false)
-    private Long queue_id;
+    private Long studentInQueueId;
 
     @Column(name = "placement_in_queue", nullable = false)
     private int placementInQueue;
@@ -40,7 +40,7 @@ public class StudentInQueue {
 
     // Help or approved
     @Column(name = "assessmentHelp", nullable = false)
-    private boolean type;
+    private boolean assessmentHelp;
 
     // Can be available, taken, waiting (when you have to close the machine and not be taken out of the queue)
     @Enumerated(EnumType.ORDINAL)

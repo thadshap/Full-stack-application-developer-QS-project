@@ -70,4 +70,22 @@ public class Course {
     // Queue is child, course is parent
     @OneToOne(mappedBy = "course")
     private Queue queue;
+
+    // Add a group of assignment to the list of groups of assignments
+    public void addGroupOfAssignment(GroupOfAssignment groupOfAssignments) {
+        groupsOfAssignments.add(groupOfAssignments);
+    }
+
+    // Add a student assistant to a course
+    public void addStudentAssistant(Student studentAssistant) {
+        studentAssistants.add(studentAssistant);
+    }
+
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    public void addTeacher(Teacher teacher) {
+        teachers.add(teacher);
+    }
 }

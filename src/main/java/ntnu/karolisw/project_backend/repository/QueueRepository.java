@@ -9,13 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface QueueRepository extends JpaRepository<Queue, Long> {
-
-    // get number of waiting students
-    int findByQueueId(long queueId);
-
-    // get queue
-    Queue findQueueByQueueId(long queueId);
-
     // get all active queues
     List<Queue> findByActiveTrue();
 

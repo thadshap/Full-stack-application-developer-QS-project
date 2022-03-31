@@ -12,8 +12,6 @@ public interface StudentInQueueRepository extends JpaRepository<StudentInQueue, 
     // get student with statusInQueue = status
     List<StudentInQueue> findByStatusInQueue(Status status);
 
-    // get statusInQueue ?
-
     // get student with placement in queue =
     StudentInQueue findStudentByPlacementInQueue(int placement);
 
@@ -41,4 +39,6 @@ public interface StudentInQueueRepository extends JpaRepository<StudentInQueue, 
     // get all students with all the above
     List<StudentInQueue> findByCampusAndBuildingAndRoomAndTableNumber(String campus, String building,
                                                                      String room, int tableNumber);
+
+    // get queue id of this queue
 }
