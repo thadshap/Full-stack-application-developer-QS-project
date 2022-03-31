@@ -27,8 +27,8 @@
       </div>
     </div>
     </div>
-    <Footer></Footer>
   </div>
+  <Footer></Footer>  
 </template>
 <script>
 import Footer from "../components/Footer";

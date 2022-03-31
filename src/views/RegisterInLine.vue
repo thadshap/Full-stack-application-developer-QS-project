@@ -1,9 +1,11 @@
 <template>
-<div id="register-in-line-container">
   <Header></Header><br>
+<div id="register-in-line-container">
 
-  <Footer></Footer>
+
+
 </div>
+  <Footer></Footer>
 </template>
 
 <script>

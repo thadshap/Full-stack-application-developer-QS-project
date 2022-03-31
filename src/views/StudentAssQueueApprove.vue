@@ -1,6 +1,6 @@
 <template>
+  <Header></Header>
   <div id="queue-student-ass-container">
-    <Header></Header>
     <button id="back-to-queue-btn">
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
     </button>
@@ -19,8 +19,8 @@
       <button id="wait-btn">Vent</button>
       <button id="approve-btn">Godkjenn</button>
     </div>
-    <Footer></Footer>
   </div>
+  <Footer></Footer>
 </template>
 
 <script>

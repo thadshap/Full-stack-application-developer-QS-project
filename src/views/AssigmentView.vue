@@ -22,8 +22,8 @@
       <p id="approve-header">Ikke godkjent</p>
       <hr class="line-under-oving">
     </div>
-    <Footer></Footer>
   </div>
+  <Footer></Footer>
 </template>
 
 <script>
