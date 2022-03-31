@@ -1,11 +1,14 @@
 <template>
+  <Header></Header><br>
 <div id="student-home-page">
- <Header></Header><br>
+  <div id="tabs-bar-wrapper">
   <div id="tabs-bar">
     <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
     <button id="middle-btn"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
     <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
   </div>
+  </div>
+  <div id="active-subject-container-wrapper">
   <div id="active-subject-container">
        <div id="sub-name-container">
          <p id="sub-name">Fullstack</p>
@@ -21,6 +24,7 @@
       <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
       <button id="que-btn"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
     </div>
+  </div>
   </div>
   <Footer></Footer>
 </div>
@@ -38,8 +42,11 @@ export default {
 <style scoped>
 #student-home-page{
   height: 850px;
-  width: 412px;
-  
+}
+#tabs-bar-wrapper,#active-subject-container-wrapper{
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 #tabs-bar{
   height: 47px;
@@ -80,7 +87,7 @@ export default {
   width: 295px;
   height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
-  margin: 30px 5px 0 25px;
+  margin-top: 20px;
   border-radius: .3em;
   border-style: solid;
   border-color: #0a64c2;
