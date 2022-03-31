@@ -1,6 +1,9 @@
 <template>
+  <Header></Header>
   <div id="queue-container">
-    <Header></Header><br>
+    <button id="back-to-queue-btn">
+      <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
+    </button>
     <div id="sub-header-container">
     <p id="sub-name">Fullstack</p>
     <p id="sub-code">IDATT2105</p>
@@ -34,6 +37,23 @@ export default {
 </script>
 
 <style scoped>
+#back-to-queue-btn{
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  margin: 5px;
+  padding: 5px 15px 5px 15px;
+  border-radius: 0.3em;
+  color: rgba(255, 255, 255, 0.89);
+  margin: 10px 10px 20px 0;
+  background-color: inherit;
+}
+#back-to-queue-btn-img{
+  height: 20px;
+  width: 20px;
+}
 #sub-name,#sub-code{
   letter-spacing: 1px;
   font-weight: lighter;

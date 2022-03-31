@@ -1,6 +1,9 @@
 <template>
   <div id="queue-student-container">
     <Header></Header><br>
+    <button id="back-to-queue-btn">
+      <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
+    </button>
     <button id="oving-rules-btn">
       <img id="oving-list-img" src="./../assets/ovinger-btn.png">
     </button>
@@ -41,6 +44,26 @@ export default {
 </script>
 
 <style scoped>
+#back-to-queue-btn{
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  margin: 5px;
+  padding: 5px 15px 5px 15px;
+  border-radius: 0.3em;
+  color: rgba(255, 255, 255, 0.89);
+  margin: 10px 10px 20px 0;
+  background-color: inherit;
+}
+#back-to-queue-btn-img{
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  left: 15px;
+  top: 80px;
+}
 #oving-rules-btn{
   margin-left: 20px;
   color: inherit;
@@ -57,6 +80,9 @@ export default {
 #oving-list-img{
   height: 36px;
   width: 36px;
+  position: absolute;
+  right: 15px;
+  top: 75px;
 }
 #all-queue-btn,#approve-queue-btn,#help-queue-btn{
   display: inline;

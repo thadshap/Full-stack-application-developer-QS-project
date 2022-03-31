@@ -1,6 +1,7 @@
 <template>
 <div id="register-in-line-container">
   <Header></Header><br>
+
   <Footer></Footer>
 </div>
 </template>
