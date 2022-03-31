@@ -7,7 +7,7 @@
     </div>
     <p id="status">Status: Ikke godkjent</p>
     <hr class="blue-line">
-    <div id="oving-rules-contailer">
+    <div id="oving-rules-container">
       <p id="oving-rules">Øvingsregler</p>
       <button id="oving-rules-btn">
         <img id="drop-down-arrow-img" src="./../assets/drop-down-arrow.png">
@@ -17,8 +17,8 @@
     <div id="oving-container">
       <p id="oving-header">Øving 1</p>
       <p id="approve-header">Ikke godkjent</p>
+      <hr class="line-under-oving">
     </div>
-    <hr class="line-under-oving">
     <Footer></Footer>
   </div>
 </template>
@@ -87,7 +87,7 @@ export default {
 #approve-header{
   float: right;
 }
-#oving-rules-contailer{
+#oving-rules-container{
  text-align: center;
 }
 #oving-rules,#oving-rules-btn{
