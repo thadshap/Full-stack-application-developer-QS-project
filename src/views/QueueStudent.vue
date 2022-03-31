@@ -11,6 +11,12 @@
     <div id="queue-choices">
     <input type="radio" id="all-queue-btn" value="all-queue" name="queue-btn">
     <label id="all-queue-header" for="all-queue-btn">Alle</label>
+
+      <input type="radio" id="school-queue-btn" value="all-queue" name="queue-btn">
+      <label id="school-queue-header" for="school-queue-btn">Campus</label>
+      <input type="radio" id="digital-queue-btn" value="all-queue" name="queue-btn">
+      <label id="digital-queue-header" for="digital-queue-btn">Dgital</label>
+
     <input type="radio" id="approve-queue-btn" value="approve-queue" name="queue-btn">
     <label id="approve-queue-header" for="all-queue-btn">Godkjenning</label>
     <input type="radio" id="help-queue-btn" value="help-queue" name="queue-btn">
@@ -84,9 +90,10 @@ export default {
   right: 15px;
   top: 75px;
 }
-#all-queue-btn,#approve-queue-btn,#help-queue-btn{
+#all-queue-btn,#approve-queue-btn,#help-queue-btn, #school-queue-btn,#digital-queue-btn{
   display: inline;
-  margin: 10px;
+  margin-left: 10px;
+  margin-bottom: 20px;
 }
 #queue-choices, #amount-of-students-in-queue{
   text-align: center;
