@@ -18,9 +18,9 @@
                 <br>Sluttdato(forventet): 25.31.12
             </div>
             <div id="sub-feature-tabs">
-              <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png"> Arkiver fag</button>
-              <button id="allStudents"> Se studenter</button>
-              <button id="que-btn"><img id="in-to-que-img"> Slett fag</button>
+              <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png" v-on:click="alertArchiveCourse"> Arkiver fag</button>
+              <button id="allStudents" v-on:click="showStudents"> Se studenter</button>
+              <button id="que-btn"><img id="in-to-que-img" v-on:click="alertDeleteCourse"> Slett fag</button>
             </div>
           </div>
         </div><br>
@@ -43,10 +43,15 @@ export default {
     }
   },
   methods: {
-    makeNewCourse: {
-
+    alertDeleteCourse() {
     },
-
+    alertArchiveCourse() {
+    },
+    showStudents(){
+      this.$router.push({
+        name: 'allStudents'
+      })
+    }
   }
 }
 </script>

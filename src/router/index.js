@@ -7,6 +7,7 @@ import HomeStudent from "../views/HomeStudent.vue";
 import HomeStudentAss from "../views/HomeStudentAss";
 import Queue from "../views/Queue";
 import Settings from "@/views/Settings";
+import ShowAllStudentsInCourse from "@/views/ShowAllStudentsInCourse";
 
 
 const routes = [
@@ -49,6 +50,11 @@ const routes = [
     path: "/settings",
     name: "settings",
     component: Settings,
+  },
+  {
+    path: "/allStudents",
+    name: "allStudents",
+    component: ShowAllStudentsInCourse,
   },
 ];
 
