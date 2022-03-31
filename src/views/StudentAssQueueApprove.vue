@@ -7,7 +7,11 @@
     <div id="sub-header-container">
       <p id="sub-name">Fullstack</p>
       <p id="sub-code">IDATT2105</p>
-      <p id="student-name">Thadshajini Paramsothy</p>
+      <p id="student-name" class="student-details-in-queue">Thadshajini Paramsothy</p>
+      <p id="campus" class="student-details-in-queue">Realfagsbygget </p>
+      <p id="building" class="student-details-in-queue">A4 </p>
+      <p id="room" class="student-details-in-queue">112 </p>
+      <p id="table" class="student-details-in-queue">10 </p>
     </div>
     <div id="oving-container">
       <p id="oving-header">Øving 1</p>
@@ -51,15 +55,18 @@ export default {
   height: 20px;
   width: 20px;
 }
-#sub-name,#sub-code,#student-name{
+#sub-name,#sub-code,.student-details-in-queue{
   letter-spacing: 1px;
   font-weight: lighter;
   color: rgba(255, 255, 255, 0.89);
-  text-align: center;
+}
+.student-details-in-queue{
+  font-size: 16px;
 }
 #sub-name{
   font-size: 24px;
   margin-bottom: 0;
+  font-weight: bold;
 }
 #sub-header-container{
   border-radius: .2em;
@@ -67,6 +74,12 @@ export default {
   border-color: #0a64c2;
   border-width: 2.5px;
   margin: 0 20px 24px 20px;
+  text-align: center;
+  padding-bottom: 24px;
+}
+#campus,#building,#room,#table{
+  display: inline;
+  text-align: center;
 }
 #oving-container{
   color: rgba(255, 255, 255, 0.89);
