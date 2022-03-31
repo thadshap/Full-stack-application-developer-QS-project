@@ -3,7 +3,7 @@
   <div id="student-home-page">
     <div id="tabs-bar-wrapper">
     <div id="tabs-bar">
-      <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
+      <button id="left-btn" v-on:click="select($event)"><img id="student-img" src="./../assets/student.png">Student</button>
       <button id="middle-btn"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
       <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
     </div>
@@ -33,25 +33,34 @@
 <script>
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import HomeStudent from "./HomeStudent";
 
 export default {
   name: "HomeStudentAss",
   components: {Footer, Header},
         methods:{
-        changeActivityStatus(){
-          if(document.getElementById("active-que-btn").innerHTML === "Aktiver kø"){
-            document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
-            document.getElementById("active-que-btn").style.position='relative'
-            document.getElementById("active-que-btn").style.top='-30px'
-          }else{
-            document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
-            document.getElementById("active-que-btn").style.position='relative'
-            document.getElementById("active-que-btn").style.top='0'
+          select: function(event) {
+            const targetId = event.currentTarget.id;
+            if (targetId === "left-btn") {
+              this.$router.push({
+                name: 'student',
+                component: HomeStudent,
+              })
+            }
+          },
+          changeActivityStatus(){
+            if(document.getElementById("active-que-btn").innerHTML === "Aktiver kø"){
+              document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
+              document.getElementById("active-que-btn").style.position='relative'
+              document.getElementById("active-que-btn").style.top='-30px'
+            }else{
+              document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
+              document.getElementById("active-que-btn").style.position='relative'
+              document.getElementById("active-que-btn").style.top='0'
+            }
           }
-        }
         },
 };
-
 </script>
 
 <style scoped>
@@ -71,12 +80,10 @@ export default {
 }
 #left-btn,#middle-btn,#right-btn {
   display: inline;
-  width: 130.6px;
   height: 46px;
   background: rgb(40, 40, 40);
   color: inherit;
   border: none;
-  padding: 0;
   font: inherit;
   cursor: pointer;
   outline: inherit;
@@ -86,6 +93,8 @@ export default {
   font-family: sans-serif;
   position: relative;
   top: -4px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 #left-btn,#middle-btn{
   position: relative;
@@ -94,7 +103,6 @@ export default {
 #adjust-archive{
   position: relative;
   top: -3px;
-
 }
 #middle-btn{
   background-color: #011c39;
@@ -110,7 +118,6 @@ export default {
   border-width: 2.5px;
   font-family: sans-serif;
   padding: 30px;
-
 }
 #sub-name,#sub-code,#que-details{
   margin: 3px;

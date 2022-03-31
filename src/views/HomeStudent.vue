@@ -4,7 +4,7 @@
   <div id="tabs-bar-wrapper">
   <div id="tabs-bar">
     <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
-    <button id="middle-btn"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
+    <button id="middle-btn" v-on:click="select($event)"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
     <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
   </div>
   </div>
@@ -32,10 +32,22 @@
 <script>
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import HomeStudentAss from "./HomeStudentAss";
 
 export default {
   name: "Student",
   components: {Footer, Header},
+  methods: {
+    select: function(event) {
+      const targetId = event.currentTarget.id;
+      if (targetId === "middle-btn") {
+        this.$router.push({
+          name: 'studentAss',
+          component: HomeStudentAss,
+        })
+      }
+    },
+  },
 };
 </script>
 
@@ -55,12 +67,10 @@ export default {
 }
 #left-btn,#middle-btn,#right-btn {
   display: inline;
-  width: 130.6px;
   height: 46px;
   background: rgb(40, 40, 40);
   color: inherit;
   border: none;
-  padding: 0;
   font: inherit;
   cursor: pointer;
   outline: inherit;
@@ -70,6 +80,8 @@ export default {
   font-family: sans-serif;
   position: relative;
   top: -4px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 #left-btn,#middle-btn{
   position: relative; 
