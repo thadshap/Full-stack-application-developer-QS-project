@@ -79,20 +79,19 @@ export default {
   margin-left: 0px;
   margin-right: 20px;
   border-color: #011c39;
-  width: 92px;
 }
 
 #assigment-btn{
   margin-left: 0px;
   margin-right: 20px;
   border-color: #011c39;
-  width: 92px;
 }
 #que-btn{
   margin-left: 0px;
   margin-right: 0px;
-  border-color: green;
-  width: 72px;
+  border-color: darkred;
+  width: auto;
+
 }
 #sub-name-container{
   margin-right: 10px;

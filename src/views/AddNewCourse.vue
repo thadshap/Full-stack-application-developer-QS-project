@@ -18,7 +18,7 @@
         <input type="radio" id="normal" name="typeAssignment" v-on:click="sendButtonShow"> Vanlig
         <input type="radio" id="undergroups" name="typeAssignment" v-on:click="showUnderGroups"> Undergrupper<br>
 
-        <br><button id="send" v-if="showButton" v-on:click="sendCourse">Opprett nytt emne{{email}}</button>
+        <br><button id="send" v-if="showButton" v-on:click="sendCourse">Opprett nytt emne</button>
       </div>
       <div id="invisibleChoices" v-if="showGroupDetails">
         Hvor mange undergrupper har emnet? <input v-model="numOfUnderGroups" id="NumOfUnderGroups" class="inputFields" type="number" v-on:input="generateInputFields"><br>
@@ -97,6 +97,7 @@ export default {
   #registerCourse{
     color : white;
     text-align: center;
+    height: 300px;
   }
   .inputFields{
     background-color: #2d2c2c;
