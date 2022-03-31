@@ -108,7 +108,6 @@ export default {
 }
 #delete-btn,#wait-btn,#approve-btn{
   display: inline;
-  color: inherit;
   border: none;
   font: inherit;
   cursor: pointer;

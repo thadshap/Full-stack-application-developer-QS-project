@@ -11,12 +11,10 @@
     <div id="queue-choices">
     <input type="radio" id="all-queue-btn" value="all-queue" name="queue-btn">
     <label id="all-queue-header" for="all-queue-btn">Alle</label>
-
-      <input type="radio" id="school-queue-btn" value="all-queue" name="queue-btn">
-      <label id="school-queue-header" for="school-queue-btn">Campus</label>
-      <input type="radio" id="digital-queue-btn" value="all-queue" name="queue-btn">
-      <label id="digital-queue-header" for="digital-queue-btn">Dgital</label>
-
+    <input type="radio" id="school-queue-btn" value="all-queue" name="queue-btn">
+    <label id="school-queue-header" for="school-queue-btn">Campus</label>
+    <input type="radio" id="digital-queue-btn" value="all-queue" name="queue-btn">
+    <label id="digital-queue-header" for="digital-queue-btn">Digital</label>
     <input type="radio" id="approve-queue-btn" value="approve-queue" name="queue-btn">
     <label id="approve-queue-header" for="all-queue-btn">Godkjenning</label>
     <input type="radio" id="help-queue-btn" value="help-queue" name="queue-btn">
@@ -51,7 +49,6 @@ export default {
 
 <style scoped>
 #back-to-queue-btn{
-  color: inherit;
   border: none;
   font: inherit;
   cursor: pointer;
