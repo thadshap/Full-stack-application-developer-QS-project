@@ -13,6 +13,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
     List<Assignment> findByAssignmentNumber(int assignmentNumber);
 
     // get all approved assignments
-    List<Assignment> findByApprovedTrue(long groupId);
-
+    List<Assignment> findByApprovedTrue(); //todo wrong?
 }
+

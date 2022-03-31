@@ -37,7 +37,7 @@ public class Student extends Person {
             joinColumns = { @JoinColumn(name = "student_id") },
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
-    private Set<Assignment> courses = new HashSet<>();
+    private Set<Course> courses = new HashSet<>();
 
     // Creating the student assistant table as a many-to-many connection with course
     @ManyToMany(cascade = {CascadeType.ALL} )
@@ -46,7 +46,7 @@ public class Student extends Person {
             joinColumns = { @JoinColumn(name = "student_id") }, // todo should this maybe be just "id"
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
-    private Set<Assignment> studentAssistants = new HashSet<>();
+    private Set<Student> studentAssistants = new HashSet<>();
 
     // One-to-one relationship with student_in_queue
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

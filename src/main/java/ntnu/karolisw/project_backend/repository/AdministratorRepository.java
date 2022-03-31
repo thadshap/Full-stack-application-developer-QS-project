@@ -7,5 +7,4 @@ public interface AdministratorRepository extends JpaRepository<Administrator, Lo
     Administrator findByEmailAndLastName(String email, String lastName);
     Administrator findByEmail(String email);
     Administrator findByEmailAndPassword(String email, String password);
-
 }

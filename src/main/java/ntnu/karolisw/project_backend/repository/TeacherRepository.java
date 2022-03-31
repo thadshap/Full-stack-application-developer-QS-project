@@ -6,16 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Set;
 
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     Teacher findByEmailAndLastName(String email, String lastName);
-    Teacher findByEmail(String email, String lastName);
+    Teacher findByEmail(String email);
     Teacher findByEmailAndPassword(String email, String password);
-
-    // get all teachers where course id = y
-    List<Teacher> findAllWhereCourseId(long courseId);
 
     // get all courses where teacher id = x
     @Query("SELECT t.courses FROM Teacher t WHERE t.id = :id")

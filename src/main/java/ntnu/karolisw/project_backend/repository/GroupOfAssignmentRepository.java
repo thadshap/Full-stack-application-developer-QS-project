@@ -3,7 +3,10 @@ package ntnu.karolisw.project_backend.repository;
 import ntnu.karolisw.project_backend.model.Assignment;
 import ntnu.karolisw.project_backend.model.Course;
 import ntnu.karolisw.project_backend.model.GroupOfAssignment;
+import ntnu.karolisw.project_backend.model.Queue;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -20,5 +23,14 @@ public interface GroupOfAssignmentRepository extends JpaRepository<GroupOfAssign
     List<GroupOfAssignment> findByGroupId(long groupId);
 
     // get how many assignments are approved
-    int findApprovedAssignmentsWhereGroupId(long groupId);
+    /**
+    int findApprovedAssignmentsByGroupId(long groupId); //todo wrong...
+    @Query("SELECT g.assignments FROM GroupOfAssignment g, Assignment a WHERE a.approved= :true")
+    List<Assignment> getAllApprovedAssignmentsByGroupId(@Param("id") long groupId);
+*/
+
+    // get all the assignments in a group of assignments (by id)
+    @Query("SELECT g.assignments FROM GroupOfAssignment g WHERE g.groupId = :id")
+    List<Assignment> getAllAssignmentsByGroupId(@Param("id") long groupId);
+
 }

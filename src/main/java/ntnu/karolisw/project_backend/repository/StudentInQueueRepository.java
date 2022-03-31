@@ -38,11 +38,7 @@ public interface StudentInQueueRepository extends JpaRepository<StudentInQueue, 
     // get all students with tableNumber =
     List<StudentInQueue> findByTableNumber(int tableNumber);
 
-    // get all students with all of the above
+    // get all students with all the above
     List<StudentInQueue> findByCampusAndBuildingAndRoomAndTableNumber(String campus, String building,
                                                                      String room, int tableNumber);
-
-    // get all students from queue where course_id = z
-
-
 }

@@ -67,6 +67,7 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private Set<GroupOfAssignment> groupsOfAssignments = new HashSet<>();
 
+    // Queue is child, course is parent
     @OneToOne(mappedBy = "course")
     private Queue queue;
 }
