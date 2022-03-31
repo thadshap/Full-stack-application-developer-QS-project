@@ -10,7 +10,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 export default {
-  name: "QueueStudentAss",
+  name: "StudentAssQueueApprove",
   components: {Footer, Header},
 };
 </script>

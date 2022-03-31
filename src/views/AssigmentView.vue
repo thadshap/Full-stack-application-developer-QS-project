@@ -102,8 +102,6 @@ export default {
   margin-right: 40px;
   position: relative;
   top: 4px;
-}
-#oving-rules-btn{
   color: inherit;
   border: none;
   padding: 0;

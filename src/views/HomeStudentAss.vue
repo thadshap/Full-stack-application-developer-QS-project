@@ -89,6 +89,9 @@ export default {
   top: -3px;
 
 }
+#middle-btn{
+  background-color: #011c39;
+}
 #active-subject-container{
   width: 295px;
   height: 130px;

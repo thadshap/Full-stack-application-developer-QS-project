@@ -1,6 +1,18 @@
 <template>
   <div id="queue-student-container">
     <Header></Header><br>
+    <button id="oving-rules-btn">
+      <img id="oving-list-img" src="./../assets/ovinger-btn.png">
+    </button>
+    <br>
+    <div id="queue-choices">
+    <input type="radio" id="all-queue-btn" value="all-queue" name="queue-btn">
+    <label id="all-queue-header" for="all-queue-btn">Alle</label>
+    <input type="radio" id="approve-queue-btn" value="approve-queue" name="queue-btn">
+    <label id="approve-queue-header" for="all-queue-btn">Godkjenning</label>
+    <input type="radio" id="help-queue-btn" value="help-queue" name="queue-btn">
+    <label id="help-queue-header" for="all-queue-btn">Hjelp</label>
+    </div>
     <p id="amount-of-students-in-queue">Antall studenter i kø: 0</p>
     <table id="queue-table">
       <tr id="queue-table-headers">
@@ -29,12 +41,33 @@ export default {
 </script>
 
 <style scoped>
-#amount-of-students-in-queue{
+#oving-rules-btn{
+  margin-left: 20px;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  width: 40px;
+  height: 40px;
+  background-color: inherit;
+  border-radius: 100%;
+}
+#oving-list-img{
+  height: 36px;
+  width: 36px;
+}
+#all-queue-btn,#approve-queue-btn,#help-queue-btn{
+  display: inline;
+  margin: 10px;
+}
+#queue-choices, #amount-of-students-in-queue{
   text-align: center;
   color: rgba(255, 255, 255, 0.82);
-
-
+  font-weight: lighter;
 }
+
 #queue-table{
   width: 100%;
 }

@@ -8,7 +8,7 @@ import HomeStudentAss from "../views/HomeStudentAss";
 import AssigmentView from "../views/AssigmentView";
 import RegisterInLine from "../views/RegisterInLine";
 import QueueStudent from "../views/QueueStudent";
-import QueueStudentAss from "../views/QueueStudentAss";
+import StudentAssQueueApprove from "../views/StudentAssQueueApprove";
 
 const routes = [
   {
@@ -57,9 +57,9 @@ const routes = [
     component: QueueStudent,
   },
   {
-    path: "/queueStudentAss",
-    name: "queueStudentAss",
-    component: QueueStudentAss,
+    path: "/studentAssQueueApprove",
+    name: "studentAssQueueApprove",
+    component: StudentAssQueueApprove,
   },
 ];
 
