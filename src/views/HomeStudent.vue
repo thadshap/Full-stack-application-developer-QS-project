@@ -99,14 +99,13 @@ export default {
   width: 295px;
   height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
-  margin-top: 20px;
+  margin: 20px 0 0 0;
   border-radius: .3em;
   border-style: solid;
   border-color: #0a64c2;
   border-width: 2.5px;
   font-family: sans-serif;
   padding: 30px;
- 
 }
 #sub-name,#sub-code,#que-details{
   margin: 3px;
