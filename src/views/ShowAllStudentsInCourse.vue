@@ -4,7 +4,9 @@
     <button id="goBack" v-on:click="goBack"> Gå tilbake</button>
     <button id="addStudent" v-on:click="addNewStudent"> Legg til student</button><br>
     <p id="add-student-file-header">Legg til CSV fil med studenter:</p>
-    <input id="file" class="inputFields" type="file" v-on:change="changeFile">
+    <input id="file" class="inputFields" type="file" v-on:change="changeFile" hidden>
+    <label id="file-button" for="file" v-on:click="changeFileDesigne">Velg fil</label>
+    <span id="file-chosen">No file chosen</span>
     <button id="sendFile" v-on:click="sendFile" v-if="showSendFile"> Send</button>
     <div id="showAddStudent" v-if="showAddStudent"><br>
       fornavn: <input @validate="validate('firstName')" v-model="addStudent.firstName" id="firstName" class="inputFields" type="text" placeholder="fornavn"><br>
@@ -75,6 +77,16 @@ export default {
     }
   },
   methods: {
+    changeFileDesigne(){
+      const actualBtn = document.getElementById('file');
+
+      const fileChosen = document.getElementById('file-chosen');
+
+      actualBtn.addEventListener('change', function(){
+        fileChosen.textContent = this.files[0].name
+        fileChosen.style.color  = "green";
+      })
+    },
     goBack(){
       this.$router.push({
         name: 'administrator'
@@ -137,7 +149,7 @@ export default {
 
 <style scoped>
 
-  button {
+  button{
     cursor: pointer;
     color:white;
     background-color: #2d2c2c;
@@ -145,6 +157,7 @@ export default {
     border-color: steelblue;
     border-radius: 7px;
     margin: 10px;
+    padding: 3px 5px 3px 5px;
   }
 
   #studentsToShow{
@@ -191,5 +204,22 @@ export default {
     width: 100%;
     display: grid;
     justify-content: center;
+  }
+  #file-button {
+    background-color: #2d2c2c;
+    color: white;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin: 10px;
+    padding: 3px 5px 3px 5px;
+    font-size: 13px;
+    font-family: Arial;
+  }
+  #file-chosen{
+    color: darkred;
+    margin-left: 10px;
+  }
+  #sendFile{
+    margin: 0 0 0 10px;
   }
 </style>

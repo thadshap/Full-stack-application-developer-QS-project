@@ -42,7 +42,14 @@
 import MenuBarAdministrator from "@/components/menuBarAdministrator";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-
+//import {object, string} from "yup";
+/**
+const validationSchema = object({
+  courseCode: string().required().('Please enter valid name'),
+  name: string().required().matches(/^[A-ÅÆØa-æøå ]*$/, 'Please enter valid name'),
+  email: string().email('Please enter a valid email').required()
+})
+ */
 export default {
   name: "AddNewCourse",
   components: {Footer, MenuBarAdministrator, Header},
