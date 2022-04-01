@@ -1,5 +1,5 @@
 <template>
-  <Header></Header><br>
+<Header></Header><br>
 <div id="student-home-page">
   <div id="tabs-bar-wrapper">
   <div id="tabs-bar">
@@ -8,25 +8,27 @@
     <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
   </div>
   </div>
+  <div id="active-subject-container-table-wrapper">
   <div id="active-subject-container-wrapper">
-  <div id="active-subject-container">
-       <div id="sub-name-container">
-         <p id="sub-name">Fullstack</p>
-         <p id="sub-code">IDATT2105</p>
-       </div>
-    <div id="que-details-container">
-      <p id="que-details">
-        <img id="amount-of-students-img" src="./../assets/amount-students.png">
-        100
-      </p>
-    </div>
-    <div id="sub-feature-tabs">
-      <button id="assigment-btn" v-on:click="select($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
-      <button id="que-btn" v-on:click="select($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
-    </div>
-  </div>
-  </div>
-  <Footer></Footer>
+  <div id="active-subject-container" v-for="course in courses" :key="course">
+   <div id="sub-name-container">
+     <p id="sub-name">{{course.courseName}}</p>
+     <p id="sub-code">{{course.courseCode}}</p>
+   </div>
+   <div id="que-details-container">
+     <p id="que-details">
+       <img id="amount-of-students-img" src="./../assets/amount-students.png">
+       {{course.numberOfStudents}}
+     </p>
+   </div>
+   <div id="sub-feature-tabs">
+     <button id="assigment-btn" v-on:click="select($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
+     <button id="que-btn" v-on:click="select($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+   </div>
+   </div>
+   </div>
+</div>
+<Footer></Footer>
 </div>
 </template>
 <script>
@@ -39,6 +41,17 @@ import QueueStudent from "./QueueStudent";
 export default {
   name: "Student",
   components: {Footer, Header},
+  data(){
+    return{
+      courses:[
+        {
+          courseCode:"IDATT2102",
+          courseName:"Nettverk", 
+          numberOfStudents:50,   
+        },
+      ],
+    }
+  },
   methods: {
     select: function(event) {
       const targetId = event.currentTarget.id;
@@ -71,10 +84,13 @@ export default {
   overflow: auto;
   object-fit: cover;
 }
-#tabs-bar-wrapper,#active-subject-container-wrapper{
+#tabs-bar-wrapper{
   width: 100%;
   display: flex;
   justify-content: center;
+}
+#active-subject-container-wrapper{
+  display: table;
 }
 #tabs-bar{
   height: 47px;
@@ -106,7 +122,6 @@ export default {
 #adjust-archive{
   position: relative; 
   top: -3px;
-
 }
 #left-btn{
   background-color: #011c39;
@@ -168,7 +183,6 @@ export default {
   border-radius: .3em;
   font-weight: lighter;
   font-size: 14px;
-
 }
 #assigment-btn{
   margin-left: 15px;
@@ -199,5 +213,10 @@ export default {
 #archive-img{
     position: relative;
     top: 5px;
+}
+#active-subject-container-table-wrapper{
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 </style>
