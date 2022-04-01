@@ -1,35 +1,35 @@
 <template>
-<Header></Header><br>
-<div id="student-home-page">
-  <div id="tabs-bar-wrapper">
-  <div id="tabs-bar">
-    <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
-    <button id="middle-btn" v-on:click="select($event)"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
-    <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
+  <Header></Header><br>
+  <div id="student-home-page">
+    <div id="tabs-bar-wrapper">
+    <div id="tabs-bar">
+      <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
+      <button id="middle-btn" v-on:click="select($event)"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
+      <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
+    </div>
+    </div>
+    <div id="active-subject-container-table-wrapper">
+    <div id="active-subject-container-wrapper">
+    <div id="active-subject-container" v-for="course in courses" :key="course">
+     <div id="sub-name-container">
+       <p id="sub-name">{{course.courseName}}</p>
+       <p id="sub-code">{{course.courseCode}}</p>
+     </div>
+     <div id="que-details-container">
+       <p id="que-details">
+         <img id="amount-of-students-img" src="./../assets/amount-students.png">
+         {{course.numberOfStudents}}
+       </p>
+     </div>
+     <div id="sub-feature-tabs">
+       <button id="assigment-btn" v-on:click="select($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
+       <button id="que-btn" v-on:click="select($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+     </div>
+    </div>
+    </div>
+    </div>
   </div>
-  </div>
-  <div id="active-subject-container-table-wrapper">
-  <div id="active-subject-container-wrapper">
-  <div id="active-subject-container" v-for="course in courses" :key="course">
-   <div id="sub-name-container">
-     <p id="sub-name">{{course.courseName}}</p>
-     <p id="sub-code">{{course.courseCode}}</p>
-   </div>
-   <div id="que-details-container">
-     <p id="que-details">
-       <img id="amount-of-students-img" src="./../assets/amount-students.png">
-       {{course.numberOfStudents}}
-     </p>
-   </div>
-   <div id="sub-feature-tabs">
-     <button id="assigment-btn" v-on:click="select($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
-     <button id="que-btn" v-on:click="select($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
-   </div>
-   </div>
-   </div>
-</div>
-<Footer></Footer>
-</div>
+  <Footer></Footer>
 </template>
 <script>
 import Footer from "../components/Footer";
@@ -171,7 +171,6 @@ export default {
 }
 #assigment-btn,#que-btn{
   color: inherit;
-  border: none;
   padding: 0;
   font: inherit;
   cursor: pointer;

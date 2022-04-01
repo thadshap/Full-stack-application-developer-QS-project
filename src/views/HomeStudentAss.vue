@@ -8,16 +8,17 @@
       <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
     </div>
     </div>
+    <div id="active-subject-container-table-wrapper">
     <div id="active-subject-container-wrapper">
-    <div id="active-subject-container">
+    <div id="active-subject-container" v-for="course in courses" :key="course">
       <div id="sub-name-container">
-        <p id="sub-name">Fullstack</p>
-        <p id="sub-code">IDATT2105</p>
+        <p id="sub-name">{{course.courseName}}</p>
+        <p id="sub-code">{{course.courseCode}}</p>
       </div>
       <div id="que-details-container">
         <p id="que-details">
           <img id="amount-of-students-img" src="./../assets/amount-students.png">
-          100
+          {{course.numberOfStudents}}
         </p>
       </div>
       <div id="sub-feature-tabs">
@@ -25,6 +26,7 @@
         <button id="que-btn" v-on:click="select($event)" ><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
         <button id="active-que-btn" @click="changeActivityStatus()">Aktiver kø</button>
       </div>
+    </div>
     </div>
     </div>
   </div>
@@ -40,40 +42,51 @@ import AssigmentViewForStudentAss from "./AssigmentViewForStudentAss";
 export default {
   name: "HomeStudentAss",
   components: {Footer, Header},
-        methods:{
-          select: function(event) {
-            const targetId = event.currentTarget.id;
-            if (targetId === "left-btn") {
-              this.$router.push({
-                name: 'student',
-                component: HomeStudent,
-              })
-            }
-            else if (targetId === "assigment-btn"){
-              this.$router.push({
-                name:'assigmentViewForStudentAss',
-                component: AssigmentViewForStudentAss
-              })
-            }
-            else if (targetId === "que-btn"){
-              this.$router.push({
-                name:'queueStudent',
-                component: QueueStudent
-              })
-            }
-          },
-          changeActivityStatus(){
-            if(document.getElementById("active-que-btn").innerHTML === "Aktiver kø"){
-              document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
-              document.getElementById("active-que-btn").style.position='relative'
-              document.getElementById("active-que-btn").style.top='-30px'
-            }else{
-              document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
-              document.getElementById("active-que-btn").style.position='relative'
-              document.getElementById("active-que-btn").style.top='0'
-            }
-          }
+  data(){
+    return{
+      courses:[
+        {
+          courseCode:"IDATT2102",
+          courseName:"Nettverk",
+          numberOfStudents:50,
         },
+      ],
+    }
+  },
+  methods:{
+    select: function(event) {
+      const targetId = event.currentTarget.id;
+      if (targetId === "left-btn") {
+        this.$router.push({
+          name: 'student',
+          component: HomeStudent,
+        })
+      }
+      else if (targetId === "assigment-btn"){
+        this.$router.push({
+          name:'assigmentViewForStudentAss',
+          component: AssigmentViewForStudentAss
+        })
+      }
+      else if (targetId === "que-btn"){
+        this.$router.push({
+          name:'queueStudent',
+          component: QueueStudent
+        })
+      }
+    },
+    changeActivityStatus(){
+      if(document.getElementById("active-que-btn").innerHTML === "Aktiver kø"){
+        document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
+        document.getElementById("active-que-btn").style.position='relative'
+        document.getElementById("active-que-btn").style.top='-30px'
+      }else{
+        document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
+        document.getElementById("active-que-btn").style.position='relative'
+        document.getElementById("active-que-btn").style.top='0'
+      }
+    }
+  },
 };
 </script>
 
@@ -83,10 +96,13 @@ export default {
   overflow: auto;
   object-fit: cover;
 }
-#tabs-bar-wrapper,#active-subject-container-wrapper{
+#tabs-bar-wrapper{
     width: 100%;
     display: flex;
     justify-content: center;
+}
+#active-subject-container-wrapper{
+  display: table;
 }
 #tabs-bar{
   height: 47px;
@@ -211,5 +227,10 @@ export default {
   float: right;
   border-color: #0a64c2;
   padding: 5px;
+}
+#active-subject-container-table-wrapper{
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 </style>
