@@ -1,7 +1,7 @@
 <template>
   <Header></Header><br>
 <div id="register-in-line-container">
-  <button id="back-to-queue-btn">
+  <button id="back-to-queue-btn" v-on:click="backToPreviousPage">
     <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
   </button>
   <div id="digital-or-not-checkbox">
@@ -68,8 +68,10 @@ export default {
     },
     digitalChosen(){
       this.showCampusDetails = false;
-    }
-
+    },
+    backToPreviousPage(){
+      this.$router.go(-1)
+    },
   }
 };
 </script>

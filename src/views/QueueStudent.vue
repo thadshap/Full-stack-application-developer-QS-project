@@ -1,11 +1,8 @@
 <template>
   <Header></Header><br>
   <div id="queue-student-container">
-    <button id="back-to-queue-btn">
+    <button id="back-to-queue-btn" v-on:click="backToPreviousPage">
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
-    </button>
-    <button id="oving-rules-btn">
-      <img id="oving-list-img" src="./../assets/ovinger-btn.png">
     </button>
     <br>
     <div id="queue-choices">
@@ -27,7 +24,7 @@
         <th id="room">Rom</th>
         <th id="type">Type</th>
       </tr>
-      <tr>
+      <tr id="student-column">
         <td id="name-column">Thadshajini Paramsothy</td>
         <td id="room-column">Realfagsbygget A4 112</td>
         <td id="type-column">Godkjenning</td>
@@ -44,6 +41,11 @@ import Header from "../components/Header";
 export default {
   name: "QueueStudent",
   components: {Footer, Header},
+  methods:{
+    backToPreviousPage(){
+      this.$router.go(-1)
+    },
+  },
 };
 </script>
 
@@ -72,26 +74,6 @@ export default {
   left: 15px;
   top: 80px;
 }
-#oving-rules-btn{
-  margin-left: 20px;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  width: 40px;
-  height: 40px;
-  background-color: inherit;
-  border-radius: 100%;
-}
-#oving-list-img{
-  height: 36px;
-  width: 36px;
-  position: absolute;
-  right: 15px;
-  top: 75px;
-}
 #all-queue-btn,#approve-queue-btn,#help-queue-btn, #school-queue-btn,#digital-queue-btn{
   display: inline;
   margin-left: 10px;
@@ -105,6 +87,7 @@ export default {
 
 #queue-table{
   width: 100%;
+  border-collapse: collapse;
 }
 #queue-table th ,#queue-table td{
   padding-top: 12px;
@@ -123,5 +106,8 @@ export default {
 }
 #type-column{
   padding-right: 10px;
+}
+#student-column{
+  background-color: rgba(0, 128, 0, 0.55);
 }
 </style>

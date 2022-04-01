@@ -1,7 +1,7 @@
 <template>
   <Header></Header>
   <div id="queue-student-ass-container">
-    <button id="back-to-queue-btn">
+    <button id="back-to-queue-btn" v-on:click="backToPreviousPage">
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
     </button>
     <div id="sub-header-container">
@@ -34,6 +34,11 @@ import Header from "../components/Header";
 export default {
   name: "StudentAssQueueApprove",
   components: {Footer, Header},
+  methods:{
+    backToPreviousPage(){
+      this.$router.go(-1)
+    },
+  },
 };
 </script>
 
@@ -81,6 +86,7 @@ export default {
   margin: 0 20px 24px 20px;
   text-align: center;
   padding-bottom: 24px;
+  padding-top: 20px;
 }
 #campus,#building,#room,#table{
   display: inline;

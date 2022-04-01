@@ -34,8 +34,8 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import HomeStudent from "./HomeStudent";
-import AssigmentView from "./AssigmentView";
 import QueueStudent from "./QueueStudent";
+import AssigmentViewForStudentAss from "./AssigmentViewForStudentAss";
 
 export default {
   name: "HomeStudentAss",
@@ -51,8 +51,8 @@ export default {
             }
             else if (targetId === "assigment-btn"){
               this.$router.push({
-                name:'assigmentView',
-                component: AssigmentView
+                name:'assigmentViewForStudentAss',
+                component: AssigmentViewForStudentAss
               })
             }
             else if (targetId === "que-btn"){

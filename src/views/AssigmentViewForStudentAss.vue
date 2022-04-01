@@ -1,7 +1,7 @@
 <template>
   <Header></Header>
   <div id="queue-container">
-    <button id="back-to-queue-btn">
+    <button id="back-to-queue-btn" v-on:click="backToPreviousPage">
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
     </button>
     <div id="sub-header-container">
@@ -45,6 +45,9 @@ export default {
         this.showAmountOfOvingerDetails = false;
         document.getElementById("drop-down-arrow-img-oving-rules").style.transform ='rotate(450deg)'
       }
+    },
+    backToPreviousPage(){
+      this.$router.go(-1)
     },
   },
 };

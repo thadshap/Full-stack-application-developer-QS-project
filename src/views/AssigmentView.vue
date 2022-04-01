@@ -1,7 +1,7 @@
 <template>
   <Header></Header>
   <div id="queue-container">
-    <button id="back-to-queue-btn">
+    <button id="back-to-queue-btn" v-on:click="backToPreviousPage">
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
     </button>
     <div id="sub-header-container">
@@ -34,6 +34,7 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 
+
 export default {
   name: "AssigmentView",
   components: {Footer, Header},
@@ -43,7 +44,7 @@ export default {
     }
   },
   methods : {
-    showRules()  {
+    showRules(){
       if (this.showOvingRules === false){
         this.showOvingRules = true;
         document.getElementById("drop-down-arrow-img").style.transform ='rotate(360deg)'
@@ -52,6 +53,9 @@ export default {
         this.showOvingRules = false;
         document.getElementById("drop-down-arrow-img").style.transform ='rotate(450deg)'
       }
+    },
+    backToPreviousPage(){
+      this.$router.go(-1)
     },
   },
 };
