@@ -38,6 +38,11 @@ export default {
 </script>
 
 <style scoped>
+#queue-student-ass-container{
+  height: 650px;
+  overflow: auto;
+  object-fit: cover;
+}
 #back-to-queue-btn{
   color: inherit;
   border: none;

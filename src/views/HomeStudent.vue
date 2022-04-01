@@ -21,8 +21,8 @@
       </p>
     </div>
     <div id="sub-feature-tabs">
-      <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
-      <button id="que-btn"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+      <button id="assigment-btn" v-on:click="select($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
+      <button id="que-btn" v-on:click="select($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
     </div>
   </div>
   </div>
@@ -33,6 +33,8 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import HomeStudentAss from "./HomeStudentAss";
+import AssigmentView from "./AssigmentView";
+import QueueStudent from "./QueueStudent";
 
 export default {
   name: "Student",
@@ -46,6 +48,18 @@ export default {
           component: HomeStudentAss,
         })
       }
+      else if (targetId === "assigment-btn"){
+        this.$router.push({
+          name:'assigmentView',
+          component: AssigmentView
+        })
+      }
+      else if (targetId === "que-btn"){
+        this.$router.push({
+          name:'queueStudent',
+          component: QueueStudent
+        })
+      }
     },
   },
 };
@@ -53,7 +67,9 @@ export default {
 
 <style scoped>
 #student-home-page{
-  height: 850px;
+  height: 710px;
+  overflow: auto;
+  object-fit: cover;
 }
 #tabs-bar-wrapper,#active-subject-container-wrapper{
   width: 100%;

@@ -48,6 +48,11 @@ export default {
 </script>
 
 <style scoped>
+#queue-student-container{
+  height: 710px;
+  overflow: auto;
+  object-fit: cover;
+}
 #back-to-queue-btn{
   border: none;
   font: inherit;

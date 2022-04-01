@@ -37,6 +37,11 @@ export default {
 </script>
 
 <style scoped>
+#queue-container{
+  height: 710px;
+  overflow: auto;
+  object-fit: cover;
+}
 #back-to-queue-btn{
   color: inherit;
   border: none;
