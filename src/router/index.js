@@ -11,6 +11,7 @@ import QueueStudent from "../views/QueueStudent";
 import StudentAssQueueApprove from "../views/StudentAssQueueApprove";
 import Settings from "@/views/Settings";
 import ShowAllStudentsInCourse from "@/views/ShowAllStudentsInCourse";
+import AssigmentViewForStudentAss from "../views/AssigmentViewForStudentAss";
 
 const routes = [
   {
@@ -72,6 +73,11 @@ const routes = [
     path: "/allStudents",
     name: "allStudents",
     component: ShowAllStudentsInCourse,
+  },
+  {
+    path: "/assigmentViewForStudentAss",
+    name: "assigmentViewForStudentAss",
+    component: AssigmentViewForStudentAss,
   },
 ];
 
