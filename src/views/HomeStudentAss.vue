@@ -1,6 +1,6 @@
 <template>
   <Header></Header><br>
-  <div id="student-home-page">
+  <div id="studentAss-home-page">
     <div id="tabs-bar-wrapper">
     <div id="tabs-bar">
       <button id="left-btn" v-on:click="select($event)"><img id="student-img" src="./../assets/student.png">Student</button>
@@ -64,8 +64,7 @@ export default {
 </script>
 
 <style scoped>
-
-#student-home-page{
+#studentAss-home-page{
   height: 850px;
 }
 #tabs-bar-wrapper,#active-subject-container-wrapper{
@@ -151,7 +150,6 @@ export default {
 #assigment-btn,#que-btn, #active-que-btn{
   display: inline;
   color: inherit;
-  border: none;
   padding: 0;
   font: inherit;
   cursor: pointer;
@@ -168,6 +166,7 @@ export default {
   float: left;
   border-color: rgba(1, 28, 57, 0.75);
   width: 92px;
+  margin: 0;
 }
 #que-btn{
   border-color: green;
