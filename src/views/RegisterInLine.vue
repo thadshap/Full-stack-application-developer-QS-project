@@ -5,10 +5,10 @@
     <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
   </button>
   <div id="digital-or-not-checkbox">
-    <input type="radio" id="school-queue-btn" value="all-queue" name="queue-btn">
+    <input type="radio" id="school-queue-btn" value="all-queue" name="queue-btn" v-on:click="campusChosen">
     <label id="school-queue-header" for="school-queue-btn">Campus</label>
-    <input type="radio" id="digital-queue-btn" value="all-queue" name="queue-btn">
-    <label id="digital-queue-header" for="digital-queue-btn">Digital</label>
+    <input type="radio" id="digital-queue-btn" value="all-queue" name="queue-btn" v-on:click="digitalChosen">
+    <label id="digital-queue-header" for="digital-queue-btn" >Digital</label>
   </div>
   <div id="list-of-ovinger">
     <label id="oving-checkbox-header" class="oving-lable" for="oving-checkbox">Øving 1</label>
@@ -30,7 +30,7 @@
     <input type="radio" id="help-queue-btn" value="help-queue" name="queue-btn">
     <label id="help-queue-header" for="help-queue-btn">Help</label>
   </div>
-  <div id="destination-on-campus">
+  <div id="destination-on-campus" v-if="showCampusDetails">
     <label id="campus-label" class="destination-lable" for="campus-input">Campus:</label>
     <input id="campus-input" class="destination-input">
     <br>
@@ -57,6 +57,20 @@ import Header from "../components/Header";
 export default {
   name: "RegisterInLine",
   components: {Footer, Header},
+  data() {
+    return {
+      showCampusDetails : false
+    }
+  },
+  methods : {
+    campusChosen()  {
+      this.showCampusDetails = true;
+    },
+    digitalChosen(){
+      this.showCampusDetails = false;
+    }
+
+  }
 };
 </script>
 
