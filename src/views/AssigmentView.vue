@@ -10,12 +10,16 @@
     </div>
     <p id="status">Status: Ikke godkjent</p>
     <hr class="blue-line">
+    <div id="oving-rules-container-wrapper">
     <div id="oving-rules-container">
       <p id="oving-rules">Øvingsregler</p>
-      <button id="oving-rules-btn">
+      <button id="oving-rules-btn" v-on:click="showRules">
         <img id="drop-down-arrow-img" src="./../assets/drop-down-arrow.png">
       </button>
-      <hr class="blue-line">
+    </div>
+     </div>
+    <div id="oving-rules-drop-down-container" v-if="showOvingRules">
+      <p id="oving-rules-header">For å bestrå faget må 3 av 4 øvinger godkjennes.</p>
     </div>
     <div id="oving-container">
       <p id="oving-header">Øving 1</p>
@@ -33,6 +37,23 @@ import Header from "../components/Header";
 export default {
   name: "AssigmentView",
   components: {Footer, Header},
+  data() {
+    return {
+      showOvingRules : false
+    }
+  },
+  methods : {
+    showRules()  {
+      if (this.showOvingRules === false){
+        this.showOvingRules = true;
+        document.getElementById("drop-down-arrow-img").style.transform ='rotate(360deg)'
+      }
+      else if (this.showOvingRules === true){
+        this.showOvingRules = false;
+        document.getElementById("drop-down-arrow-img").style.transform ='rotate(450deg)'
+      }
+    },
+  },
 };
 </script>
 
@@ -88,6 +109,7 @@ export default {
   letter-spacing: 1px;
   font-weight: lighter;
   font-size: 24px;
+  margin-top: 30px;
 }
 .blue-line{
   margin: 24px 20px 24px 20px;
@@ -140,5 +162,24 @@ export default {
 #drop-down-arrow-img{
   height: 15px;
   width: 25px;
+  transform: rotate(90deg);
+}
+#oving-rules-container-wrapper{
+ width: 100%; 
+}
+#oving-rules-drop-down-container{
+  border-radius: 0.2em;
+  border-style: solid;
+  border-color: #0a64c2;
+  border-width: 2.5px;
+  margin: 20px;
+}
+#oving-rules-header{
+  text-align: center;
+  color: rgba(255, 255, 255, 0.89);
+  letter-spacing: 1px;
+  font-weight: lighter;
+  font-size: 15px;
+  padding: 5px;
 }
 </style>

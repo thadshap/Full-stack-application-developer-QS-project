@@ -39,9 +39,11 @@ export default {
     showOvinger()  {
       if (this.showAmountOfOvingerDetails === false){
         this.showAmountOfOvingerDetails = true;
+        document.getElementById("drop-down-arrow-img-oving-rules").style.transform ='rotate(360deg)'
       }
       else if (this.showAmountOfOvingerDetails === true){
         this.showAmountOfOvingerDetails = false;
+        document.getElementById("drop-down-arrow-img-oving-rules").style.transform ='rotate(450deg)'
       }
     },
   },
@@ -127,6 +129,7 @@ export default {
 #drop-down-arrow-img-oving-rules{
   height: 15px;
   width: 25px;
+  transform: rotate(90deg);
 }
 #oving-approval-header{
   text-align: center;
