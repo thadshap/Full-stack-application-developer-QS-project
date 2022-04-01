@@ -1,5 +1,6 @@
 package ntnu.karolisw.project_backend.service;
 
+import ntnu.karolisw.project_backend.dto.StudentInQueueDto;
 import ntnu.karolisw.project_backend.model.*;
 import ntnu.karolisw.project_backend.repository.*;
 import ntnu.karolisw.project_backend.repository.userRepo.AdminUserRepository;
@@ -19,22 +20,22 @@ import java.util.Set;
 public class QueueService {
 
     @Autowired
-    QueueRepository queueRepository;
+    private QueueRepository queueRepository;
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
-    StudentInQueueRepository studentInQueueRepository;
+    private StudentInQueueRepository studentInQueueRepository;
 
     @Autowired
-    CourseRepository courseRepository;
+    private CourseRepository courseRepository;
 
     @Autowired
-    AssignmentRepository assignmentRepository;
+    private AssignmentRepository assignmentRepository;
 
     @Autowired
-    GroupOfAssignmentRepository groupOfAssignmentRepository;
+    private GroupOfAssignmentRepository groupOfAssignmentRepository;
 
 
     // get all students that are in queue digitally
@@ -50,6 +51,7 @@ public class QueueService {
         }
         return new ResponseEntity<> (digital, HttpStatus.OK);
     }
+
 
     // get all students that are in queue digital and vice versa
     public ResponseEntity<Object> getAllStudentsInQueueAtSchool(long courseId) {
@@ -188,4 +190,93 @@ public class QueueService {
         return new ResponseEntity<>(allAssignment, HttpStatus.OK);
     }
 
+    /**
+     * When a student wants to enter a queue, a StudentInQueue entity must be created.
+     * This new entity is used in the queue - logic of the front-end and is therefore
+     * important to both create/delete at the appropriate times:
+     *            Created --> When the student enters the queue (this will make them visible in the queue)
+     *            Deleted --> When the student's assignment is approved,
+     *
+     * @param dto is the data transfer object send when the user tries to enter the queue
+     * @return the new StudentInQueue entity created in this method
+     */
+    public ResponseEntity<Object> createStudentInQueueEntity(StudentInQueueDto dto) {
+        StudentInQueue newSIQ = new StudentInQueue();
+
+        // Get the queue
+        Optional<Queue> queue = queueRepository.getQueueByCourseId(dto.getCourseId());
+        // Add the general attributes
+        if(queue.isPresent()){
+            newSIQ.setQueue(queue.get());
+            newSIQ.setAssessmentHelp(dto.isAssessmentHelp());
+        }
+        else {
+            throw new IllegalStateException("There was no queue connected to the course with id: "
+                    + dto.getCourseId());
+        }
+
+        // Get size of array of students in current queue + 1
+        newSIQ.setPlacementInQueue(queueRepository.
+                findAllStudentsInQueueByCourseId(dto.getCourseId()).
+                size() + 1 );
+
+        // 1 =  AVAILABLE; 2 = TAKEN; 3 = WAITING;
+        int status = dto.getStatusInQueue();
+
+        if(status == 1) {
+            newSIQ.setStatusInQueue(Status.AVAILABLE);
+        }
+        else if(status == 2) {
+            newSIQ.setStatusInQueue(Status.TAKEN);
+        }
+        else if(status == 3) {
+            newSIQ.setStatusInQueue(Status.WAITING);
+        }
+        else {
+            throw new IllegalArgumentException("The status was not numbers 1-3, but: " + status);
+        }
+
+        // If digital help/assessment requested
+        if(dto.isDigital()) {
+            newSIQ.setDigital(true);
+        }
+
+        // Else, set digital and add the school attributes (campus, building etc.)
+        else {
+            newSIQ.setDigital(false);
+            newSIQ.setCampus(dto.getCampus());
+            newSIQ.setBuilding(dto.getBuilding());
+            newSIQ.setRoom(dto.getRoom());
+            newSIQ.setTableNumber(dto.getTableNumber());
+        }
+
+        // Assign the foreign keys ( student and queue )
+        Optional<Student> student = studentRepository.findById(dto.getStudentId());
+        if(student.isPresent()) {
+            newSIQ.setStudent(student.get());
+            newSIQ.setQueue(queue.get());
+        }
+        // Save the new SIQ object
+        studentInQueueRepository.save(newSIQ); // todo are the foreign keys present in the other two tables now?
+        // If the method does not throw an exception until we get here, then the entity was successfully created
+        return new ResponseEntity<>(newSIQ, HttpStatus.OK);
+    }
+
+    /**
+     * todo cascade for the foreign keys involved hmm
+     * @param dto this time should hold the studentInQueue entity's id
+     * @return http-status = OK --> if deletion was successful
+     */
+    public ResponseEntity<Object> deleteStudentInQueueEntity(StudentInQueueDto dto) {
+        // get the SIQ id
+        long id = dto.getStudentInQueueId();
+        // If this SIQ object exists
+        if(studentInQueueRepository.existsById(id)) {
+            studentInQueueRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+       else{
+           throw new IllegalStateException("There was no SIQ object with the id: " + id);
+        }
+    }
 }

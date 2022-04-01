@@ -22,16 +22,16 @@ import java.util.Set;
 public class CourseService {
 
     @Autowired
-    CourseRepository courseRepository;
+    private CourseRepository courseRepository;
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
-    GroupOfAssignmentRepository groupOfAssignmentRepository;
+    private GroupOfAssignmentRepository groupOfAssignmentRepository;
 
     @Autowired
-    QueueRepository queueRepository;
+    private QueueRepository queueRepository;
 
     // Mark a specified course as archived
     public void markAsArchived(long courseId) {
@@ -229,6 +229,47 @@ public class CourseService {
             long queueId = courseRepository.getQueueByCourseId(courseId).getQueueId();
             queueRepository.delete(queueRepository.getById(queueId)); //todo cascade needed!!
             return new ResponseEntity<>(course.get(), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // get number of approved assignments necessary for a certain course
+    public ResponseEntity<Object> getNumberOfApprovedAssignmentsByCourse(long courseId) {
+        Optional<Course> course = courseRepository.findById(courseId);
+
+        // If the course exists, retrieve how many (minimum) assignments must be approved
+        if(course.isPresent()) {
+            int minApprovedAssignments = course.get().getMinApprovedAssignments();
+            return new ResponseEntity<>(minApprovedAssignments, HttpStatus.OK);
+        }
+        // If the course was not found
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // get all the assignments for a student with student id
+    public ResponseEntity<Object> getAllAssignmentsForStudent(long studentId) {
+        // Check that the student exists
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (student.isPresent()) {
+            Set<Assignment> allAssignments = studentRepository.getAssignmentsByStudentId(studentId);
+            return new ResponseEntity<>(allAssignments, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // get all courses for student with student id (whole object)
+    public ResponseEntity<Object> getAllCoursesForStudent(long studentId) {
+        // Check that the student exists
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (student.isPresent()) {
+            Set<Course> allCourses = studentRepository.getCoursesByStudentId(studentId);
+            return new ResponseEntity<>(allCourses, HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -26,27 +26,23 @@ import java.util.Optional;
 public class LoginService {
 
     @Autowired
-    AdminUserRepository adminUserRepository;
+    private AdminUserRepository adminUserRepository;
 
     @Autowired
-    StudentUserRepository studentUserRepository;
+    private StudentUserRepository studentUserRepository;
 
     @Autowired
-    TeacherUserRepository teacherUserRepository;
+    private TeacherUserRepository teacherUserRepository;
 
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
 
     @Autowired
-    TeacherRepository teacherRepository;
+    private TeacherRepository teacherRepository;
 
     @Autowired
-    AdministratorRepository administratorRepository;
+    private AdministratorRepository administratorRepository;
 
-    // salt password
-
-    // validate user login --> do this in service
-    // logout
 
     public byte[] generateRandomSalt() {
         SecureRandom random = new SecureRandom();
