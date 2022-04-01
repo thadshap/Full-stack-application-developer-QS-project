@@ -1,6 +1,7 @@
 package ntnu.karolisw.project_backend.model;
 
 import lombok.*;
+import ntnu.karolisw.project_backend.model.user.StudentUser;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -51,5 +52,9 @@ public class Student extends Person {
     // One-to-one relationship with student_in_queue
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private StudentInQueue studentInQueue;
+
+    // One-to-one relationship with studentUser
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private StudentUser studentUser;
 
 }

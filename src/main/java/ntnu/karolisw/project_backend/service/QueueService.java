@@ -2,6 +2,9 @@ package ntnu.karolisw.project_backend.service;
 
 import ntnu.karolisw.project_backend.model.*;
 import ntnu.karolisw.project_backend.repository.*;
+import ntnu.karolisw.project_backend.repository.userRepo.AdminUserRepository;
+import ntnu.karolisw.project_backend.repository.userRepo.StudentUserRepository;
+import ntnu.karolisw.project_backend.repository.userRepo.TeacherUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,7 @@ public class QueueService {
 
     @Autowired
     GroupOfAssignmentRepository groupOfAssignmentRepository;
+
 
     // get all students that are in queue digitally
     public ResponseEntity<Object> getAllStudentsInDigitalQueue(long courseId) {

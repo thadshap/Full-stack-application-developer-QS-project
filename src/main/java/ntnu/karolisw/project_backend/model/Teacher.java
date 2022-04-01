@@ -1,6 +1,7 @@
 package ntnu.karolisw.project_backend.model;
 
 import lombok.*;
+import ntnu.karolisw.project_backend.model.user.TeacherUser;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -27,5 +28,9 @@ public class Teacher extends Person{
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
     private Set<Assignment> courses = new HashSet<>();
+
+    // One-to-one relationship with TeacherUser
+    @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private TeacherUser teacherUser;
 }
 
