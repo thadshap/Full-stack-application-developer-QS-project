@@ -5,10 +5,12 @@ import HomeAdministrator from "@/views/HomeAdministrator";
 import AddNewCourse from "@/views/AddNewCourse";
 import HomeStudent from "../views/HomeStudent.vue";
 import HomeStudentAss from "../views/HomeStudentAss";
-import Queue from "../views/Queue";
+import AssigmentView from "../views/AssigmentView";
+import RegisterInLine from "../views/RegisterInLine";
+import QueueStudent from "../views/QueueStudent";
+import StudentAssQueueApprove from "../views/StudentAssQueueApprove";
 import Settings from "@/views/Settings";
 import ShowAllStudentsInCourse from "@/views/ShowAllStudentsInCourse";
-
 
 const routes = [
   {
@@ -42,9 +44,24 @@ const routes = [
     component: HomeStudentAss,
   },
   {
-    path: "/queue",
-    name: "queue",
-    component: Queue,
+    path: "/assigmentView",
+    name: "assigmentView",
+    component: AssigmentView,
+  },
+  {
+    path: "/registerInLine",
+    name: "registerInLine",
+    component: RegisterInLine,
+  },
+  {
+    path: "/queueStudent",
+    name: "queueStudent",
+    component: QueueStudent,
+  },
+  {
+    path: "/studentAssQueueApprove",
+    name: "studentAssQueueApprove",
+    component: StudentAssQueueApprove,
   },
   {
     path: "/settings",

@@ -1,11 +1,14 @@
 <template>
+  <Header></Header><br>
   <div id="student-home-page">
-    <Header></Header><br>
+    <div id="tabs-bar-wrapper">
     <div id="tabs-bar">
-      <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
+      <button id="left-btn" v-on:click="select($event)"><img id="student-img" src="./../assets/student.png">Student</button>
       <button id="middle-btn"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
       <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
     </div>
+    </div>
+    <div id="active-subject-container-wrapper">
     <div id="active-subject-container">
       <div id="sub-name-container">
         <p id="sub-name">Fullstack</p>
@@ -20,26 +23,55 @@
       <div id="sub-feature-tabs">
         <button id="assigment-btn"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
         <button id="que-btn"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+        <button id="active-que-btn" @click="changeActivityStatus()">Aktiver kø</button>
       </div>
     </div>
-    <Footer></Footer>
+    </div>
   </div>
+  <Footer></Footer>  
 </template>
 <script>
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import HomeStudent from "./HomeStudent";
 
 export default {
   name: "HomeStudentAss",
   components: {Footer, Header},
+        methods:{
+          select: function(event) {
+            const targetId = event.currentTarget.id;
+            if (targetId === "left-btn") {
+              this.$router.push({
+                name: 'student',
+                component: HomeStudent,
+              })
+            }
+          },
+          changeActivityStatus(){
+            if(document.getElementById("active-que-btn").innerHTML === "Aktiver kø"){
+              document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
+              document.getElementById("active-que-btn").style.position='relative'
+              document.getElementById("active-que-btn").style.top='-30px'
+            }else{
+              document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
+              document.getElementById("active-que-btn").style.position='relative'
+              document.getElementById("active-que-btn").style.top='0'
+            }
+          }
+        },
 };
 </script>
 
 <style scoped>
+
 #student-home-page{
   height: 850px;
-  width: 412px;
-
+}
+#tabs-bar-wrapper,#active-subject-container-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 #tabs-bar{
   height: 47px;
@@ -48,12 +80,10 @@ export default {
 }
 #left-btn,#middle-btn,#right-btn {
   display: inline;
-  width: 130.6px;
   height: 46px;
   background: rgb(40, 40, 40);
   color: inherit;
   border: none;
-  padding: 0;
   font: inherit;
   cursor: pointer;
   outline: inherit;
@@ -63,6 +93,8 @@ export default {
   font-family: sans-serif;
   position: relative;
   top: -4px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 #left-btn,#middle-btn{
   position: relative;
@@ -71,20 +103,21 @@ export default {
 #adjust-archive{
   position: relative;
   top: -3px;
-
+}
+#middle-btn{
+  background-color: #011c39;
 }
 #active-subject-container{
   width: 295px;
   height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
-  margin: 30px 5px 0 25px;
+  margin-top: 20px;
   border-radius: .3em;
   border-style: solid;
   border-color: #0a64c2;
   border-width: 2.5px;
   font-family: sans-serif;
   padding: 30px;
-
 }
 #sub-name,#sub-code,#que-details{
   margin: 3px;
@@ -114,10 +147,9 @@ export default {
 }
 #sub-feature-tabs{
   height: 40px;
-  position: relative;
-
 }
-#assigment-btn,#que-btn{
+#assigment-btn,#que-btn, #active-que-btn{
+  display: inline;
   color: inherit;
   border: none;
   padding: 0;
@@ -131,19 +163,16 @@ export default {
   border-radius: .3em;
   font-weight: lighter;
   font-size: 14px;
-
 }
 #assigment-btn{
-  margin-left: 15px;
-  margin-right: 37px;
-  border-color: #011c39;
+  float: left;
+  border-color: rgba(1, 28, 57, 0.75);
   width: 92px;
 }
 #que-btn{
-  margin-left: 60px;
-  margin-right: 10px;
   border-color: green;
   width: 72px;
+  margin: 0 9% 0 9%;
 }
 #amount-of-students-img{
   position: relative;
@@ -162,5 +191,10 @@ export default {
 #archive-img{
   position: relative;
   top: 5px;
+}
+#active-que-btn{
+  float: right;
+  border-color: #0a64c2;
+  padding: 5px;
 }
 </style>

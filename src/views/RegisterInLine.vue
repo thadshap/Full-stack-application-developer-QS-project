@@ -1,0 +1,158 @@
+<template>
+  <Header></Header><br>
+<div id="register-in-line-container">
+  <button id="back-to-queue-btn">
+    <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
+  </button>
+  <div id="digital-or-not-checkbox">
+    <input type="radio" id="school-queue-btn" value="all-queue" name="queue-btn" v-on:click="campusChosen">
+    <label id="school-queue-header" for="school-queue-btn">Campus</label>
+    <input type="radio" id="digital-queue-btn" value="all-queue" name="queue-btn" v-on:click="digitalChosen">
+    <label id="digital-queue-header" for="digital-queue-btn" >Digital</label>
+  </div>
+  <div id="list-of-ovinger">
+    <label id="oving-checkbox-header" class="oving-lable" for="oving-checkbox">Øving 1</label>
+    <input type="checkbox" id="oving-checkbox" class="oving-checkbox" name="oving-checkbox">
+    <label id="oving-checkbox-header 1" class="oving-lable" for="oving-checkbox 1">Øving 2</label>
+    <input type="checkbox" id="oving-checkbox 1" class="oving-checkbox" name="oving-checkbox">
+    <label id="oving-checkbox-header 2" class="oving-lable" for="oving-checkbox 2">Øving 3</label>
+    <input type="checkbox" id="oving-checkbox 2" class="oving-checkbox" name="oving-checkbox">
+    <label id="oving-checkbox-header 3" class="oving-lable" for="oving-checkbox 3">Øving 4</label>
+    <input type="checkbox" id="oving-checkbox 3" class="oving-checkbox" name="oving-checkbox">
+    <label id="oving-checkbox-header 4" class="oving-lable" for="oving-checkbox 4">Øving 5</label>
+    <input type="checkbox" id="oving-checkbox 4" class="oving-checkbox" name="oving-checkbox">
+    <label id="oving-checkbox-header 5" class="oving-lable" for="oving-checkbox 5">Øving 6</label>
+    <input type="checkbox" id="oving-checkbox 5" class="oving-checkbox" name="oving-checkbox">
+  </div>
+  <div id="approval-or-help-checkbox">
+    <input type="radio" id="approval-queue-btn" value="approval-queue" name="queue-btn">
+    <label id="approval-queue-header" for="approval-queue-btn">Godkjenning</label>
+    <input type="radio" id="help-queue-btn" value="help-queue" name="queue-btn">
+    <label id="help-queue-header" for="help-queue-btn">Help</label>
+  </div>
+  <div id="destination-on-campus" v-if="showCampusDetails">
+    <label id="campus-label" class="destination-lable" for="campus-input">Campus:</label>
+    <input id="campus-input" class="destination-input">
+    <br>
+    <label id="building-label" class="destination-lable" for="building-input">Bygning:</label>
+    <input id="building-input" class="destination-input">
+    <br>
+    <label id="room-label" class="destination-lable" for="room-input">Rom:</label>
+    <input id="room-input" class="destination-input">
+    <br>
+    <label id="table-label" class="destination-lable" for="table-input">Bord:</label>
+    <input id="table-input" class="destination-input">
+  </div>
+  <div id="stand-in-line-wrapper">
+  <button id="stand-in-queue-btn">Still i kø</button>
+  </div>
+</div>
+  <Footer></Footer>
+</template>
+
+<script>
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+
+export default {
+  name: "RegisterInLine",
+  components: {Footer, Header},
+  data() {
+    return {
+      showCampusDetails : false
+    }
+  },
+  methods : {
+    campusChosen()  {
+      this.showCampusDetails = true;
+    },
+    digitalChosen(){
+      this.showCampusDetails = false;
+    }
+
+  }
+};
+</script>
+
+<style scoped>
+#back-to-queue-btn{
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  margin: 5px;
+  padding: 5px 15px 5px 15px;
+  border-radius: 0.3em;
+  color: rgba(255, 255, 255, 0.89);
+  margin: 10px 10px 20px 0;
+  background-color: inherit;
+}
+#back-to-queue-btn-img{
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  left: 15px;
+  top: 80px;
+}
+#school-queue-btn,#digital-queue-btn{
+  display: inline;
+  margin-bottom: 20px;
+}
+#digital-queue-btn,#help-queue-btn{
+  margin-left: 50px;
+}
+#digital-or-not-checkbox,#list-of-ovinger,#approval-or-help-checkbox,#destination-on-campus{
+  text-align: center;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: lighter;
+}
+#digital-or-not-checkbox,#approval-or-help-checkbox{
+  font-size: 17px;
+}
+#list-of-ovinger{
+  font-size: 20px;
+}
+#approval-or-help-checkbox,#list-of-ovinger{
+  margin-top: 50px;
+}
+#approval-or-help-checkbox{
+  margin-bottom: 55px;
+}
+.oving-checkbox{
+  margin-right: 20px;
+}
+.oving-lable{
+  margin-left: 20px;
+}
+.destination-input{
+  margin-bottom: 40px;
+  margin-left: 10px;
+  font-size: 20px;
+}
+.destination-lable{
+  font-size: 20px;
+}
+#room-label,#table-label{
+  margin-left: 36px;
+}
+#stand-in-queue-btn{
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  margin-top: 20px;
+  padding: 5px 15px 5px 15px;
+  border-radius: 0.3em;
+  color: rgba(255, 255, 255, 0.89);
+  background-color: #0a64c2;
+  width: 300px;
+  height: 35px;
+  margin-left: 10px;
+}
+#stand-in-line-wrapper{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+</style>
