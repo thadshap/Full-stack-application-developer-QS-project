@@ -1,11 +1,9 @@
-package ntnu.karolisw.project_backend.service;
+package ntnu.karolisw.project_backend.service.classes;
 
-import ntnu.karolisw.project_backend.dto.StudentInQueueDto;
+import ntnu.karolisw.project_backend.dto.in.StudentInQueueIn;
 import ntnu.karolisw.project_backend.model.*;
 import ntnu.karolisw.project_backend.repository.*;
-import ntnu.karolisw.project_backend.repository.userRepo.AdminUserRepository;
-import ntnu.karolisw.project_backend.repository.userRepo.StudentUserRepository;
-import ntnu.karolisw.project_backend.repository.userRepo.TeacherUserRepository;
+import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class QueueService {
+public class QueueService implements QueueServiceI {
 
     @Autowired
     private QueueRepository queueRepository;
@@ -39,9 +37,11 @@ public class QueueService {
 
 
     // get all students that are in queue digitally
+    @Override
     public ResponseEntity<Object> getAllStudentsInDigitalQueue(long courseId) {
         // get all students in queue for the specified course id
         List<StudentInQueue> studentsInQueue = queueRepository.findAllStudentsInQueueByCourseId(courseId);
+
         ArrayList<StudentInQueue> digital = new ArrayList<>();
         // return all students that are signed up to participate digitally
         for(StudentInQueue student : studentsInQueue) {
@@ -54,6 +54,7 @@ public class QueueService {
 
 
     // get all students that are in queue digital and vice versa
+    @Override
     public ResponseEntity<Object> getAllStudentsInQueueAtSchool(long courseId) {
         // get all students in queue for the specified course id
         List<StudentInQueue> studentsInQueue = queueRepository.findAllStudentsInQueueByCourseId(courseId);
@@ -76,6 +77,7 @@ public class QueueService {
      *                   is false if we want to retrieve students that need help
      * @return a list of the students that pertain to the assessment value within the specified course-id
      */
+    @Override
     public ResponseEntity<Object> getStudentsForAssessmentOrHelp(long courseId, boolean assessment) {
         // get all students in queue for the specified course id
         List<StudentInQueue> studentsInQueue = queueRepository.findAllStudentsInQueueByCourseId(courseId);
@@ -100,6 +102,7 @@ public class QueueService {
      *
      * @return the student in queue object with the altered state
      */
+    @Override
     public ResponseEntity<Object> setStudentState(long studentId, long courseId, Status status) {
         List<StudentInQueue> students = queueRepository.findAllStudentsInQueueByCourseId(courseId);
         for(StudentInQueue student : students) {
@@ -110,6 +113,7 @@ public class QueueService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Override
     public ResponseEntity<Object> approveStudent(long studentId, int assignmentNumber, long courseId) {
         // if the student exists and has an assignment with that id that is not approved
         Optional<Student> student = studentRepository.findById(studentId);
@@ -143,6 +147,7 @@ public class QueueService {
 
 
     // get group of assignment that assignment is part of
+    @Override
     public ResponseEntity<Object> getGroupOfAssignment(long assignmentId) {
         return new ResponseEntity<>
                 (assignmentRepository.getGroupOfAssignment(assignmentId),
@@ -150,6 +155,7 @@ public class QueueService {
     }
 
     // get group of assignment when you have the number of the assignment and the course id
+    @Override
     public GroupOfAssignment getGroupOfAssignment(int assignmentNumber, long courseId){
 
         List<GroupOfAssignment> groups = courseRepository.getAllGroupsOfAssignmentByCourseId(courseId);
@@ -166,6 +172,7 @@ public class QueueService {
     }
 
     // getAllStudentsInQueue
+    @Override
     public ResponseEntity<Object> getAllStudentsInQueue(long courseId) {
         List<StudentInQueue> students = queueRepository.findAllStudentsInQueueByCourseId(courseId);
         if(students != null) {
@@ -178,6 +185,7 @@ public class QueueService {
 
 
     // get all assignments in specified course id and return them in order to display in frontend
+    @Override
     public ResponseEntity<Object> getAllAssignmentsInCourse(long courseId) {
         List<Assignment> allAssignment = new ArrayList<>();
         // get all the groups
@@ -200,7 +208,8 @@ public class QueueService {
      * @param dto is the data transfer object send when the user tries to enter the queue
      * @return the new StudentInQueue entity created in this method
      */
-    public ResponseEntity<Object> createStudentInQueueEntity(StudentInQueueDto dto) {
+    @Override
+    public ResponseEntity<Object> createStudentInQueueEntity(StudentInQueueIn dto) {
         StudentInQueue newSIQ = new StudentInQueue();
 
         // Get the queue
@@ -267,7 +276,8 @@ public class QueueService {
      * @param dto this time should hold the studentInQueue entity's id
      * @return http-status = OK --> if deletion was successful
      */
-    public ResponseEntity<Object> deleteStudentInQueueEntity(StudentInQueueDto dto) {
+    @Override
+    public ResponseEntity<Object> deleteStudentInQueueEntity(StudentInQueueIn dto) {
         // get the SIQ id
         long id = dto.getStudentInQueueId();
         // If this SIQ object exists

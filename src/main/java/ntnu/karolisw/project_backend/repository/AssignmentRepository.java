@@ -21,5 +21,8 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
     @Query("SELECT a.groupOfAssignment FROM Assignment a WHERE a.assignmentId= :id")
     List<Assignment> getGroupOfAssignment(@Param("id") long assignmentId);
 
+    // get the group id of the group this assignment belongs to
+    @Query("SELECT a.groupOfAssignment.groupId FROM Assignment a WHERE a.assignmentId= :id")
+    long getGroupIdOfAssignment(@Param("id") long assignmentId);
 }
 

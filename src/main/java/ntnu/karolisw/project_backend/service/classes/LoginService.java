@@ -1,4 +1,4 @@
-package ntnu.karolisw.project_backend.service;
+package ntnu.karolisw.project_backend.service.classes;
 
 import ntnu.karolisw.project_backend.model.Administrator;
 import ntnu.karolisw.project_backend.model.Student;
@@ -12,6 +12,7 @@ import ntnu.karolisw.project_backend.repository.TeacherRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.AdminUserRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.StudentUserRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.TeacherUserRepository;
+import ntnu.karolisw.project_backend.service.interfaces.LoginServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-public class LoginService {
+public class LoginService implements LoginServiceI {
 
     @Autowired
     private AdminUserRepository adminUserRepository;
@@ -44,6 +45,7 @@ public class LoginService {
     private AdministratorRepository administratorRepository;
 
 
+    @Override
     public byte[] generateRandomSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
@@ -51,6 +53,7 @@ public class LoginService {
         return salt;
     }
 
+    @Override
     public byte[] hashPassword(String password, byte[] salt) {
         // Hashing through the use of SHA-512 and the salt
         MessageDigest digest = null;
@@ -79,6 +82,7 @@ public class LoginService {
      *                 at the frontend, and that now will be hashed before its put into
      *                 the database along with the email and the salt
      */
+    @Override
     public void saveNewUser(String email, String password, long personId, int userBit) throws Exception {
         // Generate a hashed password
         byte[] randomSalt = generateRandomSalt();
@@ -173,6 +177,7 @@ public class LoginService {
      *                2 = TeacherUser
      *                3 = AdminUser
      */
+    @Override
     public byte[] getHashingFunction(String email, int userBit) {
         // If student
         if(userBit == 1) {
@@ -228,6 +233,7 @@ public class LoginService {
      * @param email is the email inserted by the user that is trying to log in
      * @param password is the password inserted by the user that is trying to log in
      */
+    @Override
     public boolean validatePassword(String email, String password, int userBit) throws IllegalAccessException {
         // Get the user
         if (userBit == 1) {
@@ -248,7 +254,6 @@ public class LoginService {
                     throw new IllegalAccessException("The passwords did not match. " +
                             "\n The db password was: " + Arrays.toString(actualPassword) +
                             "\n The input password was: " + Arrays.toString(hashedPassword));
-
                 }
             }
             // If the user is not present

@@ -1,6 +1,6 @@
-package ntnu.karolisw.project_backend.dto;
+package ntnu.karolisw.project_backend.dto.in;
 
-public class StudentInQueueDto {
+public class StudentInQueueIn {
     long studentInQueueId; // Only used upon delete (not creation)
     long studentId;
     long courseId;

@@ -1,4 +1,4 @@
-package ntnu.karolisw.project_backend.dto;
+package ntnu.karolisw.project_backend.dto.in;
 
 import ntnu.karolisw.project_backend.model.Assignment;
 import ntnu.karolisw.project_backend.model.Student;
@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * DTO for creation of course object in frontEnd in order to insert in DB
  */
-public class CourseDto {
+public class CourseIn {
     private Long courseId;
     private String courseCode;
     private String name;

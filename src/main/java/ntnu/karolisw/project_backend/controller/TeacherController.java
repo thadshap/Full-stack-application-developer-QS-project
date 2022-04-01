@@ -1,6 +1,21 @@
 package ntnu.karolisw.project_backend.controller;
 
+import ntnu.karolisw.project_backend.service.interfaces.CourseServiceI;
+import ntnu.karolisw.project_backend.service.interfaces.LoginServiceI;
+import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class TeacherController {
+
+    @Autowired
+    CourseServiceI courseService;
+
+    @Autowired
+    LoginServiceI loginService;
+
+    @Autowired
+    QueueServiceI queueService;
+
 
     // Updates to GroupOfAssignment can be done by a teacher and an admin
         // update order_nr

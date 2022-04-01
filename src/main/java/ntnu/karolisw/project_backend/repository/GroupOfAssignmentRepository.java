@@ -22,15 +22,11 @@ public interface GroupOfAssignmentRepository extends JpaRepository<GroupOfAssign
     // find all assignments where groupId = id
     List<GroupOfAssignment> findByGroupId(long groupId);
 
-    // get how many assignments are approved
-    /**
-    int findApprovedAssignmentsByGroupId(long groupId); //todo wrong...
-    @Query("SELECT g.assignments FROM GroupOfAssignment g, Assignment a WHERE a.approved= :true")
-    List<Assignment> getAllApprovedAssignmentsByGroupId(@Param("id") long groupId);
-*/
-
     // get all the assignments in a group of assignments (by id)
     @Query("SELECT g.assignments FROM GroupOfAssignment g WHERE g.groupId = :id")
     List<Assignment> getAllAssignmentsByGroupId(@Param("id") long groupId);
 
+    // get the course id of this group of assignments
+    @Query("SELECT g.course.courseId FROM GroupOfAssignment g WHERE g.groupId= :id")
+    long getCourseIdOfGroup(@Param("id") long groupId);
 }

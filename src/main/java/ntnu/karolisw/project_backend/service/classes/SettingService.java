@@ -1,4 +1,4 @@
-package ntnu.karolisw.project_backend.service;
+package ntnu.karolisw.project_backend.service.classes;
 
 import ntnu.karolisw.project_backend.model.Administrator;
 import ntnu.karolisw.project_backend.model.Student;
@@ -12,6 +12,7 @@ import ntnu.karolisw.project_backend.repository.TeacherRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.AdminUserRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.StudentUserRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.TeacherUserRepository;
+import ntnu.karolisw.project_backend.service.interfaces.SettingServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ import java.util.Optional;
  * All entities belonging to PERSON superclass uses this service
  */
 @Service
-public class SettingService {
+public class SettingService implements SettingServiceI {
 
     @Autowired
     StudentRepository studentRepository;
@@ -48,6 +49,7 @@ public class SettingService {
     LoginService loginService;
 
     // update last name
+    @Override
     public ResponseEntity<Object> updateLastName(long personId, String newLastName, int userBit) throws Exception {
         // If student
         if(userBit == 1) {
@@ -95,6 +97,7 @@ public class SettingService {
         }
     }
     // update first name
+    @Override
     public ResponseEntity<Object> updateFirstName(long personId, String newFirstName, int userBit) throws Exception {
         // If student
         if(userBit == 1) {
@@ -141,6 +144,7 @@ public class SettingService {
         }
     }
     // update email
+    @Override
     public ResponseEntity<Object> updateEmail(long personId, String newEmail, int userBit) throws Exception {
         // If student
         if(userBit == 1) {
@@ -188,6 +192,7 @@ public class SettingService {
         }
     }
     // update pronouns
+    @Override
     public ResponseEntity<Object> updatePronouns(long personId, String newPronoun, int userBit) throws Exception {
         // If student
         if(userBit == 1) {
@@ -236,6 +241,7 @@ public class SettingService {
     }
 
     // update password
+    @Override
     public ResponseEntity<Object> updatePassword(long personId, String newPassword, int userBit) throws Exception {
         // Generate a new hash
         byte[] randomSalt = loginService.generateRandomSalt();

@@ -1,6 +1,20 @@
 package ntnu.karolisw.project_backend.controller;
 
+import ntnu.karolisw.project_backend.service.interfaces.CourseServiceI;
+import ntnu.karolisw.project_backend.service.interfaces.LoginServiceI;
+import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class StudentController {
+    @Autowired
+    CourseServiceI courseService;
+
+    @Autowired
+    LoginServiceI loginService;
+
+    @Autowired
+    QueueServiceI queueService;
+
     // legg in en ny student i et fag OK
     // get how many assignments must be approved (minimum) OK
 
