@@ -14,7 +14,7 @@
       <p id="table" class="student-details-in-queue">10 </p>
     </div>
     <div id="oving-container" >
-      <p id="oving-header">Fullstack}</p>
+      <p id="oving-header">Øving 1</p>
       <input type="checkbox" id="approve-checkbox" name="horns" >
       <hr class="line-under-oving">
     </div>
