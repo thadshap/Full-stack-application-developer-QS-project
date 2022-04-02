@@ -5,8 +5,8 @@
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
     </button>
     <div id="sub-header-container">
-      <p id="sub-name">Fullstack</p>
-      <p id="sub-code">IDATT2105</p>
+      <p id="sub-name">{{subjectName}}</p>
+      <p id="sub-code">{{subjectCode}}</p>
     </div>
       <div id="table-container">
         <table id="tableStudents">
@@ -38,6 +38,8 @@ export default {
   components: {Footer, Header},
   data() {
     return {
+      subjectName: "Fullstack",
+      subjectCode: "IDATT2101",
       assignmentsList:[],
       idCheckedStudent: null,
       students:[

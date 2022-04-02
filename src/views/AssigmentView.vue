@@ -5,10 +5,10 @@
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
     </button>
     <div id="sub-header-container">
-    <p id="sub-name">Fullstack</p>
-    <p id="sub-code">IDATT2105</p>
+    <p id="sub-name">{{subjectName}}</p>
+    <p id="sub-code">{{subjectCode}}</p>
     </div>
-    <p id="status">Status: Ikke godkjent</p>
+    <p id="status">Status: {{status}}</p>
     <hr class="blue-line">
     <div id="oving-rules-container-wrapper">
     <div id="oving-rules-container">
@@ -19,7 +19,7 @@
     </div>
      </div>
     <div id="oving-rules-drop-down-container" v-if="showOvingRules">
-      <p id="oving-rules-header">For å bestå faget må 3 av 4 øvinger godkjennes.</p>
+      <p id="oving-rules-header">For å bestå faget må {{minimumAssignmentsApproved}} av {{totalAmountOfAssignments}} øvinger godkjennes.</p>
     </div>
     <div id="table-wrapper">
       <div id="table-container">
@@ -44,6 +44,11 @@ export default {
   components: {Footer, Header},
   data() {
     return {
+      status: "Ikke godkjent",
+      totalAmountOfAssignments:6,
+      minimumAssignmentsApproved:5,
+      subjectName: "Fullstack",
+      subjectCode: "IDATT2101",
       showOvingRules : false,
       assigments:[
         {
