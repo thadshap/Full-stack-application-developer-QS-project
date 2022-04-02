@@ -34,6 +34,8 @@ public class GroupOfAssignment {
     @Column(name = "approved_assignments", nullable = false)
     private int approvedAssignments;
 
+    @Column(name = "min_approved_in_group")
+    private int minApprovedAssignmentsInGroup;
     // This table has a many-to-one relationship with course
     @ManyToOne
     @JoinColumn(name = "course_id")
@@ -42,4 +44,8 @@ public class GroupOfAssignment {
     // One-to-many connection with assignments
     @OneToMany(mappedBy = "groupOfAssignment")
     private Set<Assignment> assignments = new HashSet<>();
+
+    public void removeAssignment(Assignment assignment) {
+        getAssignments().remove(assignment);
+    }
 }

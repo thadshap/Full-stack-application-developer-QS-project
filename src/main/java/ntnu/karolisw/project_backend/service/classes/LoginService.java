@@ -1,5 +1,6 @@
 package ntnu.karolisw.project_backend.service.classes;
 
+import ntnu.karolisw.project_backend.dto.out.PersonOut;
 import ntnu.karolisw.project_backend.model.Administrator;
 import ntnu.karolisw.project_backend.model.Student;
 import ntnu.karolisw.project_backend.model.Teacher;
@@ -14,6 +15,8 @@ import ntnu.karolisw.project_backend.repository.userRepo.StudentUserRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.TeacherUserRepository;
 import ntnu.karolisw.project_backend.service.interfaces.LoginServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -234,7 +237,7 @@ public class LoginService implements LoginServiceI {
      * @param password is the password inserted by the user that is trying to log in
      */
     @Override
-    public boolean validatePassword(String email, String password, int userBit) throws IllegalAccessException {
+    public PersonOut validatePassword(String email, String password, int userBit) throws IllegalAccessException {
         // Get the user
         if (userBit == 1) {
             Optional<StudentUser> studentUser = studentUserRepository.findByEmail(email);
@@ -249,7 +252,12 @@ public class LoginService implements LoginServiceI {
                 byte[] actualPassword = studentUser.get().getPassword();
                 // If the passwords match
                 if (Arrays.toString(actualPassword).equals(Arrays.toString(hashedPassword))) {
-                    return true;
+
+                    // Create dto
+                    PersonOut dto = new PersonOut();
+                    dto.setPersonId(studentUser.get().getStudent().getId());
+                    dto.setLoggedIn(true);
+                    return dto;
                 } else {
                     throw new IllegalAccessException("The passwords did not match. " +
                             "\n The db password was: " + Arrays.toString(actualPassword) +
@@ -273,7 +281,13 @@ public class LoginService implements LoginServiceI {
                 byte[] actualPassword = teacherUser.get().getPassword();
                 // If the passwords match
                 if (Arrays.toString(actualPassword).equals(Arrays.toString(hashedPassword))) {
-                    return true;
+                    // Create a dto
+                    PersonOut dto = new PersonOut();
+                    dto.setPersonId(teacherUser.get().getTeacher().getId());
+                    dto.setLoggedIn(true);
+
+                    // Return dto
+                    return dto;
                 } else {
                     throw new IllegalAccessException("The passwords did not match. " +
                             "\n The db password was: " + Arrays.toString(actualPassword) +
@@ -297,7 +311,14 @@ public class LoginService implements LoginServiceI {
                 byte[] actualPassword = adminUser.get().getPassword();
                 // If the passwords match
                 if (Arrays.toString(actualPassword).equals(Arrays.toString(hashedPassword))) {
-                    return true;
+
+                    // Create a dto
+                    PersonOut dto = new PersonOut();
+                    dto.setPersonId(adminUser.get().getAdministrator().getId());
+                    dto.setLoggedIn(true);
+
+                    // Return dto
+                    return dto;
                 } else {
                     throw new IllegalAccessException("The passwords did not match. " +
                             "\n The db password was: " + Arrays.toString(actualPassword) +

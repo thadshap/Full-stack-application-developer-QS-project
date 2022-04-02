@@ -1,10 +1,16 @@
 package ntnu.karolisw.project_backend.dto.in;
 
+import ntnu.karolisw.project_backend.model.Assignment;
+
+import java.util.List;
+import java.util.Set;
+
 public class GroupIn {
     private long courseId;
     private int orderNumber;
     private int numOfPractices;
     private int minimumNumApproved;
+    private Set<Assignment> groupOfAssignments;
 
     // GETTERS
 
@@ -24,6 +30,9 @@ public class GroupIn {
         return minimumNumApproved;
     }
 
+    public Set<Assignment> getGroupOfAssignments() {
+        return groupOfAssignments;
+    }
     // SETTERS
 
     public void setCourseId(long courseId) {
@@ -40,5 +49,9 @@ public class GroupIn {
 
     public void setMinimumNumApproved(int minimumNumApproved) {
         this.minimumNumApproved = minimumNumApproved;
+    }
+
+    public void setGroupsOfAssignments(Set<Assignment> groupOfAssignments) {
+        this.groupOfAssignments = groupOfAssignments;
     }
 }

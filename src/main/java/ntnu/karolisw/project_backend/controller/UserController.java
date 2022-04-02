@@ -1,6 +1,7 @@
 package ntnu.karolisw.project_backend.controller;
 
 import ntnu.karolisw.project_backend.dto.in.Login;
+import ntnu.karolisw.project_backend.dto.out.PersonOut;
 import ntnu.karolisw.project_backend.service.interfaces.CourseServiceI;
 import ntnu.karolisw.project_backend.service.interfaces.LoginServiceI;
 import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
@@ -27,9 +28,17 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Object> validateUserLogin(@RequestBody Login login) {
         try{
-            boolean correctLogin = loginService.validatePassword(login.getEmail(),
+            PersonOut result = loginService.validatePassword(login.getEmail(),
                     login.getPassword(),login.getTypeOfUser());
-            return new ResponseEntity<>(HttpStatus.OK);
+
+            // If the password was valid
+            if(result.isLoggedIn()) {
+                return new ResponseEntity<>(result,HttpStatus.OK);
+            }
+            // If the password was invalid
+            else {
+                return new ResponseEntity<>(result,HttpStatus.BAD_REQUEST);
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

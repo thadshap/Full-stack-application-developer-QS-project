@@ -14,9 +14,9 @@ public class CourseIn {
     private String name;
     private Date startDate;
     private Date expectedEndDate;
-    private int numberOfAssignments;
-    private int minApprovedAssignments;
-    private int numberPartsAssignments;
+    private int numberOfAssignments = 0;
+    private int minApprovedAssignments = 0;
+    private int numberPartsAssignments = 0;
     private boolean archived;
 
     // not necessary to send this list but needed for setting the assistant at a later stage as well

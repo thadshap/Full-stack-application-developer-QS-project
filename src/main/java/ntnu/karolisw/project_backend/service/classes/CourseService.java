@@ -1,8 +1,9 @@
 package ntnu.karolisw.project_backend.service.classes;
 
 import ntnu.karolisw.project_backend.dto.in.CourseIn;
+import ntnu.karolisw.project_backend.dto.in.GroupIn;
 import ntnu.karolisw.project_backend.dto.out.AssignmentOut;
-import ntnu.karolisw.project_backend.dto.out.StudentOut;
+import ntnu.karolisw.project_backend.dto.out.PersonOut;
 import ntnu.karolisw.project_backend.model.*;
 import ntnu.karolisw.project_backend.repository.*;
 import ntnu.karolisw.project_backend.service.interfaces.CourseServiceI;
@@ -31,6 +32,9 @@ public class CourseService implements CourseServiceI {
     @Autowired
     private AssignmentRepository assignmentRepository;
 
+    @Autowired
+    private TeacherRepository teacherRepository;
+
     // Mark a specified course as archived
     @Override
     public ResponseEntity<Object> markAsArchived(long courseId) {
@@ -47,39 +51,74 @@ public class CourseService implements CourseServiceI {
         }
     }
 
+    // setArchived --> when course is archived --> the queue must be deleted!
+    @Override
+    public ResponseEntity<Object> archiveCourse(long courseId) {
+        // Get the course
+        Optional<Course> course = courseRepository.findById(courseId);
+        if (course.isPresent()) {
+            // Archive the course
+            course.get().setArchived(true);
+
+            // Delete the queue
+            long queueId = courseRepository.getQueueByCourseId(courseId).getQueueId();
+            queueRepository.delete(queueRepository.getById(queueId)); //todo cascade needed!!
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private boolean validateCourse(CourseIn newCourse) {
+        // If new course contains all arguments it should
+        return newCourse.getCourseCode() != null && newCourse.getExpectedEndDate() != null &&
+                newCourse.getStartDate() != null && newCourse.getMinApprovedAssignments() != 0 &&
+                newCourse.getNumberOfAssignments() != 0 && newCourse.getName() != null;
+    }
+
 
     @Override
     public ResponseEntity<Object> createCourse(CourseIn newCourse) {
-        Course course = new Course();
+        // If the dto contains all arguments it should, we can proceed
+        if(validateCourse(newCourse)) {
 
-        // Set all the variables needed
-        course.setCourseCode(newCourse.getCourseCode());
-        course.setArchived(false);
-        course.setExpectedEndDate(newCourse.getExpectedEndDate());
-        course.setStartDate(newCourse.getStartDate());
-        course.setMinApprovedAssignments(newCourse.getMinApprovedAssignments());
-        course.setNumberOfAssignments(newCourse.getNumberOfAssignments());
-        course.setName(newCourse.getName());
+            // We create a course object
+            Course course = new Course();
 
-        // Get all the assignments sent from frontend
-        List<Set<Assignment>> assignmentList = newCourse.getGroupsOfAssignments();
+            // Set all the variables needed
+            course.setCourseCode(newCourse.getCourseCode());
+            course.setArchived(false);
+            course.setExpectedEndDate(newCourse.getExpectedEndDate());
+            course.setStartDate(newCourse.getStartDate());
+            course.setMinApprovedAssignments(newCourse.getMinApprovedAssignments());
+            course.setNumberOfAssignments(newCourse.getNumberOfAssignments());
+            course.setName(newCourse.getName());
 
-        // For all groups of assignment, create a group of assignment object
-        for(Set<Assignment> group : assignmentList) {
-            GroupOfAssignment groupOfAssignment = new GroupOfAssignment();
-            groupOfAssignment.setAssignments(group);
+            // Get all the assignments sent from frontend
+            List<Set<Assignment>> assignmentList = newCourse.getGroupsOfAssignments();
 
-            // Add each individual group to the course object
-            course.addGroupOfAssignment(groupOfAssignment);
+            // For all groups of assignment, create a group of assignment object
+            for(Set<Assignment> group : assignmentList) {
+                GroupOfAssignment groupOfAssignment = new GroupOfAssignment();
+                groupOfAssignment.setAssignments(group);
 
-            // Add each group to the GroupOfAssignmentRepository
-            groupOfAssignmentRepository.save(groupOfAssignment);
+                // Add each individual group to the course object
+                course.addGroupOfAssignment(groupOfAssignment);
+
+                // Add each group to the GroupOfAssignmentRepository
+                groupOfAssignmentRepository.save(groupOfAssignment);
+            }
+
+            // When all groups are added, the course object is finished and may be added to the db!
+            courseRepository.save(course);
+
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
-
-        // When all groups are added, the course object is finished and may be added to the db!
-        courseRepository.save(course);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        // If the dto did not contain the proper attributes (parameters)
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     // get all students in a course
@@ -90,11 +129,11 @@ public class CourseService implements CourseServiceI {
 
             // Get students
             Set<Student> students = course.get().getStudents();
-            ArrayList<StudentOut> students2 = new ArrayList<>(students.size());
+            ArrayList<PersonOut> students2 = new ArrayList<>(students.size());
 
             // Shape student entity-objects into correct data-transfer-objects (security)
             for(Student student: students) {
-                StudentOut so = new StudentOut();
+                PersonOut so = new PersonOut();
                 so.setFirstName(student.getFirstName());
                 so.setLastName(student.getLastName());
                 try {
@@ -102,7 +141,7 @@ public class CourseService implements CourseServiceI {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                students2.add(new StudentOut());
+                students2.add(new PersonOut());
             }
             // Return the DTO
             return new ResponseEntity<>(students2, HttpStatus.OK);
@@ -114,11 +153,12 @@ public class CourseService implements CourseServiceI {
 
     // add a list of student assistant to a course
     @Override
-    public ResponseEntity<Object> addStudentAssistant(long courseId, Student student) {
+    public ResponseEntity<Object> addStudentAssistant(long courseId, String studentEmail) {
         Optional<Course> course = courseRepository.findById(courseId);
-        if(course.isPresent()) {
-            course.get().addStudentAssistant(student);
-            courseRepository.save(course.get());
+        Optional<Student> student = studentRepository.findByEmail(studentEmail);
+        if(course.isPresent() && student.isPresent()) {
+            course.get().addStudentAssistant(student.get());
+            courseRepository.save(course.get()); // todo necessary
             return new ResponseEntity<>( HttpStatus.CREATED);
         }
         else {
@@ -128,10 +168,11 @@ public class CourseService implements CourseServiceI {
 
     // add a teacher to a course
     @Override
-    public ResponseEntity<Object> addTeacher(long courseId, Teacher teacher) {
+    public ResponseEntity<Object> addTeacher(long courseId, String teacherEmail) {
         Optional<Course> course = courseRepository.findById(courseId);
-        if(course.isPresent()) {
-            course.get().addTeacher(teacher);
+        Optional<Teacher> teacher = teacherRepository.findByEmail(teacherEmail);
+        if(course.isPresent() && teacher.isPresent()) {
+            course.get().addTeacher(teacher.get());
             courseRepository.save(course.get());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -142,10 +183,11 @@ public class CourseService implements CourseServiceI {
 
     // add a student to a course
     @Override
-    public ResponseEntity<Object> addStudent(long courseId, Student student) {
+    public ResponseEntity<Object> addStudent(long courseId, String studentEmail) {
         Optional<Course> course = courseRepository.findById(courseId);
-        if(course.isPresent()) {
-            course.get().addStudent(student);
+        Optional<Student> student = studentRepository.findByEmail(studentEmail);
+        if(course.isPresent() && student.isPresent()) {
+            course.get().addStudent(student.get());
             courseRepository.save(course.get()); // TODO maybe it updates itself?
             return new ResponseEntity<>( HttpStatus.CREATED);
         }
@@ -248,25 +290,6 @@ public class CourseService implements CourseServiceI {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    // setArchived --> when course is archived --> the queue must be deleted!
-    @Override
-    public ResponseEntity<Object> archiveCourse(long courseId, int numberOfParts) {
-        // Get the course
-        Optional<Course> course = courseRepository.findById(courseId);
-        if (course.isPresent()) {
-            // Archive the course
-            course.get().setArchived(true);
-
-            // Delete the queue
-            long queueId = courseRepository.getQueueByCourseId(courseId).getQueueId();
-            queueRepository.delete(queueRepository.getById(queueId)); //todo cascade needed!!
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -390,4 +413,96 @@ public class CourseService implements CourseServiceI {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Override
+    public ResponseEntity<Object> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        return new ResponseEntity<>(courses, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllCoursesByTeacherId(long teacherId) {
+        Set<Course> courses = teacherRepository.getCoursesByTeacherId(teacherId);
+        return new ResponseEntity<>(courses, HttpStatus.OK);
+    }
+
+    @Override
+    public List<GroupOfAssignment> getAllGroupsOfAssignmentByCourseId(long courseId) {
+        // If course exists...
+        Optional<Course> course = courseRepository.findById(courseId);
+        if(course.isPresent()) {
+            return courseRepository.getAllGroupsOfAssignmentByCourseId
+                    (courseId);
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean addGroupOfAssignmentToCourse(GroupIn dto) throws Exception {
+        // Get all groups of assignments in the course
+        List<GroupOfAssignment> groups = getAllGroupsOfAssignmentByCourseId(dto.getCourseId());
+
+        if(groups != null) {
+
+            // Get the groups from dto
+            Set<Assignment> newGroup = dto.getGroupOfAssignments();
+
+            // For all groups (could be only one group, but works either way)
+            for(GroupOfAssignment group : groups) {
+                // For all assignments in the group
+                for(Assignment assignment : group.getAssignments()) {
+                    // For all assignments in the new group
+                    for(Assignment a: newGroup) {
+                        // If newGroup contains an assignment with assignment id == assignment id of previous assignment
+                        if (Objects.equals(assignment.getAssignmentId(), a.getAssignmentId())) {
+                            // Remove the assignment that was there from the start in the course
+                            group.removeAssignment(assignment);
+                        }
+                    }
+                }
+            }
+            // When all assignments that had to be removed are removed, the new group is added to the course
+            GroupOfAssignment goa = new GroupOfAssignment();
+            goa.setApprovedAssignments(0);
+            goa.setNumberOfAssignment(dto.getNumOfPractices());
+            goa.setOrderNr(dto.getOrderNumber());
+            goa.setMinApprovedAssignmentsInGroup(dto.getMinimumNumApproved());
+            goa.setAssignments(newGroup);
+
+            // Set group
+            Optional<Course> course = courseRepository.findById(dto.getCourseId());
+
+            // If the course id was present in db
+            if(course.isPresent()){
+                // Add the course as foreign key
+                goa.setCourse(course.get());
+                // Add the group to the course as foreign key
+                course.get().addGroupOfAssignment(goa);
+            }
+            else {
+                throw new Exception("The course id: " + dto.getCourseId() + " did not exist.");
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Deletes the course (not archive)
+     *
+     * @param courseId is the course to delete
+     */
+    @Override
+    public ResponseEntity<Object> deleteCourse(long courseId) {
+        Optional<Course> course = courseRepository.findById(courseId);
+        if(course.isPresent()) {
+            courseRepository.delete(course.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

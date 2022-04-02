@@ -1,12 +1,13 @@
 package ntnu.karolisw.project_backend.dto.out;
 
-public class StudentOut {
-    private long studentId;
+public class PersonOut {
+    private long personId;
     private String firstName;
     private String lastName;
     private String email;
     private int approvedAssignmentsInCourse;
     private boolean digital;
+    private boolean loggedIn;
 
     // GETTERS
 
@@ -26,6 +27,17 @@ public class StudentOut {
         return approvedAssignmentsInCourse;
     }
 
+    public long getPersonId() {
+        return personId;
+    }
+
+    public boolean isDigital() {
+        return digital;
+    }
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
 
     // SETTERS
 
@@ -43,5 +55,17 @@ public class StudentOut {
 
     public void setApprovedAssignmentsInCourse(int approvedAssignmentsInCourse) {
         this.approvedAssignmentsInCourse = approvedAssignmentsInCourse;
+    }
+
+    public void setPersonId(long personId) {
+        this.personId = personId;
+    }
+
+    public void setDigital(boolean digital) {
+        this.digital = digital;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
     }
 }

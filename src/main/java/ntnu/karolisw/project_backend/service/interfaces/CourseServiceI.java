@@ -1,12 +1,15 @@
 package ntnu.karolisw.project_backend.service.interfaces;
 
 import ntnu.karolisw.project_backend.dto.in.CourseIn;
+import ntnu.karolisw.project_backend.dto.in.GroupIn;
+import ntnu.karolisw.project_backend.model.GroupOfAssignment;
 import ntnu.karolisw.project_backend.model.Student;
 import ntnu.karolisw.project_backend.model.Teacher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public interface CourseServiceI {
@@ -19,13 +22,13 @@ public interface CourseServiceI {
     ResponseEntity<Object> getAllStudentsInCourse(long courseId);
 
     // add a list of student assistant to a course
-    ResponseEntity<Object> addStudentAssistant(long courseId, Student student);
+    ResponseEntity<Object> addStudentAssistant(long courseId, String studentAssistantEmail);
 
     // add a teacher to a course
-    ResponseEntity<Object> addTeacher(long courseId, Teacher teacher);
+    ResponseEntity<Object> addTeacher(long courseId, String teacherEmail);
 
     // add a student to a course
-    ResponseEntity<Object> addStudent(long courseId, Student student);
+    ResponseEntity<Object> addStudent(long courseId, String studentEmail);
 
     // Deletes a student from a course
     ResponseEntity<Object> removeStudent(long courseId, long studentId);
@@ -46,7 +49,7 @@ public interface CourseServiceI {
     ResponseEntity<Object> updateNumberPartsAssignments(long courseId, int numberOfParts);
 
     // setArchived --> when course is archived --> the queue must be deleted!
-    ResponseEntity<Object> archiveCourse(long courseId, int numberOfParts);
+    ResponseEntity<Object> archiveCourse(long courseId);
 
     // get number of approved assignments necessary for a certain course
     ResponseEntity<Object> getNumberOfApprovedAssignmentsByCourse(long courseId);
@@ -62,4 +65,15 @@ public interface CourseServiceI {
 
     // get all courses for student with student id (whole object)
     ResponseEntity<Object> getAllCoursesForStudent(long studentId);
+
+
+    ResponseEntity<Object> getAllCourses();
+
+    ResponseEntity<Object> getAllCoursesByTeacherId(long teacherId);
+
+    List<GroupOfAssignment> getAllGroupsOfAssignmentByCourseId(long courseId);
+
+    boolean addGroupOfAssignmentToCourse(GroupIn dto) throws Exception;
+
+    ResponseEntity<Object> deleteCourse(long courseId);
 }

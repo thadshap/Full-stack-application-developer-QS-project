@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     Student findByEmailAndLastName(String email, String lastName);
-    Student findByEmail(String email);
+    Optional<Student> findByEmail(String email);
     Student findByEmailAndPassword(String email, String password);
 
     // get all courses where student id = x

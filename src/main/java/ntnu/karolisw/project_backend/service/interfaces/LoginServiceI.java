@@ -1,5 +1,7 @@
 package ntnu.karolisw.project_backend.service.interfaces;
 
+import ntnu.karolisw.project_backend.dto.out.PersonOut;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,5 +14,5 @@ public interface LoginServiceI {
 
     byte[] getHashingFunction(String email, int userBit);
 
-    boolean validatePassword(String email, String password, int userBit) throws IllegalAccessException;
+    PersonOut validatePassword(String email, String password, int userBit) throws IllegalAccessException;
 }
