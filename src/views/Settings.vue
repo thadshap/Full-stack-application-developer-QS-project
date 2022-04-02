@@ -1,11 +1,12 @@
 <template>
   <Header></Header>
   <div id="settingsContainer">
+    <button id="goBack" v-on:click="goBack">Gå tilbake</button>
     <h3>Dine brukerinstillinger</h3>
-    Your name: <input id="name" class="inputFields" type="text" v-model="name" disabled><br>
-    Your email: <input id="email" class="inputFields" type="text" v-model="email"  disabled><br>
+    Navnet ditt: <input id="name" class="inputFields" type="text" v-model="name" disabled><br>
+    Emailen din: <input id="email" class="inputFields" type="text" v-model="email"  disabled><br>
     <p>
-    Your pronouns: <input id="pronouns" class="inputFields" type="text" v-model="pronouns"><br>
+    Dine foretrukne pronomen: <input id="pronouns" class="inputFields" type="text" v-model="pronouns"><br>
     <button id="changePronouns">Change pronouns</button>
     </p>
 
@@ -23,9 +24,16 @@ export default {
     return {
       name : "",
       email: "",
-      pronouns: "hei",
+      pronouns: "",
     }
   },
+  methods : {
+    goBack() {
+      this.$router.push({
+        name: "administrator",
+      });
+    },
+  }
 }
 </script>
 
@@ -42,7 +50,8 @@ export default {
   color: white;
   outline: none;
 }
-#changePronouns{
+
+button{
   margin-left: 10px;
   cursor: pointer;
   color:white;

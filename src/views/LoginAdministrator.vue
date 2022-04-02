@@ -2,7 +2,9 @@
   <div id="loginPage">
     <div id="nav">
       <router-link to="/">student</router-link> |
+      <router-link to="/LoginTeacher">teacher</router-link> |
       <router-link to="/LogInAdministrator">administrator</router-link>
+      <router-view />
       <router-view />
       <router-view />
       <br>
@@ -31,6 +33,8 @@
   </div>
 </template>
 <script>
+import AXI from "../services/axiosService";
+
 export default {
   data() {
     return {
@@ -41,6 +45,27 @@ export default {
       }
     }
   },
+  created() {
+  },
+  methods : {
+    loggingIn : async function() {
+      this.$store.commit("SET_EMAIL", this.user.email);
+      await AXI.getTrueIfLoginSuccess(this.user.email, this.user.password, 3).then(function (response) {
+        this.$store.commit("SET_EMAIL", this.user.email);
+        if (response.data.loggedIn){
+          this.$store.commit("SET_USERID", response.data.personId);
+          this.$store.commit("SET_EMAIL", this.user.email);
+          this.$router.push({
+            name: 'administrator'
+          })
+        } else{
+          this.header = "Login failed";
+        }
+      }.bind(this))
+
+
+    }
+  }
 }
 </script>
 

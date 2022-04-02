@@ -11,6 +11,7 @@ import QueueStudent from "../views/QueueStudent";
 import StudentAssQueueApprove from "../views/StudentAssQueueApprove";
 import Settings from "@/views/Settings";
 import ShowAllStudentsInCourse from "@/views/ShowAllStudentsInCourse";
+import LoginTeacher from "@/views/LoginTeacher";
 
 const routes = [
   {
@@ -24,7 +25,7 @@ const routes = [
     component: LoginAdministrator,
   },
   {
-    path: "/administrator",
+    path: "/administratorOrTeacher",
     name: "administrator",
     component: HomeAdministrator,
   },
@@ -72,6 +73,11 @@ const routes = [
     path: "/allStudents",
     name: "allStudents",
     component: ShowAllStudentsInCourse,
+  },
+  {
+    path: "/loginTeacher",
+    name: "loginTeacher",
+    component: LoginTeacher,
   },
 ];
 
