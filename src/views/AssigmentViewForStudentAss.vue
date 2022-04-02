@@ -8,16 +8,22 @@
       <p id="sub-name">Fullstack</p>
       <p id="sub-code">IDATT2105</p>
     </div>
-    <div id="student-list">
-    <div id="oving-rules-container">
-      <p id="oving-rules">Thadshajini Paramsothy</p>
-      <button id="oving-rules-btn" v-on:click="showOvinger">
-        <img id="drop-down-arrow-img-oving-rules" class="drop-down-arrow-img" src="./../assets/drop-down-arrow.png">
-      </button>
-    </div>
-    <div id="amount-of-approved-oving" v-if="showAmountOfOvingerDetails">
-      <p id="oving-approval-header">Øving 1: Godkjent</p>
-    </div>
+      <div id="table-container">
+        <table id="tableStudents">
+          <tr>
+            <th>Student navn</th>
+          </tr>
+          <tr v-for="student in students" v-on:click="select($event)" v-bind:id="student.index" :key="student">
+            <td>
+              {{ student.name }}
+              <div v-if="student.showAmountOfOvingerDetails">
+              <p v-bind:id="student.index" class="oving-approval-header" v-for="assigment in assignmentsList" :key="assigment">
+                {{assigment.name}}: {{assigment.approved}}
+              </p>
+              </div>
+            </td>
+          </tr>
+        </table>
     </div>
   </div>
   <Footer></Footer>
@@ -32,23 +38,57 @@ export default {
   components: {Footer, Header},
   data() {
     return {
-      showAmountOfOvingerDetails : false
+      assignmentsList:[],
+      idCheckedStudent: null,
+      students:[
+        {
+        name:"Sander Hansen",
+        index:1,
+        showAmountOfOvingerDetails : false,
+        assigments:[{
+          name:"Øving 1",
+          approved:"Ikke godkjent"
+        },
+          {
+            name:"Øving 2",
+            approved:"Ikke godkjent"
+          }]
+        },
+        {
+          name:"Helene Hansen",
+          index:2,
+          showAmountOfOvingerDetails : false,
+          assigments:[{
+            name:"Øving 1",
+            approved:"Godkjent"
+          }]
+        },
+      ]
     }
   },
+  created(){
+
+  },
   methods : {
-    showOvinger()  {
-      if (this.showAmountOfOvingerDetails === false){
-        this.showAmountOfOvingerDetails = true;
-        document.getElementById("drop-down-arrow-img-oving-rules").style.transform ='rotate(360deg)'
-      }
-      else if (this.showAmountOfOvingerDetails === true){
-        this.showAmountOfOvingerDetails = false;
-        document.getElementById("drop-down-arrow-img-oving-rules").style.transform ='rotate(450deg)'
-      }
-    },
     backToPreviousPage(){
       this.$router.go(-1)
     },
+    select: function (e) {
+      this.idCheckedStudent = e.currentTarget.id
+      let id = this.idCheckedStudent
+        this.assignmentsList = []
+        for(let i=0 ; i<this.students.length; i++){
+          if (this.students[i].index == id){
+            this.assignmentsList = this.students[i].assigments
+            if (this.students[i].showAmountOfOvingerDetails == false){
+              this.students[i].showAmountOfOvingerDetails = true
+            }
+            else if (this.students[i].showAmountOfOvingerDetails == true){
+              this.students[i].showAmountOfOvingerDetails = false
+            }
+          }
+        }
+      }
   },
 };
 </script>
@@ -93,52 +133,31 @@ export default {
   border-width: 2.5px;
   margin: 0 20px 20px 20px;
 }
-#oving-rules{
-  color: rgba(255, 255, 255, 0.89);
-  letter-spacing: 1px;
-  font-weight: lighter;
+table {
+  border-collapse: collapse;
+  width: 60%;
+  margin-top: 20px;
   text-align: center;
+  letter-spacing: 1px;
+}
+td, .oving-approval-header{
+  cursor: pointer;
+  font-weight: lighter;
+}
+td, th, .oving-approval-header{
+  border: 1px solid steelblue;
+  padding: 8px;
+  color: rgba(255, 255, 255, 0.89);
+}
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #011c39;
   font-size: 20px;
 }
-#amount-of-approved-oving{
-  float: left;
-  font-size: 15px;
+#table-container{
+  display: flex;
   width: 100%;
-}
-#oving-rules-container{
-  text-align: center;
-}
-#oving-rules,#oving-rules-btn{
-  display: inline;
-}
-#oving-rules{
-  margin-left: 35px;
-}
-#oving-rules-btn{
-  float: right;
-  margin-right: 40px;
-  position: relative;
-  top: 4px;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  width: 20px;
-  height: 20px;
-  background-color: inherit;
-}
-#drop-down-arrow-img-oving-rules{
-  height: 15px;
-  width: 25px;
-  transform: rotate(90deg);
-}
-#oving-approval-header{
-  text-align: center;
-  color: rgba(255, 255, 255, 0.89);
-  letter-spacing: 1px;
-  font-weight: lighter;
-  font-size: 15px;
+  justify-content: center;
 }
 </style>
