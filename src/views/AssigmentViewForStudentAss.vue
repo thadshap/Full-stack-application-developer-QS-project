@@ -13,11 +13,11 @@
           <tr>
             <th>Student navn</th>
           </tr>
-          <tr v-for="student in students" v-on:click="select($event)" v-bind:id="student.index" :key="student">
+          <tr v-for="student in students" v-on:click="select($event)" v-bind:id="student.index" :key="student.index">
             <td>
               {{ student.name }}
-              <div v-if="student.showAmountOfOvingerDetails">
-              <p v-bind:id="student.index" class="oving-approval-header" v-for="assigment in assignmentsList" :key="assigment">
+              <div v-if="showAmountOfOvingerDetails && student.index==this.idCheckedStudent">
+              <p v-bind:id="student.index" class="oving-approval-header" v-for="assigment in student.assigments" :key="assigment">
                 {{assigment.name}}: {{assigment.approved}}
               </p>
               </div>
@@ -40,29 +40,28 @@ export default {
     return {
       subjectName: "Fullstack",
       subjectCode: "IDATT2101",
+      showAmountOfOvingerDetails : false,
       assignmentsList:[],
       idCheckedStudent: null,
       students:[
         {
         name:"Sander Hansen",
         index:1,
-        showAmountOfOvingerDetails : false,
         assigments:[{
           name:"Øving 1",
-          approved:"Ikke godkjent"
+          approved:"Ikke godkjent",
         },
           {
             name:"Øving 2",
-            approved:"Ikke godkjent"
+            approved:"Ikke godkjent",
           }]
         },
         {
           name:"Helene Hansen",
           index:2,
-          showAmountOfOvingerDetails : false,
           assigments:[{
             name:"Øving 1",
-            approved:"Godkjent"
+            approved:"Godkjent",
           }]
         },
       ]
@@ -77,19 +76,8 @@ export default {
     },
     select: function (e) {
       this.idCheckedStudent = e.currentTarget.id
-      let id = this.idCheckedStudent
-        this.assignmentsList = []
-        for(let i=0 ; i<this.students.length; i++){
-          if (this.students[i].index == id){
-            this.assignmentsList = this.students[i].assigments
-            if (this.students[i].showAmountOfOvingerDetails == false){
-              this.students[i].showAmountOfOvingerDetails = true
-            }
-            else if (this.students[i].showAmountOfOvingerDetails == true){
-              this.students[i].showAmountOfOvingerDetails = false
-            }
-          }
-        }
+      this.showAmountOfOvingerDetails  = !this.showAmountOfOvingerDetails
+      console.log(this.showAmountOfOvingerDetails)
       }
   },
 };

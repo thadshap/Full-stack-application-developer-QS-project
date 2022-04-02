@@ -13,9 +13,9 @@
       <p id="room" class="student-details-in-queue">112 </p>
       <p id="table" class="student-details-in-queue">10 </p>
     </div>
-    <div id="oving-container">
-      <p id="oving-header">Øving 1</p>
-      <input type="checkbox" id="approve-checkbox" name="horns">
+    <div id="oving-container" >
+      <p id="oving-header">Fullstack}</p>
+      <input type="checkbox" id="approve-checkbox" name="horns" >
       <hr class="line-under-oving">
     </div>
     <div id="approve-student-in-que-choices-btns">
@@ -26,7 +26,6 @@
   </div>
   <Footer></Footer>
 </template>
-
 <script>
 import Footer from "../components/Footer";
 import Header from "../components/Header";
@@ -34,6 +33,7 @@ import Header from "../components/Header";
 export default {
   name: "StudentAssQueueApprove",
   components: {Footer, Header},
+
   methods:{
     backToPreviousPage(){
       this.$router.go(-1)

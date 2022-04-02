@@ -11,7 +11,7 @@
     <label id="digital-queue-header" for="digital-queue-btn" >Digital</label>
   </div>
   <div id="list-of-ovinger">
-    <label id="oving-checkbox-header" class="oving-lable" for="oving-checkbox">Øving 1</label>
+    <label id="oving-checkbox-header" class="oving-lable" for="oving-checkbox">Øving 1</label> /**For å vise at en box er cheked så er det bare: const cb = document.querySelector('#oving-checkbox-header'); også cd.value ==true*/
     <input type="checkbox" id="oving-checkbox" class="oving-checkbox" name="oving-checkbox">
     <label id="oving-checkbox-header 1" class="oving-lable" for="oving-checkbox 1">Øving 2</label>
     <input type="checkbox" id="oving-checkbox 1" class="oving-checkbox" name="oving-checkbox">
