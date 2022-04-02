@@ -19,12 +19,16 @@
     </div>
      </div>
     <div id="oving-rules-drop-down-container" v-if="showOvingRules">
-      <p id="oving-rules-header">For å bestrå faget må 3 av 4 øvinger godkjennes.</p>
+      <p id="oving-rules-header">For å bestå faget må 3 av 4 øvinger godkjennes.</p>
     </div>
-    <div id="oving-container">
-      <p id="oving-header">Øving 1</p>
-      <p id="approve-header">Ikke godkjent</p>
-      <hr class="line-under-oving">
+    <div id="table-wrapper">
+      <div id="table-container">
+        <div id="oving-container" v-for="assigment in assigments" :key="assigment">
+          <p id="oving-header">{{ assigment.name }}</p>
+          <p id="approve-header">{{ assigment.approved }}</p>
+          <hr class="line-under-oving">
+        </div>
+      </div>
     </div>
   </div>
   <Footer></Footer>
@@ -40,7 +44,13 @@ export default {
   components: {Footer, Header},
   data() {
     return {
-      showOvingRules : false
+      showOvingRules : false,
+      assigments:[
+        {
+          name:"Øving 1",
+          approved:"Ikke godkjent",
+        },
+      ],
     }
   },
   methods : {
@@ -129,7 +139,7 @@ export default {
 }
 #oving-header,#approve-header{
   display: inline;
-  margin: 0 35px 0 35px;
+  margin: 0 10% 0 10%;
   font-size: 20px;
 }
 #oving-header{
@@ -185,5 +195,14 @@ export default {
   font-weight: lighter;
   font-size: 15px;
   padding: 5px;
+}
+#table-container{
+  display: table;
+  width: 100%;
+}
+#table-wrapper{
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 </style>
