@@ -9,14 +9,10 @@
       <p id="sub-name">{{subName}}</p>
       <p id="sub-code">{{subCode}}</p>
       <p id="student-name" class="student-details-in-queue">{{studentName}}</p>
-      <p id="campus" class="student-details-in-queue">{{where}}</p>
-      <p id="building" class="student-details-in-queue">{{building}}</p>
-      <p id="room" class="student-details-in-queue">{{room}}</p>
-      <p id="table" class="student-details-in-queue">{{table}}</p>
     </div>
     <div id="oving-container" v-for="assigment in assigments" :key="assigment">
       <p id="oving-header">{{assigment.name}}</p>
-      <input type="checkbox" id="approve-checkbox" name="horns" >
+      <input type="radio" id="approve-checkbox" name="horns" >
       <hr class="line-under-oving">
     </div>
     <div id="approve-student-in-que-choices-btns">
@@ -123,13 +119,7 @@ export default {
   border-width: 2.5px;
   margin: 0 20px 24px 20px;
   text-align: center;
-  padding-bottom: 24px;
   padding-top: 20px;
-}
-#campus,#building,#room,#table{
-  display: inline;
-  text-align: center;
-  margin-right: 5px;
 }
 #oving-container{
   color: rgba(255, 255, 255, 0.89);

@@ -14,7 +14,7 @@
     <div id="list-of-ovinger-container">
       <div id="list-of-ovinger" v-for="assigment in assigments" :key="assigment">
         <label id="oving-checkbox-header" class="oving-lable" for="oving-checkbox">{{assigment.name}}</label> <!--For å vise at en box er cheked så er det bare: const cb = document.querySelector('#oving-checkbox-header'); også cd.value ==true-->
-        <input type="checkbox" id="oving-checkbox" class="oving-checkbox" name="oving-checkbox">
+        <input type="radio" id="oving-checkbox" class="oving-checkbox" name="oving-checkbox">
       </div>
     </div>
   </div>
@@ -50,46 +50,46 @@ import Header from "../components/Header";
 
 export default {
   name: "RegisterInLine",
-  components: {Footer, Header},
+  components: { Footer, Header },
   data() {
     return {
-      showCampusDetails : false,
-      assigments:[
+      showCampusDetails: false,
+      assigments: [
         {
-          name:"Øving 1",
-          approved:"Ikke godkjent",
+          name: "Øving 1",
+          approved: "Ikke godkjent",
         },
         {
-          name:"Øving 2",
-          approved:"Ikke godkjent",
+          name: "Øving 2",
+          approved: "Ikke godkjent",
         },
         {
-          name:"Øving 3",
-          approved:"Ikke godkjent",
+          name: "Øving 3",
+          approved: "Ikke godkjent",
         },
         {
-          name:"Øving 4",
-          approved:"Ikke godkjent",
+          name: "Øving 4",
+          approved: "Ikke godkjent",
         },
         {
-          name:"Øving 5",
-          approved:"Ikke godkjent",
+          name: "Øving 5",
+          approved: "Ikke godkjent",
         },
       ],
     }
   },
-  methods : {
-    campusChosen()  {
+  methods: {
+    campusChosen() {
       this.showCampusDetails = true;
     },
-    digitalChosen(){
+    digitalChosen() {
       this.showCampusDetails = false;
     },
-    backToPreviousPage(){
+    backToPreviousPage() {
       this.$router.go(-1)
     },
   }
-};
+}
 </script>
 
 <style scoped>
