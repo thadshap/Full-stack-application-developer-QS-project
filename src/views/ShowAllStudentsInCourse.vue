@@ -85,7 +85,12 @@
             {{ student.email }}
           </td>
           <td>{{ student.firstName }} {{ student.lastName }}</td>
-          <td></td>
+          <td>
+            <div  v-for="assign in student.assignments" :key="assign">
+            Øving : {{assign.assignmentNr}}<br>
+            Godkjent : {{assign.approved}}<br>
+            </div>
+          </td>
         </tr>
       </table>
     </div>
@@ -122,7 +127,23 @@ export default {
       addPerson: { firstName: "", lastName: "", email: "" },
       demandOnPractices: "",
       course: "",
-      students: [],
+      students: [
+        {
+          email : "e@cool.no",
+          firstName : "Eirin",
+          lastName : "svins",
+          assignments : [
+            {
+              assignmentNr : 1,
+              approved : false
+            },
+            {
+              assignmentNr : 2,
+              approved : true
+            }
+          ],
+        }
+      ],
       fileInput: "",
       help: "",
       errors: {
@@ -141,15 +162,11 @@ export default {
      * Method that gets how many assignments a course have, and how many who need to be approved
      */
     getPracticeDemandsForCourse: async function(){
-      try {
-        await AXI.getCourseById().then(
-            function (response) {
-              this.demandOnPractice = response.data.minApprovedAssignments + " av " + response.data.numberOfAssignment + "må være godkjent";
-            }.bind(this)
-        );
-      } catch (error) {
-        console.log(error);
-      }
+      await AXI.getCourseById().then(
+        function (response) {
+          this.demandOnPractice = response.data.minApprovedAssignments + " av " + response.data.numberOfAssignment + "må være godkjent";
+          }.bind(this));
+
     },
 
     /**
@@ -157,14 +174,22 @@ export default {
      * @returns {Promise<void>}
      */
     getAllStudents: async function () {
-      try {
-        await AXI.getAllStudentsInCourse(this.$store.state.courseId).then(
+      await AXI.getAllStudentsInCourse(this.$store.state.courseId).then(
           function (response) {
             this.students = response.data;
           }.bind(this)
         );
-      } catch (error) {
-        console.log(error);
+      await this.addAssignmentsAndApprovedOrNot();
+    },
+    /**
+     * method to get the courses assignments, and whether the assignments are approved or not for all students
+     */
+    addAssignmentsAndApprovedOrNot: async function(){
+      for(let i=0; i<this.students.length; i++){
+        await AXI.getAllAssignmentsInCourseForStudentAndIfApproved(this.$store.state.courseId, this.students[i].studentId).then(
+            function (response) {
+              this.students[i].assignments = response.data;
+            }.bind(this));
       }
     },
     changeFileDesign() {
@@ -195,15 +220,11 @@ export default {
       this.showAddPerson = true;
     },
     deleteStudent: async function () {
-      try {
         await AXI.deleteStudentFromCourse(
           this.$store.state.courseId,
           this.deleteEmail
-        ).bind(this);
+        );
         await this.getAllStudents();
-      } catch (error) {
-        console.log(error);
-      }
     },
     /**
      * Add a student, student teacher or teacher to the course
@@ -212,52 +233,39 @@ export default {
      */
     sendPerson: async function () {
       if (this.currentAddUserType === "student"){
-        try {
-          await AXI.addStudentToCourse(
-              this.$store.state.courseId,
-              this.addPerson.email,
-              this.addPerson.firstName,
-              this.addPerson.lastName
-          ).bind(this);
+        await AXI.addStudentToCourse(
+            this.$store.state.courseId,
+            this.addPerson.email,
+            this.addPerson.firstName,
+            this.addPerson.lastName
+          );
           await this.getAllStudents();
-        } catch (error) {
-          console.log(error);
-        }
+
       }
       if (this.currentAddUserType === "teacher"){
-        try {
           await AXI.addTeacherToCourse(
               this.$store.state.courseId,
               this.addPerson.email,
               this.addPerson.firstName,
               this.addPerson.lastName
-          ).bind(this);
+          );
           await this.getAllStudents();
-        } catch (error) {
-          console.log(error);
-        }
+
         if (this.currentAddUserType === "studentTeacher") {
-          try {
             await AXI.addTeacherToCourse(
                 this.$store.state.courseId,
                 this.addPerson.email,
                 this.addPerson.firstName,
                 this.addPerson.lastName
-            ).bind(this);
+            );
             await this.getAllStudents();
-          } catch (error) {
-            console.log(error);
-          }
+
         }
       }
     },
     sendStudentsFromFile : async function(lastname, firstname, email){
-      try {
-        this.students.push({email : email, firstname : firstname, lastname : lastname})
-        await AXI.addStudentToCourse(this.$store.state.courseId, email, firstname, lastname).bind(this);
-      } catch (error) {
-        console.log(error);
-      }
+      this.students.push({email : email, firstName : firstname, lastName : lastname})
+      await AXI.addStudentToCourse(this.$store.state.courseId, email, firstname, lastname);
     },
     validateStudent: async function() {
       this.showErrors = true;

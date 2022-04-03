@@ -17,11 +17,12 @@ export default {
     getAllCourses(){
         return apiClient.get('/courses')
     },
-    getAllCoursesForTeacher(teacherId){
-        return apiClient.get('/courses/teacher' + teacherId)
+    getAllCoursesForTeacher(id){
+        return apiClient.get('/courses/teachers' + id)
     },
-    postNewCourse(courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices,undergroupsArray){
+    postNewCourse(typeOfUser, courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices,undergroupsArray){
         return apiClient.post('/courses/addNew', {
+            typeOfUser : typeOfUser,
             courseCode : courseCode,
             name : courseName,
             startDate : startDate,
@@ -32,11 +33,11 @@ export default {
         })
     },
     getPronouns(userId, typeOfUser){
-        return apiClient.post('/person/getPronouns', {userId : userId, typeOfUser :typeOfUser})
+        return apiClient.post('/person/getPronouns', {id : userId, typeOfUser :typeOfUser})
     },
     postPronouns(userId, typeOfUser, pronouns){
         return apiClient.post('/person/postPronouns', {
-            userId : userId,
+            id : userId,
             typeOfUser : typeOfUser,
             pronouns : pronouns
         })
@@ -71,29 +72,29 @@ export default {
         })
     },
     deleteStudentFromCourse(courseId, email){
-        return apiClient.post('/courses/deleteStudent', {courseId : courseId, email : email})
+        return apiClient.post('/courses/removeStudent', {courseId : courseId, email : email})
     },
     getAllStudentsInCourse(courseId){
-        return apiClient.get('/courses/students' + courseId)
+        return apiClient.get('/courses/students/' + courseId)
     },
     getCourseById(courseId){
         return apiClient.get('/courses/' + courseId)
     },
     //Student methods
-    getAllCoursesForStudent(userId){
-        return apiClient.get('/courses/' + userId)
+    getAllCoursesForStudent(id){
+        return apiClient.get('/courses/student/' + id)
     },
-    getAllCoursesForStudentAssistant(userId){
-        return apiClient.get('/studentAssistant/courses/' + userId)
+    getAllCoursesForStudentAssistant(id){
+        return apiClient.get('/courses/studentAssistant/' + id)
     },
     getAllStudentsInQueue(courseId){
-        return apiClient.get('/students/queue' + courseId)
+        return apiClient.get('/students/queue/' + courseId)
     },
     getAllAssignmentsInCourseForStudentAndIfApproved(courseId, studentId){
-        return apiClient.post('/courses/assignments', {courseId : courseId, studentId : studentId})
+        return apiClient.post('/queues/newSiq', {courseId : courseId, id : studentId})
     },
-    postStudentInQueue(typeOfLocation, assignmentNumber, helpOrApproving, campus, building, room, table){
-        return apiClient.post('/courses/queue', {digital : typeOfLocation, assignmentNumber : assignmentNumber, assessmentHelp : helpOrApproving, campus : campus, building : building, room : room, tableNumber : table})
+    postStudentInQueue(courseId, userId, typeOfLocation, helpOrApproving, campus, building, room, table){
+        return apiClient.post('/courses/queue', {courseId : courseId, id : userId, digital : typeOfLocation, assessmentHelp : helpOrApproving, campus : campus, building : building, room : room, tableNumber : table})
 
     },
     changeTypeOfActiveQueue(courseId, activeBoolean){
@@ -104,16 +105,16 @@ export default {
         return apiClient.get('/courses/queue/status' + courseId)
     },
     approveAssignmentForStudent(courseId, userId, assignmentNumber){
-        return apiClient.post('/students/assignment', {courseId : courseId, userId : userId, assignmentNumber : assignmentNumber})
+        return apiClient.post('/students/assignments', {courseId : courseId, id : userId, assignmentNumber : assignmentNumber})
 
     },
     changeStateInQueueForStudent(userId, courseId, state){
-        return apiClient.post('/students/queue/changeState', {courseId : courseId, userId : userId, statusInQueue : state})
+        return apiClient.post('/students/queue/changeState', {courseId : courseId, id : userId, statusInQueue : state})
     },
     getStateInQueueForStudent(userId, courseId){
-        return apiClient.post('/students/queue/getState', {courseId : courseId, userId : userId})
+        return apiClient.post('/students/queue/getState', {courseId : courseId, id : userId})
     },
     deleteStudentFromQueue(userId, courseId){
-        return apiClient.post('/courses/queue/deleteStudent', {courseId : courseId, userId : userId})
+        return apiClient.post('/courses/queue/deleteStudent', {courseId : courseId, id : userId})
     }
 }

@@ -93,7 +93,7 @@ export default {
      */
     deleteCourse: async function() {
       try{
-        await AXI.deleteCourse(this.$store.state.courseId).bind(this);
+        await AXI.deleteCourse(this.$store.state.courseId);
         await this.getCourses();
       }catch (error) {
         console.log(error)
@@ -104,7 +104,7 @@ export default {
      */
     archiveCourse: async function() {
       try{
-        await AXI.archiveCourse(this.$store.state.courseId).bind(this);
+        await AXI.archiveCourse(this.$store.state.courseId);
         await this.getCourses();
       }catch (error) {
         console.log(error)

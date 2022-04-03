@@ -11,14 +11,14 @@
     </div>
     <div id="active-subject-container-table-wrapper">
     <div id="active-subject-container-wrapper">
-    <div class="active-subject-container" v-for="course in courses" v-bind:id="course.index" :key="course.index">
+    <div class="active-subject-container" v-for="course in courses" v-bind:id="course.courseId" :key="course.courseId">
      <div id="sub-name-container">
        <p id="sub-name">{{course.courseName}}</p>
        <p id="sub-code">{{course.courseCode}}</p>
      </div>
      <div id="sub-feature-tabs">
-       <button class="studentButtons" v-bind:id="course.index"  v-on:click="showAssignments($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
-       <button class="studentButtons" v-bind:id="course.index" v-on:click="goToQueue($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+       <button class="studentButtons" v-bind:id="course.courseId" v-on:click="showAssignments($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
+       <button class="studentButtons" v-bind:id="course.courseId" v-on:click="goToQueue($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
      </div>
     </div>
     </div>
@@ -44,26 +44,29 @@ export default {
         {
           courseCode:"IDATT2102",
           courseName:"Nettverk",
-          index:1,
+          courseId:1,
         },
         {
           courseCode:"IDATT2102",
           courseName:"Nettverk",
-          index:2,
+          courseId:2,
         },
       ],
     }
   },
   created : async function() {
     await this.getAllCoursesForStudent();
+    this.$store.commit("SET_ISSTUDENTASSISTANT", false);
   },
   methods: {
+    /**
+     * method to get all courses registered for a student from database
+     */
     getAllCoursesForStudent : async function(){
       await axiosService.getAllCoursesForStudent(this.$store.state.userId).then(
           function (response) {
             this.courses = response.data;
-          }.bind(this)
-      );
+          }.bind());
     },
     showPageForStudentAssistant(){
         this.$router.push({
@@ -71,23 +74,30 @@ export default {
           component: HomeStudentAss,
         })
     },
+    /**
+     * method to change view to 'QueueStudent'
+     * saves selected course to store
+     */
     goToQueue: function(event){
       const targetId = event.currentTarget.id;
       for(let i = 0; i<this.courses.length; i++){
-        if(this.courses[i].index.toString() === targetId){
+        if(this.courses[i].courseId.toString() === targetId){
           this.$store.commit("SET_COURSE", this.courses[i]);
         }
       }
-      this.$store.commit("SET_COURSEID", targetId);
       this.$router.push({
         name:'queueStudent',
         component: QueueStudent
       })
     },
+    /**
+     * method to change view to 'AssignmentView'
+     * saves selected course to store
+     */
     showAssignments: function(event) {
       const targetId = event.currentTarget.id;
       for(let i = 0; i<this.courses.length; i++){
-        if(this.courses[i].index.toString() === targetId){
+        if(this.courses[i].courseId.toString() === targetId){
           this.$store.commit("SET_COURSE", this.courses[i]);
         }
       }

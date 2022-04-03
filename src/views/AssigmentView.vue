@@ -85,6 +85,10 @@ export default {
     await this.getAssignments();
   },
   methods : {
+    /**
+     * method to get all assignments in current course for a student,
+     * as well as getting whether they are approved or not
+     */
     getAssignments: async function(){
       await axiosService.getAllAssignmentsInCourseForStudentAndIfApproved(this.$store.state.userId).then(
           function (response) {

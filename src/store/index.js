@@ -2,6 +2,8 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
+    isStudentAssistant : true,
+    studentassistant : {},
     typeOfUser : 0, // 1 is student, 2 is teacher, 3 is admin
     userId : 0,
     courseId : 0,
@@ -14,8 +16,14 @@ export default createStore({
     queueStatus: false, //status of the queue, aka if the queue is activated or deactivated
   },
   mutations: {
+    SET_ISSTUDENTASSISTANT(state, aBoolean) {
+      state.isStudentAssistant = aBoolean;
+    },
     SET_COURSE(state, course) {
       state.course = course;
+    },
+    SET_STUDENTASSISTANT(state, student) {
+      state.studentassistant = student;
     },
     SET_COURSECODE(state, coursecode) {
       state.courseCode = coursecode

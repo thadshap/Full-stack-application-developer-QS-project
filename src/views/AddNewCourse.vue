@@ -201,7 +201,7 @@ export default {
         this.showInput = true;
         for (let i = 0; i < this.course.numOfUnderGroups; i++) {
           this.underGroups.push({
-            index: i + 1,
+            courseId: i + 1,
             inputNumOfApproved: 0,
             inputNumOfPractices: 0,
           });
@@ -234,6 +234,7 @@ export default {
     sendCourse: async function () {
       try {
         await AXI.postNewCourse(
+          this.$store.state.typeOfUser,
           this.course.courseCode,
           this.course.name,
           this.course.startDate,
@@ -241,7 +242,7 @@ export default {
           this.course.numPractices,
           this.course.numOfApprovedPractices,
           this.underGroups
-        ).bind(this);
+        );
         await this.getCourses();
       } catch (error) {
         console.log(error);

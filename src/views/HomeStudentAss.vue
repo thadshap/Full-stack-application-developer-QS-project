@@ -59,7 +59,7 @@ export default {
     }
   },
   created() {
-
+    this.$store.commit("SET_ISSTUDENTASSISTANT", true);
   },
   methods:{
     select: function(event) {
