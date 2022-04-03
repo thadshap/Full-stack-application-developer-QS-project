@@ -12,6 +12,7 @@ import StudentAssQueueApprove from "../views/StudentAssQueueApprove";
 import Settings from "@/views/Settings";
 import ShowAllStudentsInCourse from "@/views/ShowAllStudentsInCourse";
 import AssigmentViewForStudentAss from "../views/AssigmentViewForStudentAss";
+import LoginTeacher from "@/views/LoginTeacher";
 
 const routes = [
   {
@@ -25,7 +26,7 @@ const routes = [
     component: LoginAdministrator,
   },
   {
-    path: "/administrator",
+    path: "/administratorOrTeacher",
     name: "administrator",
     component: HomeAdministrator,
   },
@@ -78,6 +79,11 @@ const routes = [
     path: "/assigmentViewForStudentAss",
     name: "assigmentViewForStudentAss",
     component: AssigmentViewForStudentAss,
+  },
+  {
+    path: "/loginTeacher",
+    name: "loginTeacher",
+    component: LoginTeacher,
   },
 ];
 

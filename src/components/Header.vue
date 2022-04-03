@@ -18,6 +18,9 @@ export default {
       email: '',
     }
   },
+  created() {
+    this.email = this.$store.state.email;
+  },
   methods : {
     showSettings(){
       this.$router.push({
