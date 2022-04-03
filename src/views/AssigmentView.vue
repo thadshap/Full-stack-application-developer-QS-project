@@ -58,19 +58,19 @@ export default {
           approved:"Ikke godkjent",
         },
         {
-          name:"Øving 1",
+          name:"Øving 2",
           approved:"Ikke godkjent",
         },
         {
-          name:"Øving 1",
+          name:"Øving 3",
           approved:"Ikke godkjent",
         },
         {
-          name:"Øving 1",
+          name:"Øving 4",
           approved:"Ikke godkjent",
         },
         {
-          name:"Øving 1",
+          name:"Øving 5",
           approved:"Ikke godkjent",
         },
       ],
