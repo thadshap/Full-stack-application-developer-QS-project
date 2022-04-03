@@ -1,4 +1,5 @@
 <template>
+  <div id="container">
   <Header></Header><br>
   <div id="student-home-page">
     <div id="tabs-bar-wrapper">
@@ -30,6 +31,7 @@
     </div>
   </div>
   <Footer></Footer>
+  </div>
 </template>
 <script>
 import Footer from "../components/Footer";
@@ -79,8 +81,11 @@ export default {
 </script>
 
 <style scoped>
+#container{
+  height: 100%;
+}
 #student-home-page{
-  height: 710px;
+  height: 410px;
   overflow: auto;
   object-fit: cover;
 }
@@ -108,12 +113,12 @@ export default {
   outline: inherit;
   color: white;
   border-radius: .2em;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-family: sans-serif;
   position: relative;
   top: -4px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 #left-btn,#middle-btn{
   position: relative; 
@@ -217,5 +222,10 @@ export default {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+@media only screen and (min-height: 800px) {
+  #student-home-page{
+    height: 710px;
+  }
 }
 </style>

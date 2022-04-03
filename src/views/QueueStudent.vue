@@ -1,4 +1,5 @@
 <template>
+  <div id="container">
   <Header></Header><br>
   <div id="queue-student-container">
     <button id="back-to-queue-btn" v-on:click="backToPreviousPage">
@@ -23,6 +24,7 @@
     </table>
   </div>
   <Footer></Footer>
+  </div>
 </template>
 
 <script>
@@ -81,8 +83,11 @@ export default {
 </script>
 
 <style scoped>
+#container{
+  height: 100%;
+}
 #queue-student-container{
-  height: 710px;
+  height: 410px;
   overflow: auto;
   object-fit: cover;
 }

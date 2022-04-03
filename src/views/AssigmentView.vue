@@ -1,4 +1,5 @@
 <template>
+  <div id="container">
   <Header></Header>
   <div id="queue-container">
     <button id="back-to-queue-btn" v-on:click="backToPreviousPage">
@@ -32,6 +33,7 @@
     </div>
   </div>
   <Footer></Footer>
+  </div>
 </template>
 
 <script>
@@ -51,6 +53,22 @@ export default {
       subjectCode: "IDATT2101",
       showOvingRules : false,
       assigments:[
+        {
+          name:"Øving 1",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 1",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 1",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 1",
+          approved:"Ikke godkjent",
+        },
         {
           name:"Øving 1",
           approved:"Ikke godkjent",
@@ -77,8 +95,11 @@ export default {
 </script>
 
 <style scoped>
+#container{
+  height: 100%;
+}
 #queue-container{
-  height: 710px;
+  height: 410px;
   overflow: auto;
   object-fit: cover;
 }
@@ -209,5 +230,10 @@ export default {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+@media only screen and (min-height: 800px) {
+  #queue-container{
+    height: 710px;
+  }
 }
 </style>

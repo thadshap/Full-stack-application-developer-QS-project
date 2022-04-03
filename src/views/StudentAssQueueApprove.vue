@@ -1,4 +1,5 @@
 <template>
+  <div id="container">
   <Header></Header>
   <div id="queue-student-ass-container">
     <button id="back-to-queue-btn" v-on:click="backToPreviousPage">
@@ -25,6 +26,7 @@
     </div>
   </div>
   <Footer></Footer>
+  </div>
 </template>
 <script>
 import Footer from "../components/Footer";
@@ -43,8 +45,11 @@ export default {
 </script>
 
 <style scoped>
+#container{
+  height: 100%;
+}
 #queue-student-ass-container{
-  height: 650px;
+  height: 410px;
   overflow: auto;
   object-fit: cover;
 }
@@ -143,5 +148,10 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+@media only screen and (min-height: 800px) {
+  #queue-student-ass-container{
+    height: 710px;
+  }
 }
 </style>

@@ -1,4 +1,5 @@
 <template>
+  <div id="container">
   <Header></Header><br>
   <div id="studentAss-home-page">
     <div id="tabs-bar-wrapper">
@@ -30,7 +31,8 @@
     </div>
     </div>
   </div>
-  <Footer></Footer>  
+  <Footer></Footer>
+  </div>
 </template>
 <script>
 import Footer from "../components/Footer";
@@ -82,8 +84,17 @@ export default {
         document.getElementById("active-que-btn").style.top='-30px'
       }else{
         document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
-        document.getElementById("active-que-btn").style.position='relative'
-        document.getElementById("active-que-btn").style.top='0'
+        let x = window.matchMedia("(min-height: 800px)")
+        if (x.matches){
+          document.getElementById("active-que-btn").style.position='relative'
+          document.getElementById("active-que-btn").style.top='0'
+
+        }
+        else if (!x.matches){
+          document.getElementById("active-que-btn").style.position='relative'
+          document.getElementById("active-que-btn").style.top='-30px'
+        }
+
       }
     }
   },
@@ -91,8 +102,11 @@ export default {
 </script>
 
 <style scoped>
+#container{
+  height: 100%;
+}
 #studentAss-home-page{
-  height: 710px;
+  height: 410px;
   overflow: auto;
   object-fit: cover;
 }
@@ -120,12 +134,12 @@ export default {
   outline: inherit;
   color: white;
   border-radius: .2em;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-family: sans-serif;
   position: relative;
   top: -4px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 #left-btn,#middle-btn{
   position: relative;
@@ -227,10 +241,21 @@ export default {
   float: right;
   border-color: #0a64c2;
   padding: 5px;
+  position: relative;
+  top: -30px;
 }
 #active-subject-container-table-wrapper{
   display: flex;
   width: 100%;
   justify-content: center;
+}
+@media only screen and (min-height: 800px) {
+  #studentAss-home-page{
+    height: 710px;
+  }
+  #active-que-btn{
+    position: relative;
+    top: 0;
+  }
 }
 </style>

@@ -122,7 +122,7 @@ export default {
   margin-bottom: 55px;
 }
 .oving-checkbox{
-  margin-right: 20px;
+
 }
 .oving-lable{
   margin-left: 20px;
@@ -156,5 +156,21 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+footer{
+  position: relative;
+  bottom: 0;
+}
+#register-in-line-container{
+  height: 400px;
+  overflow: auto;
+  object-fit: cover;
+}
+@media only screen and (min-height: 800px) {
+  #register-in-line-container{
+    height: 710px;
+    overflow: auto;
+    object-fit: cover;
+  }
 }
 </style>
