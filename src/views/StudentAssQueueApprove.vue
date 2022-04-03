@@ -6,13 +6,13 @@
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
     </button>
     <div id="sub-header-container">
-      <p id="sub-name">Fullstack</p>
-      <p id="sub-code">IDATT2105</p>
-      <p id="student-name" class="student-details-in-queue">Thadshajini Paramsothy</p>
-      <p id="campus" class="student-details-in-queue">Realfagsbygget </p>
-      <p id="building" class="student-details-in-queue">A4 </p>
-      <p id="room" class="student-details-in-queue">112 </p>
-      <p id="table" class="student-details-in-queue">10 </p>
+      <p id="sub-name">{{subName}}</p>
+      <p id="sub-code">{{subCode}}</p>
+      <p id="student-name" class="student-details-in-queue">{{studentName}}</p>
+      <p id="campus" class="student-details-in-queue">{{campus}}</p>
+      <p id="building" class="student-details-in-queue">{{building}}</p>
+      <p id="room" class="student-details-in-queue">{{room}}</p>
+      <p id="table" class="student-details-in-queue">{{table}}</p>
     </div>
     <div id="oving-container" >
       <p id="oving-header">Øving 1</p>
@@ -35,7 +35,18 @@ import Header from "../components/Header";
 export default {
   name: "StudentAssQueueApprove",
   components: {Footer, Header},
-
+  data(){
+    return{
+      subName:"Fullstack",
+      subCode:"IDATT1001",
+      studentName:"Tahdshajini Paramsothy",
+      location:"campus",
+      campus:"Realfagsbygget",
+      building:"A4",
+      room:112,
+      table:4,
+    }
+  },
   methods:{
     backToPreviousPage(){
       this.$router.go(-1)
@@ -96,6 +107,7 @@ export default {
 #campus,#building,#room,#table{
   display: inline;
   text-align: center;
+  margin-right: 5px;
 }
 #oving-container{
   color: rgba(255, 255, 255, 0.89);
