@@ -1,16 +1,19 @@
 package ntnu.karolisw.project_backend.dto.in;
 
 public class StudentInQueueIn {
-    long studentInQueueId; // Only used upon delete (not creation)
-    long studentId;
-    long courseId;
-    int tableNumber;
-    String campus;
-    boolean digital;
-    String building;
-    String room;
-    boolean assessmentHelp;
-    int statusInQueue;
+    private long studentInQueueId; // Only used upon delete (not creation)
+    private long studentId;
+    private long courseId;
+    private int tableNumber;
+    private String campus;
+    private boolean digital;
+    private String building;
+    private String room;
+    private boolean assessmentHelp;
+    private int statusInQueue;
+
+    // for the queue only
+    private boolean active;
 
     // GETTERS
 
@@ -54,6 +57,10 @@ public class StudentInQueueIn {
         return studentInQueueId;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
     // SETTERS
 
     public void setStudentId(long studentId) {
@@ -94,5 +101,9 @@ public class StudentInQueueIn {
 
     public void setStudentInQueueId(long studentInQueueId) {
         this.studentInQueueId = studentInQueueId;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

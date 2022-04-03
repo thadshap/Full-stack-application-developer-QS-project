@@ -23,7 +23,7 @@ import java.util.Set;
 public class Assignment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "assignment_id", nullable = false)
     private Long assignmentId;
 
@@ -45,11 +45,12 @@ public class Assignment {
     private Date modifyDate;
 
     // Many-to-many relationship with student --> middle table = assignment_student
-    @ManyToMany(mappedBy = "assignments")
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "assignments")
     private Set<Student> students = new HashSet<>();
 
     // Many-to-one relationship with group_of_assignment
-    @ManyToOne
+    // If new assignment is added with a group id, then the group og assignment is persisted as well
+    @ManyToOne (cascade = CascadeType.PERSIST)
     @JoinColumn(name = "group_id")
     private GroupOfAssignment groupOfAssignment;
 

@@ -1,8 +1,7 @@
 package ntnu.karolisw.project_backend.repository;
 
 import ntnu.karolisw.project_backend.model.Queue;
-import ntnu.karolisw.project_backend.model.Status;
-import ntnu.karolisw.project_backend.model.Student;
+import ntnu.karolisw.project_backend.enumFolder.Status;
 import ntnu.karolisw.project_backend.model.StudentInQueue;
 import org.springframework.data.jpa.repository.JpaRepository;
 

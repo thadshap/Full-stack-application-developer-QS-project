@@ -2,7 +2,7 @@ package ntnu.karolisw.project_backend.service.interfaces;
 
 import ntnu.karolisw.project_backend.dto.in.StudentInQueueIn;
 import ntnu.karolisw.project_backend.model.GroupOfAssignment;
-import ntnu.karolisw.project_backend.model.Status;
+import ntnu.karolisw.project_backend.enumFolder.Status;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,10 @@ public interface QueueServiceI {
     // get group of assignment when you have the number of the assignment and the course id
     GroupOfAssignment getGroupOfAssignment(int assignmentNumber, long courseId);
 
+    // get group of assignment when you have the number of the group and the course id
+    // groupNumber = orderNr
+    GroupOfAssignment getGroupOfAssignmentByAssignmentNumber(int assignmentNumber, long courseId);
+
     // getAllStudentsInQueue
     ResponseEntity<Object> getAllStudentsInQueue(long courseId);
 
@@ -35,4 +39,6 @@ public interface QueueServiceI {
     ResponseEntity<Object> createStudentInQueueEntity(StudentInQueueIn dto);
 
     ResponseEntity<Object> deleteStudentInQueueEntity(StudentInQueueIn dto);
+
+    ResponseEntity<Object> setQueueActive(StudentInQueueIn dto);
 }

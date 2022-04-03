@@ -10,20 +10,21 @@ import java.util.*;
  */
 public class CourseIn {
     private Long courseId;
+    private Long personId; // For when the user wants to add a teacher as well
+    private int typeOfUser; // To verify that the personId belongs to a teacher!
     private String courseCode;
     private String name;
     private Date startDate;
     private Date expectedEndDate;
     private int numberOfAssignments = 0;
     private int minApprovedAssignments = 0;
-    private int numberPartsAssignments = 0;
     private boolean archived;
 
     // not necessary to send this list but needed for setting the assistant at a later stage as well
     private Set<Student> studentAssistants = new HashSet<>();
 
     // all assignments end up here
-    private List<Set<Assignment>> groupsOfAssignments;
+    private List<List<Assignment>> groupsOfAssignments;
 
 
     // GETTERS
@@ -56,10 +57,6 @@ public class CourseIn {
         return minApprovedAssignments;
     }
 
-    public int getNumberPartsAssignments() {
-        return numberPartsAssignments;
-    }
-
     public boolean isArchived() {
         return archived;
     }
@@ -68,8 +65,16 @@ public class CourseIn {
         return studentAssistants;
     }
 
-    public List<Set<Assignment>> getGroupsOfAssignments() {
+    public List<List<Assignment>> getGroupsOfAssignments() {
         return groupsOfAssignments;
+    }
+
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public int getTypeOfUser() {
+        return typeOfUser;
     }
 
     // SETTERS
@@ -102,10 +107,6 @@ public class CourseIn {
         this.minApprovedAssignments = minApprovedAssignments;
     }
 
-    public void setNumberPartsAssignments(int numberPartsAssignments) {
-        this.numberPartsAssignments = numberPartsAssignments;
-    }
-
     public void setArchived(boolean archived) {
         this.archived = archived;
     }
@@ -114,7 +115,15 @@ public class CourseIn {
         this.studentAssistants = studentAssistants;
     }
 
-    public void setGroupsOfAssignments(List<Set<Assignment>> groupsOfAssignments) {
+    public void setGroupsOfAssignments(List<List<Assignment>> groupsOfAssignments) {
         this.groupsOfAssignments = groupsOfAssignments;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
+    }
+
+    public void setTypeOfUser(int typeOfUser) {
+        this.typeOfUser = typeOfUser;
     }
 }

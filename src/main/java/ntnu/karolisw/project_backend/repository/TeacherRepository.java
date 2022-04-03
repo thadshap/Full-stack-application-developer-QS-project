@@ -12,7 +12,6 @@ import java.util.Set;
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     Teacher findByEmailAndLastName(String email, String lastName);
     Optional<Teacher> findByEmail(String email);
-    Teacher findByEmailAndPassword(String email, String password);
 
     // get all courses where teacher id = x
     @Query("SELECT t.courses FROM Teacher t WHERE t.id = :id")

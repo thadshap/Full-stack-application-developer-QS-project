@@ -23,38 +23,46 @@ import java.util.Set;
 public class Student extends Person {
 
     // Many-to-many connection with assignment
-    @ManyToMany(cascade = {CascadeType.ALL} )
+    // Cascade only goes the other way
+    @ManyToMany()
     @JoinTable(
             name = "assignment_student",
-            joinColumns = { @JoinColumn(name = "student_id") },
+            joinColumns = { @JoinColumn(name = "id") },
             inverseJoinColumns = { @JoinColumn(name = "assignment_id") }
     )
     private Set<Assignment> assignments = new HashSet<>();
 
     // Many-to-many connection with courses
-    @ManyToMany(cascade = {CascadeType.ALL} )
+    // No cascade
+    @ManyToMany()
     @JoinTable(
             name = "course_student",
-            joinColumns = { @JoinColumn(name = "student_id") },
+            joinColumns = { @JoinColumn(name = "id") },
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
     private Set<Course> courses = new HashSet<>();
 
     // Creating the student assistant table as a many-to-many connection with course
-    @ManyToMany(cascade = {CascadeType.ALL} )
+    // If a course is deleted, the student assistants are too (cascade.remove from course table)
+    @ManyToMany()
     @JoinTable(
             name = "student_assistant",
-            joinColumns = { @JoinColumn(name = "student_id") }, // todo should this maybe be just "id"
+            joinColumns = { @JoinColumn(name = "id") },
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
     private Set<Student> studentAssistants = new HashSet<>();
 
     // One-to-one relationship with student_in_queue
-    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // If student is removed, so is the student in queue entity
+    @OneToOne(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private StudentInQueue studentInQueue;
 
     // One-to-one relationship with studentUser
-    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // If student is removed, so is the StudentUser entity
+    @OneToOne(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private StudentUser studentUser;
 
+    public void addCourse(Course course) {
+        courses.add(course);
+    }
 }

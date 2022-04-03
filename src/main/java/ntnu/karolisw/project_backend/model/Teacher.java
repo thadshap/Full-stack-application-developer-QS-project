@@ -21,16 +21,29 @@ import java.util.Set;
 public class Teacher extends Person{
 
     // Many-to-many connection with course
-    @ManyToMany(cascade = {CascadeType.ALL} )
+    // When course is added to teacher, then teacher is also added to course
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "course_teacher",
             joinColumns = { @JoinColumn(name = "teacher_id") },
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
-    private Set<Assignment> courses = new HashSet<>();
+    private Set<Course> courses = new HashSet<>();
 
     // One-to-one relationship with TeacherUser
     @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private TeacherUser teacherUser;
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "courses=" + courses +
+                ", teacherUser=" + teacherUser +
+                '}';
+    }
+
+    public void addCourse(Course course) {
+        courses.add(course);
+    }
 }
 

@@ -30,12 +30,20 @@ public class Queue {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    // One-to-one relationship with course
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // One-to-one relationship with course where queue is deleted if the course is deleted.
+    // There is no cascade from this class to course, meaning that the deletion cascade only goes one way
+    @OneToOne( fetch = FetchType.LAZY)
+    /**
+    @JoinTable(
+            name = "queue_course",
+            joinColumns = @JoinColumn(name = "queue_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    */
     @JoinColumn(name = "course_id")
     private Course course;
 
     // One-to-many relationship with StudentInQueue
-    @OneToMany(mappedBy = "queue")
+    // If queue is deleted, then the student in queue objects will be deleted too
+    @OneToMany(mappedBy = "queue", cascade = CascadeType.REMOVE)
     private Set<StudentInQueue> studentInQueues = new HashSet<>();
 }

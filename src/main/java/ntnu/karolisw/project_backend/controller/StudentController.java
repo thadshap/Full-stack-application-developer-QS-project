@@ -1,7 +1,7 @@
 package ntnu.karolisw.project_backend.controller;
 
 import ntnu.karolisw.project_backend.service.interfaces.CourseServiceI;
-import ntnu.karolisw.project_backend.service.interfaces.LoginServiceI;
+import ntnu.karolisw.project_backend.service.interfaces.UserServiceI;
 import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +10,7 @@ public class StudentController {
     CourseServiceI courseService;
 
     @Autowired
-    LoginServiceI loginService;
+    UserServiceI loginService;
 
     @Autowired
     QueueServiceI queueService;

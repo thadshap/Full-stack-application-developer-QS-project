@@ -3,14 +3,13 @@ package ntnu.karolisw.project_backend.dto.in;
 import ntnu.karolisw.project_backend.model.Assignment;
 
 import java.util.List;
-import java.util.Set;
 
 public class GroupIn {
     private long courseId;
     private int orderNumber;
     private int numOfPractices;
-    private int minimumNumApproved;
-    private Set<Assignment> groupOfAssignments;
+    private int minNumApproved;
+    private List<Assignment> groupOfAssignments;
 
     // GETTERS
 
@@ -26,11 +25,11 @@ public class GroupIn {
         return numOfPractices;
     }
 
-    public int getMinimumNumApproved() {
-        return minimumNumApproved;
+    public int getMinNumApproved() {
+        return minNumApproved;
     }
 
-    public Set<Assignment> getGroupOfAssignments() {
+    public List<Assignment> getGroupOfAssignments() {
         return groupOfAssignments;
     }
     // SETTERS
@@ -47,11 +46,11 @@ public class GroupIn {
         this.numOfPractices = numOfPractices;
     }
 
-    public void setMinimumNumApproved(int minimumNumApproved) {
-        this.minimumNumApproved = minimumNumApproved;
+    public void setMinNumApproved(int minNumApproved) {
+        this.minNumApproved = minNumApproved;
     }
 
-    public void setGroupsOfAssignments(Set<Assignment> groupOfAssignments) {
+    public void setGroupsOfAssignments(List<Assignment> groupOfAssignments) {
         this.groupOfAssignments = groupOfAssignments;
     }
 }

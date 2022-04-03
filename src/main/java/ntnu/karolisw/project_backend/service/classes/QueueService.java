@@ -4,6 +4,7 @@ import ntnu.karolisw.project_backend.dto.in.StudentInQueueIn;
 import ntnu.karolisw.project_backend.model.*;
 import ntnu.karolisw.project_backend.repository.*;
 import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
+import ntnu.karolisw.project_backend.enumFolder.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +32,6 @@ public class QueueService implements QueueServiceI {
 
     @Autowired
     private AssignmentRepository assignmentRepository;
-
-    @Autowired
-    private GroupOfAssignmentRepository groupOfAssignmentRepository;
 
 
     // get all students that are in queue digitally
@@ -79,9 +77,14 @@ public class QueueService implements QueueServiceI {
      */
     @Override
     public ResponseEntity<Object> getStudentsForAssessmentOrHelp(long courseId, boolean assessment) {
+
         // get all students in queue for the specified course id
         List<StudentInQueue> studentsInQueue = queueRepository.findAllStudentsInQueueByCourseId(courseId);
+
+        // List of students for the specified assessment type
         ArrayList<StudentInQueue> students = new ArrayList<>();
+
+        // Find the appropriate students
         for(StudentInQueue student : studentsInQueue) {
             if(student.isAssessmentHelp() == assessment){
                 students.add(student);
@@ -108,6 +111,7 @@ public class QueueService implements QueueServiceI {
         for(StudentInQueue student : students) {
             if (student.getStudent().getId() == studentId) {
                 student.setStatusInQueue(status);
+                studentInQueueRepository.save(student);
             }
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -115,10 +119,49 @@ public class QueueService implements QueueServiceI {
 
     @Override
     public ResponseEntity<Object> approveStudent(long studentId, int assignmentNumber, long courseId) {
-        // if the student exists and has an assignment with that id that is not approved
+        // Try to find the student
         Optional<Student> student = studentRepository.findById(studentId);
+
+        // if the student exists
         if (student.isPresent()) {
-            GroupOfAssignment group = getGroupOfAssignment(assignmentNumber,courseId);
+
+            // Get all the assignments that the student has
+            Set<Assignment> studentsAssignments = studentRepository.getAssignmentsByStudentId(studentId);
+
+            // For each assignment
+            for(Assignment assignment : studentsAssignments) {
+
+                // If correct assignment number
+                if(assignment.getAssignmentNumber() == assignmentNumber) {
+
+                    // Get the course id of the assignment
+                    long courseIdOfAssignment = assignment.getGroupOfAssignment().getCourse().getCourseId();
+
+                    // If correct course id
+                    if(courseIdOfAssignment == courseId) {
+
+                        // Approve the assignment and update!
+                        if(!assignment.isApproved()) {
+                            assignment.setApproved(true);
+                            assignmentRepository.save(assignment);
+                            return new ResponseEntity<>(HttpStatus.OK);
+                        }
+                    }
+                }
+            }
+        }
+        // Student did not exist in db
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        /*
+        // if the student exists
+        if (student.isPresent()) {
+
+            // Get the group of assignments that contain the specific assignment
+            GroupOfAssignment group = getGroupOfAssignmentByAssignmentNumber
+                    (assignmentNumber,courseId);
             if(group != null) {
                 // We have the group of Assignments, and have to check if the student has the same assignments
                 Set<Assignment> assignments = studentRepository.getAssignmentsByStudentId(studentId);
@@ -127,10 +170,6 @@ public class QueueService implements QueueServiceI {
                 for (Assignment assignment : assignments) {
                     if(assignment.getAssignmentNumber() == assignmentNumber) {
                         assignment.setApproved(true);
-
-                        // increment the number of accepted assignments in the group of assignments
-                        group.setApprovedAssignments( group.getApprovedAssignments() + 1 );
-                        return new ResponseEntity<>(group, HttpStatus.OK);
                     }
                 }
                 // If we get here, the student did not have an assignment with that number
@@ -139,10 +178,10 @@ public class QueueService implements QueueServiceI {
             // If we get here, the group was null
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        */
         // If we get here, the student did not exist
-        else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
+        return null;
     }
 
 
@@ -153,17 +192,33 @@ public class QueueService implements QueueServiceI {
                 (assignmentRepository.getGroupOfAssignment(assignmentId),
                         HttpStatus.OK);
     }
-
-    // get group of assignment when you have the number of the assignment and the course id
+    // get group of assignment when you have the number of the group and the course id
+    // groupNumber = orderNr
     @Override
-    public GroupOfAssignment getGroupOfAssignment(int assignmentNumber, long courseId){
+    public GroupOfAssignment getGroupOfAssignment(int groupNumber, long courseId){
 
         List<GroupOfAssignment> groups = courseRepository.getAllGroupsOfAssignmentByCourseId(courseId);
         for(GroupOfAssignment groupOfAssignment : groups) {
+            if(groupOfAssignment.getOrderNr() == groupNumber) {
+                return groupOfAssignment;
+            }
+        }
+        // If there was no group of assignment with an assignment with that assignment - number
+        return null;
+    }
+
+
+    // get group of assignment when you have the number of the group and the course id
+    // groupNumber = orderNr
+    @Override
+    public GroupOfAssignment getGroupOfAssignmentByAssignmentNumber(int assignmentNumber, long courseId){
+
+        List<GroupOfAssignment> groups = courseRepository.getAllGroupsOfAssignmentByCourseId(courseId);
+        for(GroupOfAssignment group : groups) {
             // Go through the assignment
-            for(Assignment assignment: groupOfAssignment.getAssignments()) {
+            for(Assignment assignment: group.getAssignments()) {
                 if(assignment.getAssignmentNumber() == assignmentNumber) {
-                    return groupOfAssignment;
+                    return group;
                 }
             }
         }
@@ -187,15 +242,18 @@ public class QueueService implements QueueServiceI {
     // get all assignments in specified course id and return them in order to display in frontend
     @Override
     public ResponseEntity<Object> getAllAssignmentsInCourse(long courseId) {
-        List<Assignment> allAssignment = new ArrayList<>();
+        List<Assignment> allAssignments = new ArrayList<>();
+
         // get all the groups
         List<GroupOfAssignment> groups = courseRepository.getAllGroupsOfAssignmentByCourseId(courseId);
+
         // For each group, get the assignments
-        for(GroupOfAssignment groupOfAssignment : groups) {
-            allAssignment.addAll(groupOfAssignmentRepository.getAllAssignmentsByGroupId(groupOfAssignment.getGroupId()));
+        for(GroupOfAssignment group : groups) {
+            allAssignments.addAll(group.getAssignments());
+            // allAssignments.addAll(groupOfAssignmentRepository.getAllAssignmentsByGroupId(group.getGroupId()));
         }
         // return all assignments!
-        return new ResponseEntity<>(allAssignment, HttpStatus.OK);
+        return new ResponseEntity<>(allAssignments, HttpStatus.OK);
     }
 
     /**
@@ -214,7 +272,8 @@ public class QueueService implements QueueServiceI {
 
         // Get the queue
         Optional<Queue> queue = queueRepository.getQueueByCourseId(dto.getCourseId());
-        // Add the general attributes
+
+        // If the queue exists, we set it for the new siq entity
         if(queue.isPresent()){
             newSIQ.setQueue(queue.get());
             newSIQ.setAssessmentHelp(dto.isAssessmentHelp());
@@ -224,10 +283,15 @@ public class QueueService implements QueueServiceI {
                     + dto.getCourseId());
         }
 
-        // Get size of array of students in current queue + 1
+        // This student will be placed last in queue
+        int previousPlacement = queue.get().getNumberOfWaitingStudents();
+        newSIQ.setPlacementInQueue(previousPlacement + 1);
+
+        /**
         newSIQ.setPlacementInQueue(queueRepository.
                 findAllStudentsInQueueByCourseId(dto.getCourseId()).
                 size() + 1 );
+         */
 
         // 1 =  AVAILABLE; 2 = TAKEN; 3 = WAITING;
         int status = dto.getStatusInQueue();
@@ -263,30 +327,58 @@ public class QueueService implements QueueServiceI {
         Optional<Student> student = studentRepository.findById(dto.getStudentId());
         if(student.isPresent()) {
             newSIQ.setStudent(student.get());
-            newSIQ.setQueue(queue.get());
+            newSIQ.setQueue(queue.get()); // todo check out the cascade!
         }
-        // Save the new SIQ object
-        studentInQueueRepository.save(newSIQ); // todo are the foreign keys present in the other two tables now?
-        // If the method does not throw an exception until we get here, then the entity was successfully created
+
+        // Set the new number of waiting students (increment by one)
+        queue.get().setNumberOfWaitingStudents(previousPlacement + 1);
+
+        // Update
+        queueRepository.save(queue.get());
+
+        // Save the new SIQ object (persist cascade)
+        studentInQueueRepository.save(newSIQ);
+
+        // Entity successfully created
         return new ResponseEntity<>(newSIQ, HttpStatus.OK);
     }
 
     /**
-     * todo cascade for the foreign keys involved hmm
      * @param dto this time should hold the studentInQueue entity's id
      * @return http-status = OK --> if deletion was successful
      */
     @Override
     public ResponseEntity<Object> deleteStudentInQueueEntity(StudentInQueueIn dto) {
-        // get the SIQ id
-        long id = dto.getStudentInQueueId();
-        // If this SIQ object exists
-        if(studentInQueueRepository.existsById(id)) {
-            studentInQueueRepository.deleteById(id);
+        Optional<StudentInQueue> siq = studentInQueueRepository.findById(dto.getStudentInQueueId());
+
+        // If the student in queue entity is present in db
+        if(siq.isPresent()) {
+
+            // SIQ holds a foreign key to student and queue --> set to null
+            siq.get().setQueue(null);
+            siq.get().setStudent(null);
+
+            // With foreign keys == null, the SIQ entity can be deleted
+            studentInQueueRepository.deleteById(dto.getStudentInQueueId());
+
+            // If everything went well
             return new ResponseEntity<>(HttpStatus.OK);
         }
        else{
-           throw new IllegalStateException("There was no SIQ object with the id: " + id);
+           throw new IllegalStateException("There was no SIQ object with the id: " + dto.getStudentInQueueId());
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> setQueueActive(StudentInQueueIn dto) {
+        Optional<Queue> queue = queueRepository.getQueueByCourseId(dto.getCourseId());
+        if(queue.isPresent()) {
+            queue.get().setActive(dto.isActive());
+            queueRepository.save(queue.get());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

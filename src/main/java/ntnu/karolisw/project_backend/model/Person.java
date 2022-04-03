@@ -2,8 +2,6 @@ package ntnu.karolisw.project_backend.model;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.oauth2.client.test.OAuth2ContextConfiguration;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -32,9 +30,6 @@ public class Person {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
-    private String password;
-
     @Column(name = "pronouns")
     private String pronouns;
 
@@ -44,4 +39,16 @@ public class Person {
     @CreationTimestamp
     @Column(name = "created_on")
     private Date createdOn;
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", pronouns='" + pronouns + '\'' +
+                ", createdOn=" + createdOn +
+                '}';
+    }
 }

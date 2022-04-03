@@ -1,6 +1,7 @@
 package ntnu.karolisw.project_backend.model;
 
 import lombok.*;
+import ntnu.karolisw.project_backend.enumFolder.Status;
 
 import javax.persistence.*;
 
@@ -47,13 +48,15 @@ public class StudentInQueue {
     @Column(name = "status_in_queue", nullable = false)
     private Status statusInQueue;
 
-    // One-to-one connection with student
-    @OneToOne(fetch = FetchType.LAZY)
+    // One-to-one connection with student, where StudentInQueue is child-entity (holds the foreign key)
+    // When a student in queue object is removed, we want the student to have this
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private Student student;
 
     // Many-to-one connection with queue
-    @ManyToOne
+    // Automatically added to queue entity when created
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "queue_id")
     private Queue queue;
 }

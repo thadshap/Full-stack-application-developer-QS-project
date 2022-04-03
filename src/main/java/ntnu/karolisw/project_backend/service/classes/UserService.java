@@ -1,5 +1,6 @@
 package ntnu.karolisw.project_backend.service.classes;
 
+import ntnu.karolisw.project_backend.dto.in.PersonIn;
 import ntnu.karolisw.project_backend.dto.out.PersonOut;
 import ntnu.karolisw.project_backend.model.Administrator;
 import ntnu.karolisw.project_backend.model.Student;
@@ -13,7 +14,7 @@ import ntnu.karolisw.project_backend.repository.TeacherRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.AdminUserRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.StudentUserRepository;
 import ntnu.karolisw.project_backend.repository.userRepo.TeacherUserRepository;
-import ntnu.karolisw.project_backend.service.interfaces.LoginServiceI;
+import ntnu.karolisw.project_backend.service.interfaces.UserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-public class LoginService implements LoginServiceI {
+public class UserService implements UserServiceI {
 
     @Autowired
     private AdminUserRepository adminUserRepository;
@@ -334,5 +335,204 @@ public class LoginService implements LoginServiceI {
         else {
             throw new IllegalArgumentException("The user bit did not hold a number 1-3, but: " + userBit);
         }
+    }
+
+    @Override
+    public ResponseEntity<Object> addNewStudent(PersonIn dto) {
+        // Generate random password using salt method...
+        String password = generateRandomPassword();
+
+        // Generate the salt
+        byte [] salt = generateRandomSalt();
+
+        // Create student
+        Student student = new Student();
+        student.setFirstName(dto.getFirstName());
+        student.setLastName(dto.getLastName());
+        student.setEmail(dto.getEmail());
+
+        // Create user account for that student
+        StudentUser studentUser = new StudentUser();
+        studentUser.setSalt(generateRandomSalt());
+        studentUser.setPassword(hashPassword(password, salt));
+        studentUser.setEmail(dto.getEmail());
+
+        // Create the entities
+        studentRepository.save(student);
+        studentUserRepository.save(studentUser);
+
+        // Set the foreign keys
+        student.setStudentUser(studentUser);
+        studentUser.setStudent(student);
+
+        // Save the entities
+        studentRepository.save(student);
+        studentUserRepository.save(studentUser);
+        System.out.println(studentUserRepository.getById(studentUser.getId()).getStudent().getId());
+        System.out.println(studentRepository.getById(student.getId()).getStudentUser().getId());
+
+        // And vice versa
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> addNewTeacher(PersonIn dto) {
+        // Generate random password using salt method...
+        String password = generateRandomPassword();
+
+        // Generate the salt
+        byte [] salt = generateRandomSalt();
+
+        // Create teacher
+        Teacher teacher = new Teacher();
+        teacher.setFirstName(dto.getFirstName());
+        teacher.setLastName(dto.getLastName());
+        teacher.setEmail(dto.getEmail());
+
+        // Create user account for that teacher
+        TeacherUser teacherUser = new TeacherUser();
+        teacherUser.setSalt(generateRandomSalt());
+        teacherUser.setPassword(hashPassword(password, salt));
+        teacherUser.setEmail(dto.getEmail());
+
+        // Set the foreign keys
+        teacherUser.setTeacher(teacher); // todo needed to do both?
+        teacher.setTeacherUser(teacherUser);
+
+        teacherRepository.save(teacher);
+        teacherUserRepository.save(teacherUser);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Object> addNewAdministrator(PersonIn dto) {
+        // Generate random password using salt method...
+        String password = generateRandomPassword();
+
+        // Generate the salt
+        byte [] salt = generateRandomSalt();
+
+        // Create administrator
+        Administrator administrator = new Administrator();
+        administrator.setFirstName(dto.getFirstName());
+        administrator.setLastName(dto.getLastName());
+        administrator.setEmail(dto.getEmail());
+
+        // Create user account for that administrator
+        AdminUser adminUser = new AdminUser();
+        adminUser.setSalt(generateRandomSalt());
+        adminUser.setPassword(hashPassword(password, salt));
+        adminUser.setEmail(dto.getEmail());
+
+        // Set the foreign keys
+        adminUser.setAdministrator(administrator); // todo needed to do both?
+        administrator.setAdminUser(adminUser);
+
+        administratorRepository.save(administrator);
+        adminUserRepository.save(adminUser);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private String generateRandomPassword() {
+        byte[] password = generateRandomSalt();
+        return new String(password, StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public Student getStudent(long studentId) {
+        Optional<Student> student = studentRepository.findById(studentId);
+        if(student.isPresent()) {
+            return student.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Teacher getTeacher(long teacherId) {
+        Optional<Teacher> teacher = teacherRepository.findById(teacherId);
+        if(teacher.isPresent()) {
+            return teacher.get();
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public Administrator getAdministrator(long administratorId) {
+        Optional<Administrator> administrator = administratorRepository.findById(administratorId);
+        if(administrator.isPresent()) {
+            return administrator.get();
+        }
+        else {
+            return null;
+
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getPronouns(PersonIn dto) {
+        if(dto.getTypeOfUser() == 1) {
+            Optional<Student> student = studentRepository.findById(dto.getPersonId());
+            if(student.isPresent()) {
+                return new ResponseEntity<>(student.get().getPronouns(), HttpStatus.OK);
+            }
+            // If not present
+            else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+            }
+        }
+        else if(dto.getTypeOfUser() == 2) {
+            Optional<Teacher> teacher = teacherRepository.findById(dto.getPersonId());
+            if(teacher.isPresent()) {
+                return new ResponseEntity<>(teacher.get().getPronouns(), HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        else if(dto.getTypeOfUser() == 3) {
+            Optional<Administrator> administrator = administratorRepository.findById(dto.getPersonId());
+            if(administrator.isPresent()) {
+                return new ResponseEntity<>(administrator.get().getPronouns(), HttpStatus.OK);
+            }
+            else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    /**
+     * Sets the pronouns of the user given to the backend in the dto
+     * @param dto contains id, type of user, and pronouns of the user that wanted to set them
+     *
+     * @return OK or NOT_FOUND
+     */
+    @Override
+    public ResponseEntity<Object> setPronouns(PersonIn dto) {
+        if(dto.getTypeOfUser() == 1) {
+            Student student = studentRepository.getById(dto.getPersonId());
+            student.setPronouns(dto.getPronouns());
+            studentRepository.save(student);
+        }
+        else if(dto.getTypeOfUser() == 2) {
+            Teacher teacher = teacherRepository.getById(dto.getPersonId());
+            teacher.setPronouns(dto.getPronouns());
+            teacherRepository.save(teacher);
+        }
+        else if(dto.getTypeOfUser() == 3) {
+            Administrator administrator = administratorRepository.getById(dto.getPersonId());
+            administrator.setPronouns(dto.getPronouns());
+            administratorRepository.save(administrator);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return null;
     }
 }

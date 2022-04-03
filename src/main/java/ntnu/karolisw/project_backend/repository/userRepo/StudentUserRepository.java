@@ -6,5 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface StudentUserRepository extends JpaRepository<StudentUser, Long> {
+    // public StudentUser getAStudent();
+    // public void create(StudentUser studentUser);
+
     Optional<StudentUser> findByEmail(String email);
 }

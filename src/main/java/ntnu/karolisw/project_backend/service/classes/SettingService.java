@@ -46,7 +46,7 @@ public class SettingService implements SettingServiceI {
     AdminUserRepository adminUserRepository;
 
     @Autowired
-    LoginService loginService;
+    UserService userService;
 
     // update last name
     @Override
@@ -57,8 +57,8 @@ public class SettingService implements SettingServiceI {
             // If present
             if(student.isPresent()) {
                 student.get().setLastName(newLastName);
-                studentRepository.save(student.get()); // todo necessary?
-                return new ResponseEntity<>(student.get(), HttpStatus.OK);
+                studentRepository.save(student.get());
+                return new ResponseEntity<>( HttpStatus.OK);
             }
             else {
                 throw new Exception("No administrator present in db with id: " + personId);
@@ -70,8 +70,8 @@ public class SettingService implements SettingServiceI {
             // If present
             if(teacher.isPresent()) {
                 teacher.get().setLastName(newLastName);
-                teacherRepository.save(teacher.get()); // todo necessary?
-                return new ResponseEntity<>(teacher.get(), HttpStatus.OK);
+                teacherRepository.save(teacher.get());
+                return new ResponseEntity<>(HttpStatus.OK);
             }
             else {
                 throw new Exception("No administrator present in db with id: " + personId);
@@ -83,7 +83,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(administrator.isPresent()) {
                 administrator.get().setLastName(newLastName);
-                administratorRepository.save(administrator.get()); // todo necessary?
+                administratorRepository.save(administrator.get());
                 return new ResponseEntity<>(administrator.get(), HttpStatus.OK);
 
             }
@@ -105,7 +105,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(student.isPresent()) {
                 student.get().setFirstName(newFirstName);
-                studentRepository.save(student.get()); // todo necessary?
+                studentRepository.save(student.get());
                 return new ResponseEntity<>(student.get(), HttpStatus.OK);
             }
             else {
@@ -118,7 +118,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(teacher.isPresent()) {
                 teacher.get().setFirstName(newFirstName);
-                teacherRepository.save(teacher.get()); // todo necessary?
+                teacherRepository.save(teacher.get());
                 return new ResponseEntity<>(teacher.get(), HttpStatus.OK);
             }
             else {
@@ -131,7 +131,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(administrator.isPresent()) {
                 administrator.get().setFirstName(newFirstName);
-                administratorRepository.save(administrator.get()); // todo necessary?
+                administratorRepository.save(administrator.get());
                 return new ResponseEntity<>(administrator.get(), HttpStatus.OK);
             }
             else {
@@ -152,7 +152,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(student.isPresent()) {
                 student.get().setEmail(newEmail);
-                studentRepository.save(student.get()); // todo necessary?
+                studentRepository.save(student.get());
                 return new ResponseEntity<>(student.get(), HttpStatus.OK);
             }
             else {
@@ -165,7 +165,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(teacher.isPresent()) {
                 teacher.get().setEmail(newEmail);
-                teacherRepository.save(teacher.get()); // todo necessary?
+                teacherRepository.save(teacher.get());
                 return new ResponseEntity<>(teacher.get(), HttpStatus.OK);
             }
             else {
@@ -178,7 +178,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(administrator.isPresent()) {
                 administrator.get().setEmail(newEmail);
-                administratorRepository.save(administrator.get()); // todo necessary?
+                administratorRepository.save(administrator.get());
                 return new ResponseEntity<>(administrator.get(), HttpStatus.OK);
 
             }
@@ -200,7 +200,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(student.isPresent()) {
                 student.get().setPronouns(newPronoun);
-                studentRepository.save(student.get()); // todo necessary?
+                studentRepository.save(student.get());
                 return new ResponseEntity<>(student.get(), HttpStatus.OK);
             }
             else {
@@ -213,7 +213,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(teacher.isPresent()) {
                 teacher.get().setPronouns(newPronoun);
-                teacherRepository.save(teacher.get()); // todo necessary?
+                teacherRepository.save(teacher.get());
                 return new ResponseEntity<>(teacher.get(), HttpStatus.OK);
             }
             else {
@@ -226,7 +226,7 @@ public class SettingService implements SettingServiceI {
             // If present
             if(administrator.isPresent()) {
                 administrator.get().setPronouns(newPronoun);
-                administratorRepository.save(administrator.get()); // todo necessary?
+                administratorRepository.save(administrator.get());
                 return new ResponseEntity<>(administrator.get(), HttpStatus.OK);
 
             }
@@ -244,8 +244,8 @@ public class SettingService implements SettingServiceI {
     @Override
     public ResponseEntity<Object> updatePassword(long personId, String newPassword, int userBit) throws Exception {
         // Generate a new hash
-        byte[] randomSalt = loginService.generateRandomSalt();
-        byte[] hashedPassword = loginService.hashPassword(newPassword,randomSalt);
+        byte[] randomSalt = userService.generateRandomSalt();
+        byte[] hashedPassword = userService.hashPassword(newPassword,randomSalt);
 
         // If student
         if(userBit == 1) {
@@ -254,7 +254,7 @@ public class SettingService implements SettingServiceI {
             if(student.isPresent()) {
                 student.get().setSalt(randomSalt);
                 student.get().setPassword(hashedPassword);
-                studentUserRepository.save(student.get()); // todo necessary?
+                studentUserRepository.save(student.get());
                 return new ResponseEntity<>(student.get(), HttpStatus.OK);
             }
             else {
@@ -268,7 +268,7 @@ public class SettingService implements SettingServiceI {
             if(teacher.isPresent()) {
                 teacher.get().setSalt(randomSalt);
                 teacher.get().setPassword(hashedPassword);
-                teacherUserRepository.save(teacher.get()); // todo necessary?
+                teacherUserRepository.save(teacher.get());
                 return new ResponseEntity<>(teacher.get(), HttpStatus.OK);
             }
             else {
@@ -282,7 +282,7 @@ public class SettingService implements SettingServiceI {
             if(administrator.isPresent()) {
                 administrator.get().setSalt(randomSalt);
                 administrator.get().setPassword(hashedPassword);
-                adminUserRepository.save(administrator.get()); // todo necessary?
+                adminUserRepository.save(administrator.get());
                 return new ResponseEntity<>(administrator.get(), HttpStatus.OK);
             }
             else {
