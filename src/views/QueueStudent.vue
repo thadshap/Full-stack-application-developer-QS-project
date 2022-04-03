@@ -13,13 +13,19 @@
     <table id="queue-table">
       <tr id="queue-table-headers">
         <th id="name">Navn</th>
+        <th id="state">Status</th>
+        <th id="digitalt"></th>
         <th id="room">Rom</th>
         <th id="type">Type</th>
       </tr>
-      <tr class="student-column" v-for="student in students" v-on:click="selectRow($event)" v-bind:id="student.studentId" :key="student.studentId">
+      <tr class="student-column" v-for="student in students" v-on:click="selectRow($event)"
+          v-bind:id="student.id"
+          :key="student.studentId">
         <td id="name-column">{{student.name}}</td>
-        <td id="room-column">{{ student.location }}</td>
-        <td id="type-column">{{ student.type }}</td>
+        <td>{{student.statusInQueue}}</td>
+        <td id="digital-column">{{ student.digital}}</td>
+        <td id="room-column">{{ student.campus }} {{student.building}} {{student.room}} {{student.tableNumber}}</td>
+        <td id="type-column">{{ student.assessmentHelp }}</td>
       </tr>
     </table>
   </div>
@@ -31,6 +37,7 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import RegisterInLine from "./RegisterInLine";
+import axiosService from "@/services/axiosService";
 
 
 export default {
@@ -41,7 +48,7 @@ export default {
       students:[
         {
           name: "Sander Hansen",
-          studentId: "1",
+          id: "1",
           location: "Realfagsbygget A4 112 6",
           type: "Godkjenning"
         },
@@ -55,17 +62,41 @@ export default {
           name: "Sogne fri",
           studentId: "3",
           location: "digital",
-          type: "Hjelp"
+          type: "Hjelp",
+          statusInQueue : "BUSY",
         },
       ],
       amountOfStudentsInQueue: 0,
     }
   },
-  created() {
-    this.amountOfStudentsInQueue= this.students.length
+  created: async function() {
+    await this.getAllStudentsCurrentlyInQueue();
+    this.amountOfStudentsInQueue = this.students.length;
   },
   methods:{
-    /*lage en metode for at det er kun brukere av typen student assistent som kan trykke */
+    /**
+     * method to get all the students in a queue from the database
+     * changing assessmenthelp and digital or not to strings instead of booleans
+     */
+    getAllStudentsCurrentlyInQueue : async function(){
+      await axiosService.getAllStudentsInQueue(this.$store.state.course.courseId).then(
+          function (response) {
+            this.students = response.data;
+            for(let i = 0; i<this.students.length; i++){
+              if(this.students[i].assessmentHelp){
+                this.students[i].assessmentHelp = "Godkjenning"
+              } else{
+                this.students[i].assessmentHelp = "Hjelp"
+              }
+              if(this.students[i].digital){
+                this.students[i].digital = "Digitalt"
+              } else{
+                this.students[i].digital = "På campus"
+              }
+            }
+          }.bind(this)
+      );
+    },
     backToPreviousPage(){
       this.$router.go(-1)
     },
@@ -78,15 +109,20 @@ export default {
         })
       }
     },
-    /*
-    selectRow: function(event){
-      if (hvis studenten er studentassistent){
-         legg til i store info om den eleven du har trukket på slik at routeren for godkjenning kan hente infoen
-         gå til studentAssQueueApprove routeren
-      }
-    }
-    */
 
+    selectRow: async function(event){
+      if (this.$store.state.isStudentAssistant){
+        await axiosService.changeStateInQueueForStudent(event.currentTarget.id, this.$store.state.course.courseId, "BUSY");
+        for (let i = 0; i < this.students.length; i++) {
+          if (this.students[i].toString() === event.currentTarget) {
+            this.$store.commit("SET_STUDENTASSISTANT", this.students[i]);
+          }
+        }
+        await this.$router.push({
+          name: "studentAssQueueApprove"
+        })
+      }
+    },
 },
 };
 </script>

@@ -64,6 +64,7 @@ export default {
   created: async function() {
     await this.getAllCourses()
     await this.queueStatusInDatabase()
+    this.$store.commit("SET_ISSTUDENTASSISTANT", true);
   },
   methods: {
     /**

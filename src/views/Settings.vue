@@ -55,11 +55,7 @@ export default {
      * method to post pronouns for user
      */
     postPronomen : async function(){
-      try {
-        await AXI.postPronouns(this.$store.state.userId, this.$store.state.typeOfUser, this.pronouns);
-      } catch (error) {
-        console.log(error);
-      }
+      await AXI.postPronouns(this.$store.state.userId, this.$store.state.typeOfUser, this.pronouns);
     }
   }
 }
