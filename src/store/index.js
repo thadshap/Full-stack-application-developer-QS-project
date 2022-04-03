@@ -6,8 +6,6 @@ export default createStore({
     userId : 0,
     courseId : 0,
     email : '',
-    studentInQueueApproval:[], //this array is for the info about a student that has been taken out of the queue for approval
-    studentInQueueWait:[], //this array is for the info about a student that has waitlisted for approval
     allSubjectsToAStudent:[],
     allSubjectsToAStudentAss: [],
     queueStatus: false, //status of the queue, aka if the queue is activated or deactivated
