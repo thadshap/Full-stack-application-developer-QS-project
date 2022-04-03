@@ -9,13 +9,13 @@
       <p id="sub-name">{{subName}}</p>
       <p id="sub-code">{{subCode}}</p>
       <p id="student-name" class="student-details-in-queue">{{studentName}}</p>
-      <p id="campus" class="student-details-in-queue">{{campus}}</p>
+      <p id="campus" class="student-details-in-queue">{{where}}</p>
       <p id="building" class="student-details-in-queue">{{building}}</p>
       <p id="room" class="student-details-in-queue">{{room}}</p>
       <p id="table" class="student-details-in-queue">{{table}}</p>
     </div>
-    <div id="oving-container" >
-      <p id="oving-header">Øving 1</p>
+    <div id="oving-container" v-for="assigment in assigments" :key="assigment">
+      <p id="oving-header">{{assigment.name}}</p>
       <input type="checkbox" id="approve-checkbox" name="horns" >
       <hr class="line-under-oving">
     </div>
@@ -41,10 +41,32 @@ export default {
       subCode:"IDATT1001",
       studentName:"Tahdshajini Paramsothy",
       location:"campus",
-      campus:"Realfagsbygget",
+      where:"Realfagsbygget",
       building:"A4",
       room:112,
       table:4,
+      assigments:[
+        {
+          name:"Øving 1",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 2",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 3",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 4",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 5",
+          approved:"Ikke godkjent",
+        },
+      ],
     }
   },
   methods:{
