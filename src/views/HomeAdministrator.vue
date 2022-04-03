@@ -55,12 +55,19 @@ export default {
       ],
     }
   },
-  created() {
+  created : async function() {
+    //testing
     this.courses.push({courseName: "statistikk", courseCode: "ISTT1001", index : 20, startDate : "22.03.2022"})
     this.courses.push({courseName: "statistikk", courseCode: "ISTT1001",index : 21, startDate : "22.03.2022"})
-    this.getCourses()
+
+    await this.getCourses()
   },
   methods: {
+    /**
+     * method to get all courses
+     * if it is an administrator it gets all courses in database
+     * else it is a teacher, who will get the courses the teacher is registered on
+     */
     getCourses: async function(){
       if (this.$store.state.typeOfUser === 3){
         try {
@@ -81,6 +88,9 @@ export default {
           }
       }
     },
+    /**
+     * method to delete a course
+     */
     deleteCourse: async function() {
       try{
         await AXI.deleteCourse(this.$store.state.courseId).bind(this);
@@ -89,6 +99,9 @@ export default {
         console.log(error)
       }
     },
+    /**
+     * method to archive a course
+     */
     archiveCourse: async function() {
       try{
         await AXI.archiveCourse(this.$store.state.courseId).bind(this);
@@ -102,6 +115,10 @@ export default {
         name: 'allStudents'
       })
     },
+    /**
+     * setting current courseid and styling rows when activated
+     * @param e
+     */
     select: function (e) {
       this.disableButton = false;
       this.$store.commit("SET_COURSEID", e.currentTarget.id);
@@ -109,7 +126,6 @@ export default {
       for (let i = 0; i < rows.length; i++){
         rows[i].style.backgroundColor = '#202020';
       }
-      console.log(e.currentTarget.id)
       document.getElementById(e.currentTarget.id).style.backgroundColor = '#4682B493';
     }
 }

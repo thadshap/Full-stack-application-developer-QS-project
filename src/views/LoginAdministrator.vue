@@ -46,8 +46,13 @@ export default {
     }
   },
   created() {
+    this.$store.commit("SET_TYPEOFUSER", 3);
   },
   methods : {
+    /**
+     * method that calls on backend to check if email and password matches
+     * if the user info is correct, userid and email will be stored in state
+     * */
     loggingIn : async function() {
       this.$store.commit("SET_EMAIL", this.user.email);
       await AXI.getTrueIfLoginSuccess(this.user.email, this.user.password, 3).then(function (response) {

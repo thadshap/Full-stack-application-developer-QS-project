@@ -103,7 +103,7 @@
           v-on:input="generateInputFields"
         /><br />
 
-        <div v-for="input in underGroup" :key="input">
+        <div v-for="input in underGroups" :key="input">
           <div id="inputFieldsVisible" v-if="input.index > 0">
             Hvor mange øvinger er det i undergruppe nummer {{ input.index }} ?
             <input
@@ -167,7 +167,7 @@ export default {
         numOfApprovedPractices: 0,
         numOfUnderGroups: 0,
       },
-      underGroup: [
+      underGroups: [
         {
           index: 0,
           inputNumOfPractices: 0,
@@ -193,11 +193,14 @@ export default {
       this.showButton = false;
       this.showGroupDetails = true;
     },
+    /**
+     * will generate input fields for the correct amount of selected undergroups of assignments
+     */
     generateInputFields() {
       if (this.course.numOfUnderGroups > 0) {
         this.showInput = true;
         for (let i = 0; i < this.course.numOfUnderGroups; i++) {
-          this.underGroup.push({
+          this.underGroups.push({
             index: i + 1,
             inputNumOfApproved: 0,
             inputNumOfPractices: 0,
@@ -206,6 +209,9 @@ export default {
       }
       this.showButton = true;
     },
+    /**
+     * method that validates the input fields before sending data to database
+     */
     validateCourse() {
       this.showErrors = true;
       validationSchema
@@ -213,7 +219,7 @@ export default {
         .then(() => {
           this.sentSuccessful = true;
           this.errors = {};
-          this.sendCourse();
+          (async () => await this.sendCourse())();
         })
         .catch((error) => {
           error.inner.forEach((error) => {
@@ -222,6 +228,9 @@ export default {
           });
         });
     },
+    /**
+     * method that sends course to database
+     */
     sendCourse: async function () {
       try {
         await AXI.postNewCourse(
@@ -231,6 +240,7 @@ export default {
           this.course.endDate,
           this.course.numPractices,
           this.course.numOfApprovedPractices,
+          this.underGroups
         ).bind(this);
         await this.getCourses();
       } catch (error) {

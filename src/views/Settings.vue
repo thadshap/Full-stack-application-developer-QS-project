@@ -7,7 +7,7 @@
     Emailen din: <input id="email" class="inputFields" type="text" v-model="email"  disabled><br>
     <p>
     Dine foretrukne pronomen: <input id="pronouns" class="inputFields" type="text" v-model="pronouns"><br>
-    <button id="changePronouns">Change pronouns</button>
+    <button id="changePronouns" v-on:click="postPronomen">Change pronouns</button>
     </p>
 
   </div>
@@ -17,6 +17,7 @@
 <script>
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AXI from "@/services/axiosService";
 export default {
   name: "Settings",
   components: {Footer, Header},
@@ -27,12 +28,39 @@ export default {
       pronouns: "",
     }
   },
+  created : async function() {
+    await this.getPronomen()
+  },
   methods : {
     goBack() {
       this.$router.push({
         name: "administrator",
       });
     },
+    /**
+     * method to get pronouns for user
+     */
+    getPronomen : async function(){
+      try {
+        await AXI.getPronouns(this.$store.state.userId, this.$store.state.typeOfUser).then(
+            function (response) {
+              this.pronouns = response.data.pronouns;
+            }.bind(this)
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    /**
+     * method to post pronouns for user
+     */
+    postPronomen : async function(){
+      try {
+        await AXI.postPronouns(this.$store.state.userId, this.$store.state.typeOfUser, this.pronouns);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 }
 </script>

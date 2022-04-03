@@ -132,9 +132,9 @@ export default {
       },
     };
   },
-  created() {
-    this.getAllStudents();
-    this.getPracticeDemandsForCourse()
+  created : async function() {
+    await this.getAllStudents();
+    await this.getPracticeDemandsForCourse()
   },
   methods: {
     /**
@@ -253,8 +253,8 @@ export default {
     },
     sendStudentsFromFile : async function(lastname, firstname, email){
       try {
+        this.students.push({email : email, firstname : firstname, lastname : lastname})
         await AXI.addStudentToCourse(this.$store.state.courseId, email, firstname, lastname).bind(this);
-        await this.getAllStudents();
       } catch (error) {
         console.log(error);
       }
@@ -273,14 +273,14 @@ export default {
           });
         });
     },
-    sendFile() {
+    sendFile : async function() {
       const lines = this.fileInput.split("\r\n");
       console.log(lines);
       for (let i = 0; i < lines.length; i++) {
         this.help = lines[i].toString();
         let student = this.help.split(",");
         console.log(student);
-        this.sendStudentsFromFile(student[0], student[1],student[2])
+        await this.sendStudentsFromFile(student[0], student[1], student[2])
       }
     },
     changeFile(e) {

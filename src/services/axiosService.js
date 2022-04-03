@@ -11,7 +11,7 @@ const apiClient = axios.create({
 
 export default {
     getTrueIfLoginSuccess(email, password, typeOfUser){
-        return apiClient.get('/person/login',  {email : email, password :password, typeOfUser : typeOfUser})
+        return apiClient.post('/person/login', {email : email, password :password, typeOfUser : typeOfUser})
     },
     getAllCourses(){
         return apiClient.get('/courses')
@@ -19,32 +19,58 @@ export default {
     getAllCoursesForTeacher(teacherId){
         return apiClient.get('/courses/' + teacherId)
     },
-    postNewCourse(courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices, numOfUnderGroups, undergroupsArray){
-        return apiClient.post('/courses/addNew', {courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices, numOfUnderGroups, undergroupsArray})
+    postNewCourse(courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices,undergroupsArray){
+        return apiClient.post('/courses/addNew', {
+            courseCode : courseCode,
+            courseName : courseName,
+            startDate : startDate,
+            endDate : endDate,
+            numOfPractices : numOfPractices,
+            numOfApprovedPractices : numOfApprovedPractices,
+            undergroupsArray : undergroupsArray
+        })
     },
-    getPronouns(userId){
-        return apiClient.get('/person/pronouns', userId)
+    getPronouns(userId, typeOfUser){
+        return apiClient.post('/person/getPronouns', {userId : userId, typeOfUser :typeOfUser})
     },
-    postPronouns(userId){
-        return apiClient.post('/person/pronouns', userId)
+    postPronouns(userId, typeOfUser, pronouns){
+        return apiClient.post('/person/postPronouns', {
+            userId : userId,
+            typeOfUser : typeOfUser,
+            pronouns : pronouns
+        })
     },
     deleteCourse(courseId){
         return apiClient.delete('/courses/' + courseId)
     },
     archiveCourse(courseId){
-        return apiClient.post('/courses/archive', courseId)
+        return apiClient.post('/courses/archive', {courseId :courseId})
     },
     addStudentToCourse(courseId, email, firstName, lastName){
-        return apiClient.post('/person/addStudent', {courseId, email, firstName, lastName})
+        return apiClient.post('/person/addStudent', {
+            courseId : courseId,
+            email : email,
+            firstName : firstName,
+            lastName : lastName})
     },
     addTeacherToCourse(courseId, email, firstName, lastName){
-        return apiClient.post('/person/addTeacher', {courseId, email, firstName, lastName})
+        return apiClient.post('/person/addTeacher', {
+            courseId : courseId,
+            email : email,
+            firstName : firstName,
+            lastName : lastName
+        })
     },
     addStudentAssistant(courseId, email, firstName, lastName){
-        return apiClient.post('/person/addStudentAssistant', {courseId, email, firstName, lastName})
+        return apiClient.post('/person/addStudentAssistant', {
+            courseId : courseId,
+            email : email,
+            firstName : firstName,
+            lastName : lastName
+        })
     },
     deleteStudentFromCourse(courseId, email){
-        return apiClient.delete('/courses/deleteStudent', {courseId : courseId, email : email})
+        return apiClient.post('/courses/deleteStudent', {courseId : courseId, email : email})
     },
     getAllStudentsInCourse(courseId){
         return apiClient.get('/courses/students' + courseId)
