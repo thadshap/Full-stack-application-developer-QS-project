@@ -82,19 +82,17 @@ export default {
         document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
         document.getElementById("active-que-btn").style.position='relative'
         document.getElementById("active-que-btn").style.top='-30px'
+
       }else{
         document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
-        let x = window.matchMedia("(min-height: 800px)")
-        if (x.matches){
-          document.getElementById("active-que-btn").style.position='relative'
-          document.getElementById("active-que-btn").style.top='0'
-
-        }
-        else if (!x.matches){
+        if (window.matchMedia("(max-width: 700px)").matches){
           document.getElementById("active-que-btn").style.position='relative'
           document.getElementById("active-que-btn").style.top='-30px'
         }
-
+        else {
+          document.getElementById("active-que-btn").style.position='relative'
+          document.getElementById("active-que-btn").style.top='0'
+        }
       }
     }
   },
@@ -242,20 +240,20 @@ export default {
   border-color: #0a64c2;
   padding: 5px;
   position: relative;
-  top: -30px;
+  top: 0;
 }
 #active-subject-container-table-wrapper{
   display: flex;
   width: 100%;
   justify-content: center;
 }
-@media only screen and (min-height: 800px) {
+@media only screen and (max-width: 700px) {
   #studentAss-home-page{
     height: 710px;
   }
   #active-que-btn{
     position: relative;
-    top: 0;
+    top: -30px;
   }
 }
 </style>
