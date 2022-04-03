@@ -18,17 +18,17 @@ export default {
         return apiClient.get('/courses')
     },
     getAllCoursesForTeacher(teacherId){
-        return apiClient.get('/courses/' + teacherId)
+        return apiClient.get('/courses/teacher' + teacherId)
     },
     postNewCourse(courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices,undergroupsArray){
         return apiClient.post('/courses/addNew', {
             courseCode : courseCode,
-            courseName : courseName,
+            name : courseName,
             startDate : startDate,
-            endDate : endDate,
-            numOfPractices : numOfPractices,
-            numOfApprovedPractices : numOfApprovedPractices,
-            undergroupsArray : undergroupsArray
+            expectedEndDate : endDate,
+            numberOfAssignments : numOfPractices,
+            minApprovedAssignments : numOfApprovedPractices,
+            groupsOfAssignments : undergroupsArray
         })
     },
     getPronouns(userId, typeOfUser){
@@ -80,8 +80,11 @@ export default {
         return apiClient.get('/courses/' + courseId)
     },
     //Student methods
-    getAlCoursesForStudent(userId){
+    getAllCoursesForStudent(userId){
         return apiClient.get('/courses/' + userId)
+    },
+    getAllCoursesForStudentAssistant(userId){
+        return apiClient.get('/studentAssistant/courses/' + userId)
     },
     getAllStudentsInQueue(courseId){
         return apiClient.get('/students/queue' + courseId)
@@ -90,11 +93,11 @@ export default {
         return apiClient.post('/courses/assignments', {courseId : courseId, studentId : studentId})
     },
     postStudentInQueue(typeOfLocation, assignmentNumber, helpOrApproving, campus, building, room, table){
-        return apiClient.post('/courses/queue', {typeOfLocation : typeOfLocation, assignmentNumber : assignmentNumber, helpOrApproving : helpOrApproving, campus : campus, building : building, room : room, table : table})
+        return apiClient.post('/courses/queue', {digital : typeOfLocation, assignmentNumber : assignmentNumber, assessmentHelp : helpOrApproving, campus : campus, building : building, room : room, tableNumber : table})
 
     },
     changeTypeOfActiveQueue(courseId, activeBoolean){
-        return apiClient.post('/courses/queue/status', {courseId : courseId, activeBoolean : activeBoolean})
+        return apiClient.post('/courses/queue/status', {courseId : courseId, active : activeBoolean})
 
     },
     getTypeActiveQueue(courseId){
@@ -105,14 +108,12 @@ export default {
 
     },
     changeStateInQueueForStudent(userId, courseId, state){
-        return apiClient.post('/students/queue/changeState', {courseId : courseId, userId : userId, state : state})
+        return apiClient.post('/students/queue/changeState', {courseId : courseId, userId : userId, statusInQueue : state})
     },
     getStateInQueueForStudent(userId, courseId){
         return apiClient.post('/students/queue/getState', {courseId : courseId, userId : userId})
     },
-    deleteStudentFromQueue(){
-
-    },
-    
-    
+    deleteStudentFromQueue(userId, courseId){
+        return apiClient.post('/courses/queue/deleteStudent', {courseId : courseId, userId : userId})
+    }
 }

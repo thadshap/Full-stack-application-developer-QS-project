@@ -25,7 +25,7 @@
                 {{course.startDate}}
               </td>
               <td>
-                {{course.endDate}}
+                {{course.expectedEndDate}}
               </td>
             </tr>
           </table>

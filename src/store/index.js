@@ -6,6 +6,7 @@ export default createStore({
     userId : 0,
     courseId : 0,
     email : '',
+    course: {},
     studentInQueueApproval:[], //this array is for the info about a student that has been taken out of the queue for approval
     studentInQueueWait:[], //this array is for the info about a student that has waitlisted for approval
     allSubjectsToAStudent:[],
@@ -13,6 +14,15 @@ export default createStore({
     queueStatus: false, //status of the queue, aka if the queue is activated or deactivated
   },
   mutations: {
+    SET_COURSE(state, course) {
+      state.course = course;
+    },
+    SET_COURSECODE(state, coursecode) {
+      state.courseCode = coursecode
+    },
+    SET_COURSENAME(state, coursename) {
+      state.courseName = coursename
+    },
     SET_TYPEOFUSER(state, type) {
       state.typeOfUser = type
     },

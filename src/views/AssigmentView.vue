@@ -39,6 +39,7 @@
 <script>
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import axiosService from "@/services/axiosService";
 
 
 export default {
@@ -49,8 +50,8 @@ export default {
       status: "Ikke godkjent",
       totalAmountOfAssignments:6,
       minimumAssignmentsApproved:5,
-      subjectName: "Fullstack",
-      subjectCode: "IDATT2101",
+      subjectName: "",
+      subjectCode: "",
       showOvingRules : false,
       assigments:[
         {
@@ -76,7 +77,21 @@ export default {
       ],
     }
   },
+  created : async function() {
+    this.subjectName = this.$store.state.course.name;
+    this.subjectCode = this.$store.state.course.courseCode;
+    this.totalAmountOfAssignments = this.$store.state.course.numberOfAssignments
+    this.minimumAssignmentsApproved = this.$store.state.course.minApprovedAssignments
+    await this.getAssignments();
+  },
   methods : {
+    getAssignments: async function(){
+      await axiosService.getAllAssignmentsInCourseForStudentAndIfApproved(this.$store.state.userId).then(
+          function (response) {
+            this.assignments = response.data;
+          }.bind(this)
+      );
+    },
     showRules(){
       if (this.showOvingRules === false){
         this.showOvingRules = true;

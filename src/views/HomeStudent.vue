@@ -5,7 +5,7 @@
     <div id="tabs-bar-wrapper">
     <div id="tabs-bar">
       <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
-      <button id="middle-btn" v-on:click="select($event)"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
+      <button id="middle-btn" v-on:click="showPageForStudentAssistant"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
       <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
     </div>
     </div>
@@ -16,15 +16,9 @@
        <p id="sub-name">{{course.courseName}}</p>
        <p id="sub-code">{{course.courseCode}}</p>
      </div>
-     <div id="que-details-container">
-       <p id="que-details">
-         <img id="amount-of-students-img" src="./../assets/amount-students.png">
-         {{course.numberOfStudents}}
-       </p>
-     </div>
      <div id="sub-feature-tabs">
-       <button id="assigment-btn" v-on:click="select($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
-       <button id="que-btn" v-on:click="select($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+       <button class="studentButtons" v-bind:id="course.index"  v-on:click="showAssignments($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
+       <button class="studentButtons" v-bind:id="course.index" v-on:click="goToQueue($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
      </div>
     </div>
     </div>
@@ -39,6 +33,7 @@ import Header from "../components/Header";
 import HomeStudentAss from "./HomeStudentAss";
 import AssigmentView from "./AssigmentView";
 import QueueStudent from "./QueueStudent";
+import axiosService from "@/services/axiosService";
 
 export default {
   name: "Student",
@@ -50,38 +45,66 @@ export default {
           courseCode:"IDATT2102",
           courseName:"Nettverk",
           index:1,
-          numberOfStudents:50,   
+        },
+        {
+          courseCode:"IDATT2102",
+          courseName:"Nettverk",
+          index:2,
         },
       ],
     }
   },
+  created : async function() {
+    await this.getAllCoursesForStudent();
+  },
   methods: {
-    select: function(event) {
-      const targetId = event.currentTarget.id;
-      if (targetId === "middle-btn") {
+    getAllCoursesForStudent : async function(){
+      await axiosService.getAllCoursesForStudent(this.$store.state.userId).then(
+          function (response) {
+            this.courses = response.data;
+          }.bind(this)
+      );
+    },
+    showPageForStudentAssistant(){
         this.$router.push({
           name: 'studentAss',
           component: HomeStudentAss,
         })
-      }
-      else if (targetId === "assigment-btn"){
-        this.$router.push({
-          name:'assigmentView',
-          component: AssigmentView
-        })
-      }
-      else if (targetId === "que-btn"){
-        this.$router.push({
-          name:'queueStudent',
-          component: QueueStudent
-        })
-      }
     },
+    goToQueue: function(event){
+      const targetId = event.currentTarget.id;
+      for(let i = 0; i<this.courses.length; i++){
+        if(this.courses[i].index.toString() === targetId){
+          this.$store.commit("SET_COURSE", this.courses[i]);
+        }
+      }
+      this.$store.commit("SET_COURSEID", targetId);
+      this.$router.push({
+        name:'queueStudent',
+        component: QueueStudent
+      })
+    },
+    showAssignments: function(event) {
+      const targetId = event.currentTarget.id;
+      for(let i = 0; i<this.courses.length; i++){
+        if(this.courses[i].index.toString() === targetId){
+          this.$store.commit("SET_COURSE", this.courses[i]);
+        }
+      }
+      this.$store.commit("SET_COURSEID", targetId);
+      this.$router.push({
+        name:'assigmentView',
+        component: AssigmentView
+      })
+      }
   },
 };
 </script>
 
 <style scoped>
+.studentButtons{
+
+}
 #container{
   height: 100%;
 }
@@ -152,9 +175,7 @@ export default {
 #sub-name,#sub-code{
   font-size: 22px;
 }
- #que-details{
-   margin-left: 20px;
- }
+
 #sub-name{
   color: #011c39;
 }
@@ -166,18 +187,16 @@ export default {
 #sub-name-container{
   margin-right: 10px;
 }
-#que-details-container{
-  position: relative;  
-  top: -30px;
-}
+
 #sub-feature-tabs{
   height: 40px;
   position: relative;
   
 }
-#assigment-btn,#que-btn{
-  color: inherit;
+.studentButtons{
+  border-color: #0a64c2;
   padding: 0;
+  margin: 10px;
   font: inherit;
   cursor: pointer;
   outline: inherit;
@@ -200,11 +219,6 @@ export default {
   margin-right: 10px;
   border-color: green;
   width: 72px;
-}
-#amount-of-students-img{
-  position: relative;
-  top: 5px;
-  margin-left: 38px;
 }
 #assigment-img,#in-to-que-img{
   width: 15px;
