@@ -36,10 +36,27 @@ public class CourseController {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 
-    @GetMapping("/teacher/{teacherId}")
+    @GetMapping("/teachers/{teacherId}")
     public ResponseEntity<Object> getAllCoursesForTeacher(@PathVariable("teacherId") long id) {
         return courseService.getAllCoursesByTeacherId(id);
     }
+
+    // TODO TEST
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<Object> getAllCoursesForStudent(@PathVariable("studentId") long id) {
+        return courseService.getAllCoursesForStudent(id);
+    }
+
+    // TODO TEST
+    @GetMapping("/students/{studentId}")
+    public ResponseEntity<Object> getAllCoursesForStudentAssistant(@PathVariable("studentId") long id) {
+        return courseService.getAllCoursesForStudentAssistant(id);
+    }
+
+}
+
+    approveAssignmentForStudent(courseId, userId, assignmentNumber){
+        return apiClient.post('/students/assignment', {courseId : courseId, userId : userId, assignmentNumber : assignmentNumber})
 
     @GetMapping("/{courseId}")
     public ResponseEntity<Object> getCourseById(@PathVariable("courseId") long courseId){

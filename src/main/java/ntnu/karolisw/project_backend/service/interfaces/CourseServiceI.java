@@ -68,6 +68,8 @@ public interface CourseServiceI {
     ResponseEntity<Object> getAllCoursesForStudent(long studentId);
 
 
+    ResponseEntity<Object> getAllCoursesForStudentAssistant(long studentId);
+
     ResponseEntity<Object> getAllCourses();
 
     ResponseEntity<Object> getAllCoursesByTeacherId(long teacherId);

@@ -13,6 +13,7 @@ public class CourseIn {
     private Long personId; // For when the user wants to add a teacher as well
     private int typeOfUser; // To verify that the personId belongs to a teacher!
     private String courseCode;
+    private int assignmentNumber;
     private String name;
     private Date startDate;
     private Date expectedEndDate;
@@ -77,6 +78,9 @@ public class CourseIn {
         return typeOfUser;
     }
 
+    public int getAssignmentNumber() {
+        return assignmentNumber;
+    }
     // SETTERS
 
     public void setCourseId(Long courseId) {
@@ -125,5 +129,9 @@ public class CourseIn {
 
     public void setTypeOfUser(int typeOfUser) {
         this.typeOfUser = typeOfUser;
+    }
+
+    public void setAssignmentNumber(int assignmentNumber) {
+        this.assignmentNumber = assignmentNumber;
     }
 }

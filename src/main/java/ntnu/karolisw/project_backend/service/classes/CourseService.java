@@ -606,6 +606,47 @@ public class CourseService implements CourseServiceI {
     }
 
     @Override
+    public ResponseEntity<Object> getAllCoursesForStudentAssistant(long studentId) {
+
+        // Final list to be returned (TA = teachers assistant --> student assistant)
+        List<CourseOut> taCourses = new ArrayList<>();
+
+        // Check that the student exists before going forth
+        Optional<Student> student = studentRepository.findById(studentId);
+
+        if(student.isPresent()) {
+
+            // Get all courses
+            List<Course> allCourses = courseRepository.findAll();
+
+            // For each course
+            for(Course course : allCourses) {
+
+                // For all student assistants in each course
+                for(Student s : course.getStudentAssistants()) {
+
+                    // If this student assistant is the one in arg
+                    if(s.getId() == studentId) {
+
+                        // Convert the course to a dto in order to get as little information as possible
+                        CourseOut courseDto = new CourseOut();
+                        courseDto.setName(course.getName());
+                        courseDto.setCode(course.getCourseCode());
+
+                        // Add the course to list of courses that this student is TA in
+                        taCourses.add(courseDto);
+                    }
+                }
+            }
+            // Return all courses found
+            return new ResponseEntity<>(taCourses, HttpStatus.OK);
+        }
+        // If student did not exist
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @Override
     public ResponseEntity<Object> getAllCourses() {
         // id, name, code
         List<CourseOut> courses = new ArrayList<>();
@@ -627,6 +668,7 @@ public class CourseService implements CourseServiceI {
         }
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
+
 
     @Override
     public ResponseEntity<Object> getAllCoursesByTeacherId(long teacherId) {
