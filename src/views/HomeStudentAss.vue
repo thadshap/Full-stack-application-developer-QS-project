@@ -4,7 +4,7 @@
   <div id="studentAss-home-page">
     <div id="tabs-bar-wrapper">
     <div id="tabs-bar">
-      <button id="left-btn" v-on:click="select($event)"><img id="student-img" src="./../assets/student.png">Student</button>
+      <button id="left-btn" v-on:click="select()"><img id="student-img" src="./../assets/student.png">Student</button>
       <button id="middle-btn"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
       <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
     </div>
@@ -18,8 +18,8 @@
         <p id="sub-code">{{course.courseCode}}</p>
       </div>
       <div id="sub-feature-tabs">
-        <button class="assigment-btn" v-bind:id="course.index" v-on:click="select($event)" ><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
-        <button class="que-btn" v-bind:id="course.index" v-on:click="select($event)" ><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
+        <button class="assigment-btn" v-bind:id="course.index" v-on:click="assignBtn($event)" ><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
+        <button class="que-btn" v-bind:id="course.index" v-on:click="queueBtn($event)" ><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
       </div>
     </div>
     </div>
@@ -41,7 +41,7 @@ export default {
   components: {Footer, Header},
   data(){
     return{
-      currentCourseId : null,
+      //TODO REMOVE EVERYTHING INSIDE COURSE
       courses:[
         {
           courseCode:"IDATT2102",
@@ -66,76 +66,78 @@ export default {
     await this.queueStatusInDatabase()
   },
   methods: {
-      /**
-       * Pre-sets all the subjects containers due to if their queue is active or not
-       * @returns {Promise<void>}
-       */
-      queueStatusInDatabase: async function() {
-        await AXI.getTypeActiveQueue(this.$store.state.courseId).then(function(response) {
-          this.statusBtnClickedDatabase = response.data
-        })
-        for (let i = 0; i < this.courses.length; i++) {
-          if (this.courses[i].activityStatus === true) {
-            document.getElementById(this.courses[i].index).style.backgroundColor = "rgba(3,164,3,0.25)"
-          } else {
-            document.getElementById(this.courses[i].index).style.backgroundColor = "rgba(133,0,10,0.36)"
-          }
-        }
-      },
     /**
-     * Student assistant can activate or deactivate a queue by clicking the subject
-     * @param e course id
+     * Pre-sets all the subjects containers due to if their queue is active or not
      * @returns {Promise<void>}
      */
-      statusBtnClickedFunc: async function(e) {
-        this.idCheckedCourse = e.currentTarget.id
-        await AXI.getTypeActiveQueue(this.$store.state.courseId).then(function(response) {
-          this.statusBtnClicked = response.data
-        })
-        if (this.statusBtnClicked === true) {
-          document.getElementById(this.idCheckedCourse).style.backgroundColor = "rgba(3,164,3,0.25)"
-          await AXI.changeTypeOfActiveQueue(this.idCheckedCourse,this.statusBtnClicked)
-          this.statusBtnClicked = !this.statusBtnClicked
+    queueStatusInDatabase: async function() {
+      await AXI.getTypeActiveQueue(this.$store.state.courseId).then(function(response) {
+        this.statusBtnClickedDatabase = response.data
+      })
+      for (let i = 0; i < this.courses.length; i++) {
+        if (this.courses[i].activityStatus === true) {
+          document.getElementById(this.courses[i].index).style.backgroundColor = "rgba(3,164,3,0.25)"
         } else {
-          document.getElementById(this.idCheckedCourse).style.backgroundColor = "rgba(133,0,10,0.36)"
-          await AXI.changeTypeOfActiveQueue(this.idCheckedCourse,this.statusBtnClicked)
-          this.statusBtnClicked = !this.statusBtnClicked
+          document.getElementById(this.courses[i].index).style.backgroundColor = "rgba(133,0,10,0.36)"
         }
-      },
-      /**
-       * get all courses this given student is student assistant in
-       */
-      getAllCourses: async function() {
-        await AXI.getAllCoursesForStudentAssistant().then(function(response) {
-          this.courses = response.data
-          console.log(response.data) //TODO REMOVE THIS IF THIS METHOD WORKS
+      }
+    },
+  /**
+   * Student assistant can activate or deactivate a queue by clicking the subject
+   * @param e course id
+   * @returns {Promise<void>}
+   */
+    statusBtnClickedFunc: async function(e) {
+      this.idCheckedCourse = e.currentTarget.id
+      await AXI.getTypeActiveQueue(this.$store.state.courseId).then(function(response) {
+        this.statusBtnClicked = response.data
+      })
+      if (this.statusBtnClicked === true) {
+        document.getElementById(this.idCheckedCourse).style.backgroundColor = "rgba(3,164,3,0.25)"
+        await AXI.changeTypeOfActiveQueue(this.idCheckedCourse,this.statusBtnClicked)
+        this.statusBtnClicked = !this.statusBtnClicked
+      } else {
+        document.getElementById(this.idCheckedCourse).style.backgroundColor = "rgba(133,0,10,0.36)"
+        await AXI.changeTypeOfActiveQueue(this.idCheckedCourse,this.statusBtnClicked)
+        this.statusBtnClicked = !this.statusBtnClicked
+      }
+    },
+    /**
+     * get all courses this given student is student assistant in
+     */
+    getAllCourses: async function() {
+      await AXI.getAllCoursesForStudentAssistant().then(function(response) {
+        this.courses = response.data
+        console.log(response.data) //TODO REMOVE THIS IF THIS METHOD WORKS
+      })
+    },
+    /**
+     * send the user to student
+     * @param event id to the pressed button
+     */
+    select: function() {
+        this.$router.push({
+          name: 'student',
+          component: HomeStudent,
         })
-      },
-      /**
-       * send the user to a selected page based on witch button is pressed by the user
-       * @param event button is to the current pressed button
-       */
-      select: function(event) {
-        const targetId = event.currentTarget.id;
-        if (targetId === "left-btn") {
-          this.$router.push({
-            name: 'student',
-            component: HomeStudent,
-          })
-        } else if (targetId === "assigment-btn") {
-          this.$store.commit("SET_COURSEID", targetId);
-          this.$router.push({
-            name: 'assigmentViewForStudentAss',
-            component: AssigmentViewForStudentAss
-          })
-        } else if (targetId === "que-btn") {
-          this.$store.commit("SET_COURSEID", targetId);
-          this.$router.push({
-            name: 'queueStudent',
-            component: QueueStudent
-          })
-        }
-      },
+
+    },
+    assignBtn: function(event){
+      const targetId = event.currentTarget.id;
+      this.$store.commit("SET_COURSEID", targetId);
+      this.$router.push({
+        name: 'assigmentViewForStudentAss',
+        component: AssigmentViewForStudentAss
+      })
+    },
+    queueBtn: function(event){
+      const targetId = event.currentTarget.id;
+      this.$store.commit("SET_COURSEID", targetId);
+      this.$router.push({
+        name: 'queueStudent',
+        component: QueueStudent
+      })
+    },
     },
 };
 </script>

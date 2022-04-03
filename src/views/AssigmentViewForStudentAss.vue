@@ -6,8 +6,8 @@
       <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png">
     </button>
     <div id="sub-header-container">
-      <p id="sub-name">{{subjectName}}</p>
-      <p id="sub-code">{{subjectCode}}</p>
+      <p id="sub-name">{{course.subjectName}}</p>
+      <p id="sub-code">{{course.subjectCode}}</p>
     </div>
       <div id="table-container">
         <table id="tableStudents">
@@ -18,9 +18,10 @@
             <td>
               {{ student.name }}
               <div v-if="showAmountOfOvingerDetails && student.index==this.idCheckedStudent">
-              <p v-bind:id="student.index" class="oving-approval-header" v-for="assigment in student.assigments" :key="assigment">
-                {{assigment.name}}: {{assigment.approved}}
-              </p>
+              <div v-bind:id="student.index" v-for="assigment in student.assigments" :key="assigment">
+                <p class="oving-approval-header" v-if="assigment.approved==true">{{assigment.name}}: godkjent</p>
+                <p class="oving-approval-header" v-if="assigment.approved==false">{{assigment.name}}: ikke godkjent</p>
+              </div>
               </div>
             </td>
           </tr>
@@ -34,28 +35,35 @@
 <script>
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import AXI from "../services/axiosService";
 
 export default {
   name: "AssigmentViewForStudentAss",
   components: {Footer, Header},
   data() {
     return {
-      subjectName: "Fullstack",
-      subjectCode: "IDATT2101",
       showAmountOfOvingerDetails : false,
       assignmentsList:[],
       idCheckedStudent: null,
+      //TODO REMOVE EVERYTHING INSIDE COURSE
+      course:[
+        {
+        subjectName: "Fullstack",
+        subjectCode: "IDATT2101",
+        }
+      ],
+      //TODO REMOVE EVERYTHING INSIDE STUDENT
       students:[
         {
         name:"Sander Hansen",
         index:1,
         assigments:[{
           name:"Øving 1",
-          approved:"Ikke godkjent",
+          approved: false,
         },
           {
             name:"Øving 2",
-            approved:"Ikke godkjent",
+            approved: false,
           }]
         },
         {
@@ -63,19 +71,45 @@ export default {
           index:2,
           assigments:[{
             name:"Øving 1",
-            approved:"Godkjent",
+            approved: true,
           }]
         },
       ]
     }
   },
-  created(){
-
+  created: async function(){
+    await this.getAllStudent()
+    await this.getSubjectHeader()
   },
   methods : {
+    /**
+     * gets subject name and code from database
+     * @returns {Promise<void>}
+     */
+    getSubjectHeader: async function(){
+      await AXI.getCourseById(this.$store.state.courseId).then(function(response) {
+        this.course = response.data
+      })
+    },
+    /**
+     * het all students from database
+     * @returns {Promise<void>}
+     */
+    getAllStudent: async function(){
+      await AXI.getAllStudentsInCourse(this.$store.state.courseId).then(function(response) {
+        this.students = response.data
+      })
+    },
+    /**
+     * go back to previous router
+     */
     backToPreviousPage(){
       this.$router.go(-1)
     },
+    /**
+     * able to only click on one row at a time and collect assignment info to the student that was clicked on
+     * @param e student id
+     */
     select: function (e) {
       this.idCheckedStudent = e.currentTarget.id
       this.showAmountOfOvingerDetails  = !this.showAmountOfOvingerDetails
