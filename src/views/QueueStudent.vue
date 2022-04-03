@@ -16,7 +16,7 @@
         <th id="room">Rom</th>
         <th id="type">Type</th>
       </tr>
-      <tr id="student-column" v-for="student in students" :key="student">
+      <tr class="student-column" v-for="student in students" v-on:click="selectRow($event)" v-bind:id="student.studentId" :key="student.studentId">
         <td id="name-column">{{student.name}}</td>
         <td id="room-column">{{ student.location }}</td>
         <td id="type-column">{{ student.type }}</td>
@@ -63,9 +63,9 @@ export default {
   },
   created() {
     this.amountOfStudentsInQueue= this.students.length
-
   },
   methods:{
+    /*lage en metode for at det er kun brukere av typen student assistent som kan trykke */
     backToPreviousPage(){
       this.$router.go(-1)
     },
@@ -78,7 +78,16 @@ export default {
         })
       }
     },
-  },
+    /*
+    selectRow: function(event){
+      if (hvis studenten er studentassistent){
+         legg til i store info om den eleven du har trukket på slik at routeren for godkjenning kan hente infoen
+         gå til studentAssQueueApprove routeren
+      }
+    }
+    */
+
+},
 };
 </script>
 
@@ -145,6 +154,9 @@ export default {
 }
 #type-column{
   padding-right: 10px;
+}
+td{
+  cursor: pointer;
 }
 #student-column{
   /*background-color: rgba(0, 128, 0, 0.55);*/

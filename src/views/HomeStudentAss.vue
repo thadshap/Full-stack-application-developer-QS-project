@@ -11,7 +11,7 @@
     </div>
     <div id="active-subject-container-table-wrapper">
     <div id="active-subject-container-wrapper">
-    <div id="active-subject-container" v-for="course in courses" :key="course">
+    <div class="active-subject-container" v-for="course in courses" v-bind:id="course.index" :key="course.index">
       <div id="sub-name-container">
         <p id="sub-name">{{course.courseName}}</p>
         <p id="sub-code">{{course.courseCode}}</p>
@@ -25,7 +25,8 @@
       <div id="sub-feature-tabs">
         <button id="assigment-btn" v-on:click="select($event)" ><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
         <button id="que-btn" v-on:click="select($event)" ><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
-        <button id="active-que-btn" @click="changeActivityStatus()">Aktiver kø</button>
+        <button v-if="this.$store.state.queueStatus === false" id="active-que-btn" @click="changeActivityStatusForActiveBtn()">Aktiver kø</button>
+        <button v-else id="deactivate-que-btn" @click="changeActivityStatusForDeactivateBtn()">Deaktiver kø</button>
       </div>
     </div>
     </div>
@@ -50,10 +51,15 @@ export default {
         {
           courseCode:"IDATT2102",
           courseName:"Nettverk",
+          index: 1,
           numberOfStudents:50,
         },
       ],
+      queueStatus: false,
     }
+  },
+  created() {
+
   },
   methods:{
     select: function(event) {
@@ -77,14 +83,17 @@ export default {
         })
       }
     },
-    changeActivityStatus(){
+    changeActivityStatusForActiveBtn(){
       if(document.getElementById("active-que-btn").innerHTML === "Aktiver kø"){
         document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
+        this.queueStatus = true
+        this.$store.commit("SET_QUEUE_STATUS", this.queueStatus)
         document.getElementById("active-que-btn").style.position='relative'
         document.getElementById("active-que-btn").style.top='-30px'
-
       }else{
         document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
+        this.queueStatus = false
+        this.$store.commit("SET_QUEUE_STATUS", this.queueStatus)
         if (window.matchMedia("(max-width: 700px)").matches){
           document.getElementById("active-que-btn").style.position='relative'
           document.getElementById("active-que-btn").style.top='-30px'
@@ -92,6 +101,27 @@ export default {
         else {
           document.getElementById("active-que-btn").style.position='relative'
           document.getElementById("active-que-btn").style.top='0'
+        }
+      }
+    },
+    changeActivityStatusForDeactivateBtn(){
+      if(document.getElementById("deactivate-que-btn").innerHTML === "Aktiver kø"){
+        document.getElementById("deactivate-que-btn").innerHTML = "Deaktiver kø"
+        this.queueStatus = true
+        this.$store.commit("SET_QUEUE_STATUS", this.queueStatus)
+        document.getElementById("deactivate-que-btn").style.position='relative'
+        document.getElementById("deactivate-que-btn").style.top='0'
+      }else{
+        document.getElementById("deactivate-que-btn").innerHTML = "Aktiver kø"
+        this.queueStatus = false
+        this.$store.commit("SET_QUEUE_STATUS", this.queueStatus)
+        if (window.matchMedia("(max-width: 700px)").matches){
+          document.getElementById("deactivate-que-btn").style.position='relative'
+          document.getElementById("deactivate-que-btn").style.top='0'
+        }
+        else {
+          document.getElementById("deactivate-que-btn").style.position='relative'
+          document.getElementById("deactivate-que-btn").style.top='-30px'
         }
       }
     }
@@ -150,7 +180,7 @@ export default {
 #middle-btn{
   background-color: #011c39;
 }
-#active-subject-container{
+.active-subject-container{
   width: 295px;
   height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
@@ -191,7 +221,7 @@ export default {
 #sub-feature-tabs{
   height: 40px;
 }
-#assigment-btn,#que-btn, #active-que-btn{
+#assigment-btn,#que-btn, #active-que-btn, #deactivate-que-btn{
   display: inline;
   color: inherit;
   padding: 0;
@@ -235,12 +265,20 @@ export default {
   position: relative;
   top: 5px;
 }
-#active-que-btn{
+#active-que-btn, #deactivate-que-btn{
   float: right;
   border-color: #0a64c2;
   padding: 5px;
   position: relative;
   top: 0;
+}
+#active-que-btn{
+  position: relative;
+  top: 0;
+}
+#deactivate-que-btn{
+  position: relative;
+  top: -30px;
 }
 #active-subject-container-table-wrapper{
   display: flex;
@@ -251,7 +289,7 @@ export default {
   #studentAss-home-page{
     height: 710px;
   }
-  #active-que-btn{
+  #active-que-btn, #deactivate-que-btn{
     position: relative;
     top: -30px;
   }

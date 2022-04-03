@@ -11,7 +11,7 @@
     </div>
     <div id="active-subject-container-table-wrapper">
     <div id="active-subject-container-wrapper">
-    <div id="active-subject-container" v-for="course in courses" :key="course">
+    <div class="active-subject-container" v-for="course in courses" v-bind:id="course.index" :key="course.index">
      <div id="sub-name-container">
        <p id="sub-name">{{course.courseName}}</p>
        <p id="sub-code">{{course.courseCode}}</p>
@@ -48,7 +48,8 @@ export default {
       courses:[
         {
           courseCode:"IDATT2102",
-          courseName:"Nettverk", 
+          courseName:"Nettverk",
+          index:1,
           numberOfStudents:50,   
         },
       ],
@@ -131,7 +132,7 @@ export default {
 #left-btn{
   background-color: #011c39;
 }
-#active-subject-container{
+.active-subject-container{
   width: 295px;
   height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
