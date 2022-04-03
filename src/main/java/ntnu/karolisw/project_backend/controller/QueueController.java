@@ -1,13 +1,11 @@
 package ntnu.karolisw.project_backend.controller;
 
 import ntnu.karolisw.project_backend.dto.in.CourseIn;
+import ntnu.karolisw.project_backend.dto.in.StudentInQueueIn;
 import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/queues")
@@ -28,32 +26,58 @@ public class QueueController {
         return queueService.approveStudent(dto.getPersonId(),
                 dto.getAssignmentNumber(), dto.getCourseId());
     }
-    getAllStudentsInQueue(courseId){
-        return apiClient.get('/students/queue' + courseId)
-    },
-    getAllAssignmentsInCourseForStudentAndIfApproved(courseId, studentId){
-        return apiClient.post('/courses/assignments', {courseId : courseId, studentId : studentId})
-    },
-    postStudentInQueue(typeOfLocation, assignmentNumber, helpOrApproving, campus, building, room, table){
-        return apiClient.post('/courses/queue', {typeOfLocation : typeOfLocation, assignmentNumber : assignmentNumber, helpOrApproving : helpOrApproving, campus : campus, building : building, room : room, table : table})
 
-    },
-    changeTypeOfActiveQueue(courseId, activeBoolean){
-        return apiClient.post('/courses/queue/status', {courseId : courseId, activeBoolean : activeBoolean})
+    @GetMapping("/students/queues/{courseId}")
+    public ResponseEntity<Object> getAllStudentsInQueue(@PathVariable("courseId") long courseId){
+        return queueService.getAllStudentsInQueue(courseId);
+    }
 
-    },
-    getTypeActiveQueue(courseId){
-        return apiClient.get('/courses/queue/status' + courseId)
-    },
+    /**
+     *
+     * @param dto contains:
+     *            - typeOfLocation
+     *            - assignmentNumber
+     *            - helpOrApproving
+     *            - campus
+     *            - building
+     *            - room
+     *            - table
+     * @return
+     */
+    @PostMapping("/newSiq")
+    ResponseEntity<Object> postStudentInQueue(StudentInQueueIn dto){
+        return queueService.createStudentInQueueEntity(dto);
+    }
 
-        changeStateInQueueForStudent(userId, courseId, state){
-        return apiClient.post('/students/queue/changeState', {courseId : courseId, userId : userId, state : state})
-        },
-        getStateInQueueForStudent(userId, courseId){
-        return apiClient.post('/students/queue/getState', {courseId : courseId, userId : userId})
-        },
-        deleteStudentFromQueue(userId, courseId){
-        return apiClient.post('/courses/queue/deleteStudent', {courseId : courseId, userId : userId})
-        }
+    /**
+     *
+     * @param dto contains: courseId, active (boolean for the queue)
+     * @return
+     */
+    @PostMapping("/status")
+    ResponseEntity<Object> changeTypeOfActiveQueue(StudentInQueueIn dto){
+        return queueService.setQueueActive(dto);
+    }
+
+    @GetMapping("/status/{courseId}")
+    ResponseEntity<Object> getTypeActiveQueue(@PathVariable("courseId") long courseId) {
+        return queueService.isQueueActive(courseId);
+    }
+
+    @PostMapping("/changeState")
+    ResponseEntity<Object> changeStateInQueueForStudent(StudentInQueueIn dto) {
+        return queueService.setStudentState(dto.getStudentId(),dto.getCourseId(),dto.getStatusInQueue());
+    }
+
+    @PostMapping("/getState")
+    ResponseEntity<Object> getStateInQueueForStudent(StudentInQueueIn dto) {
+        return queueService.getStudentState(dto.getStudentId());
+    }
+
+    // DTO = studentId,
+    @PostMapping("/deleteStudent")
+    ResponseEntity<Object> deleteStudentFromQueue(StudentInQueueIn dto) {
+        return queueService.deleteStudentInQueueEntity(dto);
+    }
 
         }

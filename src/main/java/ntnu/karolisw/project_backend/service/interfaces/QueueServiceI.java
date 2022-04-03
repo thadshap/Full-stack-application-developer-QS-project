@@ -2,7 +2,6 @@ package ntnu.karolisw.project_backend.service.interfaces;
 
 import ntnu.karolisw.project_backend.dto.in.StudentInQueueIn;
 import ntnu.karolisw.project_backend.model.GroupOfAssignment;
-import ntnu.karolisw.project_backend.enumFolder.Status;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ public interface QueueServiceI {
 
     ResponseEntity<Object> getStudentsForAssessmentOrHelp(long courseId, boolean assessment);
 
-    ResponseEntity<Object> setStudentState(long studentId, long courseId, Status status);
+    ResponseEntity<Object> setStudentState(long studentId, long courseId, String status);
 
     ResponseEntity<Object> approveStudent(long studentId, int assignmentNumber, long courseId);
 
@@ -41,4 +40,8 @@ public interface QueueServiceI {
     ResponseEntity<Object> deleteStudentInQueueEntity(StudentInQueueIn dto);
 
     ResponseEntity<Object> setQueueActive(StudentInQueueIn dto);
+
+    ResponseEntity<Object> isQueueActive(long courseId);
+
+    ResponseEntity<Object> getStudentState(long studentId);
 }

@@ -41,22 +41,27 @@ public class CourseController {
         return courseService.getAllCoursesByTeacherId(id);
     }
 
-    // TODO TEST
-    @GetMapping("/students/{studentId}")
+    @GetMapping("/student/{studentId}")
     public ResponseEntity<Object> getAllCoursesForStudent(@PathVariable("studentId") long id) {
         return courseService.getAllCoursesForStudent(id);
     }
 
-    // TODO TEST
-    @GetMapping("/students/{studentId}")
+    @GetMapping("/students/{courseId}")
+    public ResponseEntity<Object> getAllStudentsInCourse(@PathVariable("courseId") long courseId){
+        return courseService.getAllStudentsInCourse(courseId);
+    }
+
+    // TODO TEST THIS
+    @GetMapping("/studentAssistants/{studentId}")
     public ResponseEntity<Object> getAllCoursesForStudentAssistant(@PathVariable("studentId") long id) {
         return courseService.getAllCoursesForStudentAssistant(id);
     }
 
-}
-
-    approveAssignmentForStudent(courseId, userId, assignmentNumber){
-        return apiClient.post('/students/assignment', {courseId : courseId, userId : userId, assignmentNumber : assignmentNumber})
+    // assignmentNr, approved
+    @PostMapping("/assignments")
+    public ResponseEntity<Object> getAllAssignmentsInCourseForStudentAndIfApproved(@RequestBody CourseIn dto){
+        return courseService.getAllAssignmentsForStudentInCourse(dto.getPersonId(),dto.getCourseId());
+    }
 
     @GetMapping("/{courseId}")
     public ResponseEntity<Object> getCourseById(@PathVariable("courseId") long courseId){
@@ -117,18 +122,14 @@ public class CourseController {
         return courseService.addTeacherToCourse(dto);
     }
 
+    // TODO RESTART DB FIRST
     @PostMapping("/addStudentAssistant")
-    public ResponseEntity<Object> addStudentAssistantToCourse(@RequestBody PersonIn dto){ //todo reset db and try again!
+    public ResponseEntity<Object> addStudentAssistantToCourse(@RequestBody PersonIn dto){
         return courseService.addStudentAssistantToCourse(dto);
     }
 
     @DeleteMapping("/removeStudent")
     public ResponseEntity<Object> deleteStudentFromCourse(@RequestBody PersonIn student){
         return courseService.removeStudentFromCourse(student.getCourseId(), student.getEmail());
-    }
-
-    @GetMapping("/students/{courseId}")
-    public ResponseEntity<Object> getAllStudentsInCourse(@PathVariable("courseId") long courseId){
-        return courseService.getAllStudentsInCourse(courseId);
     }
 }

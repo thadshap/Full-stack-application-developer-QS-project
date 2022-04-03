@@ -106,15 +106,53 @@ public class QueueService implements QueueServiceI {
      * @return the student in queue object with the altered state
      */
     @Override
-    public ResponseEntity<Object> setStudentState(long studentId, long courseId, Status status) {
+    public ResponseEntity<Object> setStudentState(long studentId, long courseId, String status) {
         List<StudentInQueue> students = queueRepository.findAllStudentsInQueueByCourseId(courseId);
         for(StudentInQueue student : students) {
             if (student.getStudent().getId() == studentId) {
-                student.setStatusInQueue(status);
-                studentInQueueRepository.save(student);
+
+                // Check that the string actually contains what it should!
+                if(status.equalsIgnoreCase("available")) {
+                    student.setStatusInQueue(Status.AVAILABLE);
+                    studentInQueueRepository.save(student);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+                else if(status.equalsIgnoreCase("waiting")) {
+                    student.setStatusInQueue(Status.WAITING);
+                    studentInQueueRepository.save(student);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+                else if (status.equalsIgnoreCase("taken")) {
+                    student.setStatusInQueue(Status.TAKEN);
+                    studentInQueueRepository.save(student);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+                else {
+                    // Something wrong with the given state --> reject
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
             }
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        // If we have not reached a student yet, the student id might have been wrong
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<Object> getStudentState(long studentId) {
+
+        // Find the student in queue object
+        Optional<StudentInQueue> student = studentInQueueRepository.getStudentInQueueUsingStudentId(studentId);
+
+        // If the student id was present in db (and connected to SIQ entity)
+        if(student.isPresent()) {
+            Status status = student.get().getStatusInQueue();
+            return new ResponseEntity<>(status.toString(), HttpStatus.OK);
+        }
+
+        // If student was not present
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
@@ -291,7 +329,7 @@ public class QueueService implements QueueServiceI {
         newSIQ.setPlacementInQueue(queueRepository.
                 findAllStudentsInQueueByCourseId(dto.getCourseId()).
                 size() + 1 );
-         */
+
 
         // 1 =  AVAILABLE; 2 = TAKEN; 3 = WAITING;
         int status = dto.getStatusInQueue();
@@ -308,6 +346,10 @@ public class QueueService implements QueueServiceI {
         else {
             throw new IllegalArgumentException("The status was not numbers 1-3, but: " + status);
         }
+         */
+
+        // Automatically available upon creation
+        newSIQ.setStatusInQueue(Status.AVAILABLE);
 
         // If digital help/assessment requested
         if(dto.isDigital()) {
@@ -327,7 +369,7 @@ public class QueueService implements QueueServiceI {
         Optional<Student> student = studentRepository.findById(dto.getStudentId());
         if(student.isPresent()) {
             newSIQ.setStudent(student.get());
-            newSIQ.setQueue(queue.get()); // todo check out the cascade!
+            newSIQ.setQueue(queue.get());
         }
 
         // Set the new number of waiting students (increment by one)
@@ -349,7 +391,9 @@ public class QueueService implements QueueServiceI {
      */
     @Override
     public ResponseEntity<Object> deleteStudentInQueueEntity(StudentInQueueIn dto) {
-        Optional<StudentInQueue> siq = studentInQueueRepository.findById(dto.getStudentInQueueId());
+        // Dto contains studentId
+
+        Optional<StudentInQueue> siq = studentInQueueRepository.getStudentInQueueUsingStudentId(dto.getStudentId());
 
         // If the student in queue entity is present in db
         if(siq.isPresent()) {
@@ -381,4 +425,18 @@ public class QueueService implements QueueServiceI {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Override
+    public ResponseEntity<Object> isQueueActive(long courseId) {
+        Optional<Queue> queue = queueRepository.getQueueByCourseId(courseId);
+        if(queue.isPresent()) {
+            boolean active = queue.get().isActive();
+            return new ResponseEntity<>(active,HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

@@ -10,7 +10,7 @@ public class StudentInQueueIn {
     private String building;
     private String room;
     private boolean assessmentHelp;
-    private int statusInQueue;
+    private String statusInQueue;
 
     // for the queue only
     private boolean active;
@@ -49,7 +49,7 @@ public class StudentInQueueIn {
         return assessmentHelp;
     }
 
-    public int getStatusInQueue() {
+    public String getStatusInQueue() {
         return statusInQueue;
     }
 
@@ -95,7 +95,7 @@ public class StudentInQueueIn {
         this.assessmentHelp = assessmentHelp;
     }
 
-    public void setStatusInQueue(int statusInQueue) {
+    public void setStatusInQueue(String statusInQueue) {
         this.statusInQueue = statusInQueue;
     }
 

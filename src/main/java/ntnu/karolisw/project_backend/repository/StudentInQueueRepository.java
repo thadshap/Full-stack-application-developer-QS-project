@@ -4,8 +4,11 @@ import ntnu.karolisw.project_backend.model.Queue;
 import ntnu.karolisw.project_backend.enumFolder.Status;
 import ntnu.karolisw.project_backend.model.StudentInQueue;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentInQueueRepository extends JpaRepository<StudentInQueue, Long> {
     // get student with statusInQueue = status
@@ -39,5 +42,7 @@ public interface StudentInQueueRepository extends JpaRepository<StudentInQueue, 
     List<StudentInQueue> findByCampusAndBuildingAndRoomAndTableNumber(String campus, String building,
                                                                      String room, int tableNumber);
 
-    // get queue id of this queue
+    // get student in queue object using student id
+    @Query("SELECT s FROM StudentInQueue s WHERE s.student.id = :id")
+    Optional<StudentInQueue> getStudentInQueueUsingStudentId(@Param("id") long id);
 }
