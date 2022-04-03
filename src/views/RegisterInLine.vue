@@ -10,19 +10,13 @@
     <input type="radio" id="digital-queue-btn" value="all-queue" name="queue-btn" v-on:click="digitalChosen">
     <label id="digital-queue-header" for="digital-queue-btn" >Digital</label>
   </div>
-  <div id="list-of-ovinger">
-    <label id="oving-checkbox-header" class="oving-lable" for="oving-checkbox">Øving 1</label> <!--For å vise at en box er cheked så er det bare: const cb = document.querySelector('#oving-checkbox-header'); også cd.value ==true-->
-    <input type="checkbox" id="oving-checkbox" class="oving-checkbox" name="oving-checkbox">
-    <label id="oving-checkbox-header 1" class="oving-lable" for="oving-checkbox 1">Øving 2</label>
-    <input type="checkbox" id="oving-checkbox 1" class="oving-checkbox" name="oving-checkbox">
-    <label id="oving-checkbox-header 2" class="oving-lable" for="oving-checkbox 2">Øving 3</label>
-    <input type="checkbox" id="oving-checkbox 2" class="oving-checkbox" name="oving-checkbox">
-    <label id="oving-checkbox-header 3" class="oving-lable" for="oving-checkbox 3">Øving 4</label>
-    <input type="checkbox" id="oving-checkbox 3" class="oving-checkbox" name="oving-checkbox">
-    <label id="oving-checkbox-header 4" class="oving-lable" for="oving-checkbox 4">Øving 5</label>
-    <input type="checkbox" id="oving-checkbox 4" class="oving-checkbox" name="oving-checkbox">
-    <label id="oving-checkbox-header 5" class="oving-lable" for="oving-checkbox 5">Øving 6</label>
-    <input type="checkbox" id="oving-checkbox 5" class="oving-checkbox" name="oving-checkbox">
+  <div id="list-of-ovinger-wrapper">
+    <div id="list-of-ovinger-container">
+      <div id="list-of-ovinger" v-for="assigment in assigments" :key="assigment">
+        <label id="oving-checkbox-header" class="oving-lable" for="oving-checkbox">{{assigment.name}}</label> <!--For å vise at en box er cheked så er det bare: const cb = document.querySelector('#oving-checkbox-header'); også cd.value ==true-->
+        <input type="checkbox" id="oving-checkbox" class="oving-checkbox" name="oving-checkbox">
+      </div>
+    </div>
   </div>
   <div id="approval-or-help-checkbox">
     <input type="radio" id="approval-queue-btn" value="approval-queue" name="queue-btn">
@@ -59,7 +53,29 @@ export default {
   components: {Footer, Header},
   data() {
     return {
-      showCampusDetails : false
+      showCampusDetails : false,
+      assigments:[
+        {
+          name:"Øving 1",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 2",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 3",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 4",
+          approved:"Ikke godkjent",
+        },
+        {
+          name:"Øving 5",
+          approved:"Ikke godkjent",
+        },
+      ],
     }
   },
   methods : {
@@ -114,15 +130,13 @@ export default {
 }
 #list-of-ovinger{
   font-size: 20px;
+  display: inline;
 }
 #approval-or-help-checkbox,#list-of-ovinger{
   margin-top: 50px;
 }
 #approval-or-help-checkbox{
   margin-bottom: 55px;
-}
-.oving-checkbox{
-
 }
 .oving-lable{
   margin-left: 20px;
@@ -165,6 +179,13 @@ footer{
   height: 400px;
   overflow: auto;
   object-fit: cover;
+}
+#list-of-ovinger-wrapper{
+  width: 100%;
+  justify-content: center;
+}
+#list-of-ovinger-container{
+  text-align: center;
 }
 @media only screen and (min-height: 800px) {
   #register-in-line-container{
