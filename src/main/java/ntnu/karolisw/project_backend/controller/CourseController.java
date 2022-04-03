@@ -101,14 +101,13 @@ public class CourseController {
     }
 
     @PostMapping("/addStudentAssistant")
-    public ResponseEntity<Object> addStudentAssistantToCourse(@RequestBody PersonIn dto){ // TODO
+    public ResponseEntity<Object> addStudentAssistantToCourse(@RequestBody PersonIn dto){ //todo reset db and try again!
         return courseService.addStudentAssistantToCourse(dto);
     }
 
-    @DeleteMapping("/deleteStudent") // todo maybe this is not courseIn but studentIn?
+    @DeleteMapping("/removeStudent")
     public ResponseEntity<Object> deleteStudentFromCourse(@RequestBody PersonIn student){
-        // use long courseId
-        return courseService.removeStudentFromCourse(student.getCourseId(), student.getPersonId());
+        return courseService.removeStudentFromCourse(student.getCourseId(), student.getEmail());
     }
 
     @GetMapping("/students/{courseId}")

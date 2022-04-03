@@ -172,10 +172,13 @@ public class CourseService implements CourseServiceI {
     @Override
     public ResponseEntity<Object> getAllStudentsInCourse(long courseId) {
         Optional<Course> course = courseRepository.findById(courseId);
+
         if(course.isPresent()) {
 
             // Get students
             Set<Student> students = course.get().getStudents();
+            System.out.println("Students");
+            System.out.println(students.toString());
             ArrayList<PersonOut> students2 = new ArrayList<>(students.size());
 
             // Shape student entity-objects into correct data-transfer-objects (security)
@@ -190,7 +193,7 @@ public class CourseService implements CourseServiceI {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                students2.add(new PersonOut());
+                students2.add(so);
             }
             // Return the DTO
             return new ResponseEntity<>(students2, HttpStatus.OK);
@@ -209,6 +212,7 @@ public class CourseService implements CourseServiceI {
         if(course.isPresent() && student.isPresent()) {
             course.get().addStudentAssistant(student.get());
 
+            // Cascade type = persist!
             courseRepository.save(course.get());
             return new ResponseEntity<>( HttpStatus.OK);
         }
@@ -246,10 +250,6 @@ public class CourseService implements CourseServiceI {
             // Add course to teacher only, as course will be automatically updated
             teacher.get().addCourse(course.get());
             teacherRepository.save(teacher.get());
-            /**
-            course.get().addTeacher(teacher.get());
-            courseRepository.save(course.get());
-             */
 
             return new ResponseEntity<>(HttpStatus.OK);
         }
@@ -263,9 +263,7 @@ public class CourseService implements CourseServiceI {
             // Add the course to the new teacher
             newTeacher.addCourse(course.get());
             teacherRepository.save(newTeacher);
-            /**
-            course.get().addTeacher(newTeacher);
-            */
+
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         else {
@@ -311,19 +309,19 @@ public class CourseService implements CourseServiceI {
 
     // Deletes a student from a course
     @Override
-    public ResponseEntity<Object> removeStudentFromCourse(long courseId, long studentId) {
+    public ResponseEntity<Object> removeStudentFromCourse(long courseId, String email) {
         // if the course exists
         if(courseRepository.existsById(courseId)){
+
             // get all the students taking the course
             Set<Student> students = courseRepository.getStudentsByCourseId(courseId);
 
             // For each student
             for(Student student : students) {
 
-                // If there is a student with the specified student id
-                if(student.getId() == studentId) {
+                // If there is a student with the specified email
+                if(student.getEmail().equalsIgnoreCase(email)) {
 
-                    // There is no cascade.remove present, meaning we must set foreign key = null
                     // Get all the courses the student is taking
                     Set<Course> courses = student.getCourses();
 
@@ -349,18 +347,23 @@ public class CourseService implements CourseServiceI {
                     for(Student student1 : studentsInCourse) {
 
                         // If the student in question
-                        if(student1.getId() == studentId) {
+                        if(student1.getEmail().equalsIgnoreCase(email)) {
 
-                            // Remove it from the list
+                            // Remove student1 from the list
                             studentsInCourse.remove(student1);
+
                             Optional<Course> course = courseRepository.findById(courseId);
 
                             // If the course is present
                             if(course.isPresent()) {
 
-                                // Update it with the new list of students
+                                // Set the courses list of students equal to the new list
                                 course.get().setStudents(studentsInCourse);
+
+                                // Update the course
                                 courseRepository.save(course.get());
+
+                                // Return ok
                                 return new ResponseEntity<>(HttpStatus.OK);
                             }
                         }

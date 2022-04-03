@@ -63,7 +63,7 @@ public class Course {
 
     // Many-to-many with student in a student assistant relationship
     // Remove student assistant objects if the course is removed
-    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "courses")
+    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "taInCourses")
     private Set<Student> studentAssistants = new HashSet<>();
 
     // One-to-many relationship with group of assignments

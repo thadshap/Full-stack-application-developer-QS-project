@@ -50,7 +50,8 @@ public class Student extends Person {
             joinColumns = { @JoinColumn(name = "id") },
             inverseJoinColumns = { @JoinColumn(name = "course_id") }
     )
-    private Set<Student> studentAssistants = new HashSet<>();
+    // private Set<Student> studentAssistants;
+    private Set<Course> taInCourses;
 
     // One-to-one relationship with student_in_queue
     // If student is removed, so is the student in queue entity
@@ -65,4 +66,5 @@ public class Student extends Person {
     public void addCourse(Course course) {
         courses.add(course);
     }
+
 }

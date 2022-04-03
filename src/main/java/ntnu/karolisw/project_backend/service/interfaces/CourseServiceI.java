@@ -29,7 +29,7 @@ public interface CourseServiceI {
     ResponseEntity<Object> addStudentToCourse(PersonIn dto);
 
     // Deletes a student from a course
-    ResponseEntity<Object> removeStudentFromCourse(long courseId, long studentId);
+    ResponseEntity<Object> removeStudentFromCourse(long courseId, String email);
 
     // update start date
     ResponseEntity<Object> updateStartDate(long courseId, Date startDate);
