@@ -9,24 +9,17 @@
       <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
     </div>
     </div>
+    <div id="info-about-how-to-active-queue">Aktiver kø ved å trykke på faget og deaktiver kø ved å trykke på fag igjen</div >
     <div id="active-subject-container-table-wrapper">
     <div id="active-subject-container-wrapper">
-    <div class="active-subject-container" v-for="course in courses" v-bind:id="course.index" :key="course.index">
+    <div class="active-subject-container" v-on:click="statusBtnClickedFunc(e)" v-for="course in courses" v-bind:id="course.index" :key="course.index">
       <div id="sub-name-container">
         <p id="sub-name">{{course.courseName}}</p>
         <p id="sub-code">{{course.courseCode}}</p>
       </div>
-      <div id="que-details-container">
-        <p id="que-details">
-          <img id="amount-of-students-img" src="./../assets/amount-students.png">
-          {{course.numberOfStudents}}
-        </p>
-      </div>
       <div id="sub-feature-tabs">
-        <button id="assigment-btn" v-on:click="select($event)" ><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
-        <button id="que-btn" v-on:click="select($event)" ><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
-        <button v-if="this.$store.state.queueStatus === false" id="active-que-btn" @click="changeActivityStatusForActiveBtn()">Aktiver kø</button>
-        <button v-else id="deactivate-que-btn" @click="changeActivityStatusForDeactivateBtn()">Deaktiver kø</button>
+        <button class="assigment-btn" v-bind:id="course.index" v-on:click="select($event)" ><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
+        <button class="que-btn" v-bind:id="course.index" v-on:click="select($event)" ><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
       </div>
     </div>
     </div>
@@ -41,91 +34,109 @@ import Header from "../components/Header";
 import HomeStudent from "./HomeStudent";
 import QueueStudent from "./QueueStudent";
 import AssigmentViewForStudentAss from "./AssigmentViewForStudentAss";
+import AXI from "../services/axiosService";
 
 export default {
   name: "HomeStudentAss",
   components: {Footer, Header},
   data(){
     return{
+      currentCourseId : null,
       courses:[
         {
           courseCode:"IDATT2102",
           courseName:"Nettverk",
+          activityStatus:true,
           index: 1,
-          numberOfStudents:50,
+        },
+        {
+          courseCode:"IDATT2103",
+          courseName:"Fullstack",
+          activityStatus:false,
+          index: 2,
         },
       ],
-      queueStatus: false,
+      statusBtnClicked: true,
+      statusBtnClickedDatabase: true,
+      idCheckedCourse: 0,
     }
   },
-  created() {
-
+  created: async function() {
+    await this.getAllCourses()
+    await this.queueStatusInDatabase()
   },
-  methods:{
-    select: function(event) {
-      const targetId = event.currentTarget.id;
-      if (targetId === "left-btn") {
-        this.$router.push({
-          name: 'student',
-          component: HomeStudent,
+  methods: {
+      /**
+       * Pre-sets all the subjects containers due to if their queue is active or not
+       * @returns {Promise<void>}
+       */
+      queueStatusInDatabase: async function() {
+        await AXI.getTypeActiveQueue(this.$store.state.courseId).then(function(response) {
+          this.statusBtnClickedDatabase = response.data
         })
-      }
-      else if (targetId === "assigment-btn"){
-        this.$router.push({
-          name:'assigmentViewForStudentAss',
-          component: AssigmentViewForStudentAss
+        for (let i = 0; i < this.courses.length; i++) {
+          if (this.courses[i].activityStatus === true) {
+            document.getElementById(this.courses[i].index).style.backgroundColor = "rgba(3,164,3,0.25)"
+          } else {
+            document.getElementById(this.courses[i].index).style.backgroundColor = "rgba(133,0,10,0.36)"
+          }
+        }
+      },
+    /**
+     * Student assistant can activate or deactivate a queue by clicking the subject
+     * @param e course id
+     * @returns {Promise<void>}
+     */
+      statusBtnClickedFunc: async function(e) {
+        this.idCheckedCourse = e.currentTarget.id
+        await AXI.getTypeActiveQueue(this.$store.state.courseId).then(function(response) {
+          this.statusBtnClicked = response.data
         })
-      }
-      else if (targetId === "que-btn"){
-        this.$router.push({
-          name:'queueStudent',
-          component: QueueStudent
+        if (this.statusBtnClicked === true) {
+          document.getElementById(this.idCheckedCourse).style.backgroundColor = "rgba(3,164,3,0.25)"
+          await AXI.changeTypeOfActiveQueue(this.idCheckedCourse,this.statusBtnClicked)
+          this.statusBtnClicked = !this.statusBtnClicked
+        } else {
+          document.getElementById(this.idCheckedCourse).style.backgroundColor = "rgba(133,0,10,0.36)"
+          await AXI.changeTypeOfActiveQueue(this.idCheckedCourse,this.statusBtnClicked)
+          this.statusBtnClicked = !this.statusBtnClicked
+        }
+      },
+      /**
+       * get all courses this given student is student assistant in
+       */
+      getAllCourses: async function() {
+        await AXI.getAllCoursesForStudentAssistant().then(function(response) {
+          this.courses = response.data
+          console.log(response.data) //TODO REMOVE THIS IF THIS METHOD WORKS
         })
-      }
+      },
+      /**
+       * send the user to a selected page based on witch button is pressed by the user
+       * @param event button is to the current pressed button
+       */
+      select: function(event) {
+        const targetId = event.currentTarget.id;
+        if (targetId === "left-btn") {
+          this.$router.push({
+            name: 'student',
+            component: HomeStudent,
+          })
+        } else if (targetId === "assigment-btn") {
+          this.$store.commit("SET_COURSEID", targetId);
+          this.$router.push({
+            name: 'assigmentViewForStudentAss',
+            component: AssigmentViewForStudentAss
+          })
+        } else if (targetId === "que-btn") {
+          this.$store.commit("SET_COURSEID", targetId);
+          this.$router.push({
+            name: 'queueStudent',
+            component: QueueStudent
+          })
+        }
+      },
     },
-    changeActivityStatusForActiveBtn(){
-      if(document.getElementById("active-que-btn").innerHTML === "Aktiver kø"){
-        document.getElementById("active-que-btn").innerHTML = "Deaktiver kø"
-        this.queueStatus = true
-        this.$store.commit("SET_QUEUE_STATUS", this.queueStatus)
-        document.getElementById("active-que-btn").style.position='relative'
-        document.getElementById("active-que-btn").style.top='-30px'
-      }else{
-        document.getElementById("active-que-btn").innerHTML = "Aktiver kø"
-        this.queueStatus = false
-        this.$store.commit("SET_QUEUE_STATUS", this.queueStatus)
-        if (window.matchMedia("(max-width: 700px)").matches){
-          document.getElementById("active-que-btn").style.position='relative'
-          document.getElementById("active-que-btn").style.top='-30px'
-        }
-        else {
-          document.getElementById("active-que-btn").style.position='relative'
-          document.getElementById("active-que-btn").style.top='0'
-        }
-      }
-    },
-    changeActivityStatusForDeactivateBtn(){
-      if(document.getElementById("deactivate-que-btn").innerHTML === "Aktiver kø"){
-        document.getElementById("deactivate-que-btn").innerHTML = "Deaktiver kø"
-        this.queueStatus = true
-        this.$store.commit("SET_QUEUE_STATUS", this.queueStatus)
-        document.getElementById("deactivate-que-btn").style.position='relative'
-        document.getElementById("deactivate-que-btn").style.top='0'
-      }else{
-        document.getElementById("deactivate-que-btn").innerHTML = "Aktiver kø"
-        this.queueStatus = false
-        this.$store.commit("SET_QUEUE_STATUS", this.queueStatus)
-        if (window.matchMedia("(max-width: 700px)").matches){
-          document.getElementById("deactivate-que-btn").style.position='relative'
-          document.getElementById("deactivate-que-btn").style.top='0'
-        }
-        else {
-          document.getElementById("deactivate-que-btn").style.position='relative'
-          document.getElementById("deactivate-que-btn").style.top='-30px'
-        }
-      }
-    }
-  },
 };
 </script>
 
@@ -139,9 +150,9 @@ export default {
   object-fit: cover;
 }
 #tabs-bar-wrapper{
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 #active-subject-container-wrapper{
   display: table;
@@ -177,7 +188,7 @@ export default {
   position: relative;
   top: -3px;
 }
-#middle-btn{
+#left-btn{
   background-color: #011c39;
 }
 .active-subject-container{
@@ -192,7 +203,7 @@ export default {
   font-family: sans-serif;
   padding: 30px;
 }
-#sub-name,#sub-code,#que-details{
+#sub-name,#sub-code{
   margin: 3px;
   letter-spacing: 1px;
   font-weight: lighter;
@@ -200,13 +211,10 @@ export default {
 #sub-name,#sub-code{
   font-size: 22px;
 }
-#que-details{
-  margin-left: 20px;
-}
 #sub-name{
   color: #011c39;
 }
-#sub-name-container, #que-details-container{
+#sub-name-container{
   width: 140px;
   height: 80px;
   display: inline-block;
@@ -214,15 +222,11 @@ export default {
 #sub-name-container{
   margin-right: 10px;
 }
-#que-details-container{
-  position: relative;
-  top: -30px;
-}
 #sub-feature-tabs{
   height: 40px;
+  margin-top: 20px;
 }
-#assigment-btn,#que-btn, #active-que-btn, #deactivate-que-btn{
-  display: inline;
+.assigment-btn,.que-btn{
   color: inherit;
   padding: 0;
   font: inherit;
@@ -236,21 +240,17 @@ export default {
   font-weight: lighter;
   font-size: 14px;
 }
-#assigment-btn{
-  float: left;
+.assigment-btn{
+  margin-left: 15px;
+  margin-right: 37px;
   border-color: rgba(1, 28, 57, 0.75);
   width: 92px;
-  margin: 0;
 }
-#que-btn{
+.que-btn{
+  margin-left: 60px;
+  margin-right: 10px;
   border-color: green;
   width: 72px;
-  margin: 0 9% 0 9%;
-}
-#amount-of-students-img{
-  position: relative;
-  top: 5px;
-  margin-left: 38px;
 }
 #assigment-img,#in-to-que-img{
   width: 15px;
@@ -265,33 +265,23 @@ export default {
   position: relative;
   top: 5px;
 }
-#active-que-btn, #deactivate-que-btn{
-  float: right;
-  border-color: #0a64c2;
-  padding: 5px;
-  position: relative;
-  top: 0;
-}
-#active-que-btn{
-  position: relative;
-  top: 0;
-}
-#deactivate-que-btn{
-  position: relative;
-  top: -30px;
-}
 #active-subject-container-table-wrapper{
   display: flex;
   width: 100%;
   justify-content: center;
 }
-@media only screen and (max-width: 700px) {
+#tabs-bar, #info-about-how-to-active-queue{
+  display: block;
+}
+#info-about-how-to-active-queue{
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.82);
+ }
+@media only screen and (min-width: 800px) {
   #studentAss-home-page{
     height: 710px;
-  }
-  #active-que-btn, #deactivate-que-btn{
-    position: relative;
-    top: -30px;
   }
 }
 </style>

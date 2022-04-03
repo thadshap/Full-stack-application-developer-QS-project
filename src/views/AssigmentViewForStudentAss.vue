@@ -79,7 +79,6 @@ export default {
     select: function (e) {
       this.idCheckedStudent = e.currentTarget.id
       this.showAmountOfOvingerDetails  = !this.showAmountOfOvingerDetails
-      console.log(this.showAmountOfOvingerDetails)
       }
   },
 };

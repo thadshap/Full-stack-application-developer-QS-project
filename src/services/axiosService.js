@@ -10,6 +10,7 @@ const apiClient = axios.create({
 })
 
 export default {
+    //administrator and teacher methods
     getTrueIfLoginSuccess(email, password, typeOfUser){
         return apiClient.post('/person/login', {email : email, password :password, typeOfUser : typeOfUser})
     },
@@ -77,5 +78,42 @@ export default {
     },
     getCourseById(courseId){
         return apiClient.get('/courses/' + courseId)
+    },
+    //Student methods
+    getAllCoursesForStudent(userId){
+        return apiClient.get('/courses/' + userId)
+    },
+    getAllCoursesForStudentAssistant(userId){
+        return apiClient.get('/studentAssistant/courses/' + userId)
+    },
+    getAllStudentsInQueue(courseId){
+        return apiClient.get('/students/queue' + courseId)
+    },
+    getAllAssignmentsInCourseForStudentAndIfApproved(courseId, studentId){
+        return apiClient.post('/courses/assignments', {courseId : courseId, studentId : studentId})
+    },
+    postStudentInQueue(typeOfLocation, assignmentNumber, helpOrApproving, campus, building, room, table){
+        return apiClient.post('/courses/queue', {typeOfLocation : typeOfLocation, assignmentNumber : assignmentNumber, helpOrApproving : helpOrApproving, campus : campus, building : building, room : room, table : table})
+
+    },
+    changeTypeOfActiveQueue(courseId, activeBoolean){
+        return apiClient.post('/courses/queue/status', {courseId : courseId, activeBoolean : activeBoolean})
+
+    },
+    getTypeActiveQueue(courseId){
+        return apiClient.get('/courses/queue/status' + courseId)
+    },
+    approveAssignmentForStudent(courseId, userId, assignmentNumber){
+        return apiClient.post('/students/assignment', {courseId : courseId, userId : userId, assignmentNumber : assignmentNumber})
+
+    },
+    changeStateInQueueForStudent(userId, courseId, state){
+        return apiClient.post('/students/queue/changeState', {courseId : courseId, userId : userId, state : state})
+    },
+    getStateInQueueForStudent(userId, courseId){
+        return apiClient.post('/students/queue/getState', {courseId : courseId, userId : userId})
+    },
+    deleteStudentFromQueue(userId, courseId){
+        return apiClient.post('/courses/queue/deleteStudent', {courseId : courseId, userId : userId})
     }
 }

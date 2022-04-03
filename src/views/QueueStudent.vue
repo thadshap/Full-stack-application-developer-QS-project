@@ -161,4 +161,9 @@ td{
 #student-column{
   /*background-color: rgba(0, 128, 0, 0.55);*/
 }
+@media only screen and (min-width: 800px) {
+  #queue-student-container{
+    height: 710px;
+  }
+}
 </style>
