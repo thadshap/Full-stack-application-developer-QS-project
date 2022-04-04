@@ -37,6 +37,7 @@ import AXI from "../services/axiosService";
 export default {
   data() {
     return {
+      logInSuccess : false,
       header: 'Please log in as student',
       user: {
         email: '',

@@ -104,8 +104,8 @@
         /><br />
 
         <div v-for="input in underGroups" :key="input">
-          <div id="inputFieldsVisible" v-if="input.index > 0">
-            Hvor mange øvinger er det i undergruppe nummer {{ input.index }} ?
+          <div id="inputFieldsVisible" v-if="input.courseId > 0">
+            Hvor mange øvinger er det i undergruppe nummer {{ input.courseId }} ?
             <input
               v-model="input.inputNumOfPractices"
               class="inputFields"
@@ -155,7 +155,7 @@ export default {
     return {
       sentSuccessful: false,
       showButton: false,
-      showGroupDetails: false,
+      showGroupDetails: true,
       showInput: false,
       showErrors: false,
       course: {
@@ -165,7 +165,7 @@ export default {
         endDate: "",
         numPractices: 0,
         numOfApprovedPractices: 0,
-        numOfUnderGroups: 0,
+        numOfUnderGroups: 2,
       },
       underGroups: [
         {
@@ -268,7 +268,7 @@ export default {
   color: white;
   text-align: center;
 }
-.inputFields {
+.inputFields, .inputFieldsUndergroup {
   background-color: #2d2c2c;
   border-width: 0 0 2px 0;
   border-color: steelblue;

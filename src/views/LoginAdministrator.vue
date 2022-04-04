@@ -56,9 +56,8 @@ export default {
     loggingIn : async function() {
       this.$store.commit("SET_EMAIL", this.user.email);
       await AXI.getTrueIfLoginSuccess(this.user.email, this.user.password, 3).then(function (response) {
-        this.$store.commit("SET_EMAIL", this.user.email);
         if (response.data.loggedIn){
-          this.$store.commit("SET_USERID", response.data.personId);
+          this.$store.commit("SET_USERID", response.data.id);
           this.$store.commit("SET_EMAIL", this.user.email);
           this.$router.push({
             name: 'administrator'

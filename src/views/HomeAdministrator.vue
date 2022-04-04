@@ -3,9 +3,9 @@
   <menu-bar-administrator></menu-bar-administrator>
     <div id="HomePage">
     <div id="container">
-        <button  v-on:click="archiveCourse" :disabled="disableButton"> Arkiver fag</button>
-        <button v-on:click="showStudents" :disabled="disableButton" > Rediger</button>
-        <button v-on:click="deleteCourse" :disabled="disableButton">Slett fag</button>
+        <button id="archive" v-on:click="archiveCourse" :disabled="disableButton"> Arkiver fag</button>
+        <button id="edit" v-on:click="showStudents" :disabled="disableButton" > Rediger</button>
+        <button id="delete" v-on:click="deleteCourse" :disabled="disableButton">Slett fag</button>
         <div id="courseTable">
           <table id="tableStudents">
             <tr>
@@ -14,7 +14,7 @@
               <th>Startdato</th>
               <th>Forventet sluttdato</th>
             </tr>
-            <tr class="row" v-for="course in courses" v-on:click="select($event)" v-bind:id="course.index" :key="course">
+            <tr  class="row" v-for="course in courses" v-on:click="select($event)" v-bind:id="course.index" :key="course">
               <td id="linkStyle">
                 {{ course.courseCode }}
               </td>
@@ -56,9 +56,10 @@ export default {
     }
   },
   created : async function() {
+    this.$store.commit("SET_USERID", 44);
     //testing
-    this.courses.push({courseName: "statistikk", courseCode: "ISTT1001", index : 20, startDate : "22.03.2022"})
-    this.courses.push({courseName: "statistikk", courseCode: "ISTT1001",index : 21, startDate : "22.03.2022"})
+    //this.courses.push({courseName: "statistikk", courseCode: "ISTT1001", index : 20, startDate : "22.03.2022"})
+    //this.courses.push({courseName: "statistikk", courseCode: "ISTT1001",index : 21, startDate : "22.03.2022"})
 
     await this.getCourses()
   },

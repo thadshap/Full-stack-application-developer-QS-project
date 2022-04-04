@@ -264,7 +264,7 @@ export default {
       }
     },
     sendStudentsFromFile : async function(lastname, firstname, email){
-      this.students.push({email : email, firstName : firstname, lastName : lastname})
+      this.students.push({email : email, firstName : firstname, lastName : lastname});
       await AXI.addStudentToCourse(this.$store.state.courseId, email, firstname, lastname);
     },
     validateStudent: async function() {
@@ -283,7 +283,9 @@ export default {
     },
     sendFile : async function() {
       const lines = this.fileInput.split("\r\n");
-      console.log(lines);
+      console.log(lines.length);
+      console.log(lines[0]);
+      console.log(lines[1]);
       for (let i = 0; i < lines.length; i++) {
         this.help = lines[i].toString();
         let student = this.help.split(",");
