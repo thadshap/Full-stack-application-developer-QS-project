@@ -1,8 +1,14 @@
 body{
     background-color: #202020;
-    height: 825px;
     display: grid;
-    align-items: center;
+    margin: auto;
+}
+input{
+    margin-top: 10px;
+}
+#loginPage{
+    color: white;
+    display: grid;
     justify-items: center;
 }
 #nav {
@@ -20,5 +26,5 @@ body{
 #logo{
     width: 100px;
     height: auto;
-    margin: 30px 0 0 0;
+
 }

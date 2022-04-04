@@ -1,4 +1,4 @@
-# qs_frontend
+# qs_feature-administrator
 
 ## Configure ip-address
  - go to qs_frontend\src\services\axiosService.js
