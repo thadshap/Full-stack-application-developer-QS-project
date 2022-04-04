@@ -1,4 +1,4 @@
-# qs
+# qs_backend
 
 ## Add maven
 - If your pom.xml file does not look like this (Project-QS/pom.xml)
