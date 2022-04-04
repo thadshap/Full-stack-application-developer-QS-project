@@ -1,4 +1,4 @@
-# qs_feature-administrator
+# qs_feature-student
 
 ## Project setup
 ```
