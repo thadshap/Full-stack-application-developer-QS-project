@@ -121,10 +121,12 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import axiosService from "@/services/axiosService";
 import AXI from "@/services/axiosService";
+import store from "@/store";
 
 export default {
   name: "RegisterInLine",
   components: { Footer, Header },
+
   data() {
     return {
       showCampusDetails: false,
@@ -149,13 +151,13 @@ export default {
      */
     getAssignmentsInCourse: async function () {
       await AXI.getAllAssignmentsInCourseForStudentAndIfApproved(
-        this.$store.state.course.courseId,
+        this.$store.state.course.id,
         this.$store.state.userId
       ).then(
         function (response) {
-          this.assignments = response.data;
-        }.bind(this)
-      );
+          store.state.assignments = response.data;
+        }.bind(this));
+        this.assignments = store.state.assignments
     },
     campusChosen() {
       this.showCampusDetails = true;
@@ -171,7 +173,7 @@ export default {
      */
     sendQueueRegistration: async function () {
       await axiosService.postStudentInQueue(
-        this.$store.state.course.courseId,
+        this.$store.state.course.id,
         this.$store.state.userId,
         Boolean(this.studentInQueue.location),
         Boolean(this.studentInQueue.assessmentType),
