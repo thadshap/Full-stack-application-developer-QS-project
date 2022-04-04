@@ -54,11 +54,6 @@ export default {
     };
   },
   created : async function() {
-    this.$store.commit("SET_USERID", 44);
-    //testing
-    //this.courses.push({courseName: "statistikk", courseCode: "ISTT1001", index : 20, startDate : "22.03.2022"})
-    //this.courses.push({courseName: "statistikk", courseCode: "ISTT1001",index : 21, startDate : "22.03.2022"})
-
     await this.getCourses();
   },
   methods: {
@@ -69,16 +64,11 @@ export default {
      */
     getCourses: async function () {
       if (this.$store.state.typeOfUser === 3) {
-        try {
           await AXI.getAllCourses().then(
             function (response) {
               this.courses = response.data;
-              console.log(response.data);
             }.bind(this)
           );
-        } catch (error) {
-          console.log(error);
-        }
       } else{
         await AXI.getAllCoursesForTeacher(this.$store.state.userId).then(function (response) {
           this.courses = response.data;
@@ -90,12 +80,8 @@ export default {
      * method to delete a course
      */
     deleteCourse: async function () {
-      try {
         await AXI.deleteCourse(this.$store.state.courseId);
         await this.getCourses();
-      } catch (error) {
-        console.log(error);
-      }
     },
     /**
      * method to archive a course
@@ -122,7 +108,6 @@ export default {
       }
       document.getElementById(e.currentTarget.id).style.backgroundColor = '#4682B493';
     }
-}
 }
 </script>
 

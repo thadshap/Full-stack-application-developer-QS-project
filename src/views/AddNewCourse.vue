@@ -155,25 +155,11 @@ export default {
     return {
       sentSuccessful: false,
       showButton: false,
-      showGroupDetails: true,
+      showGroupDetails: false,
       showInput: false,
       showErrors: false,
-      course: {
-        courseCode: "",
-        name: "",
-        startDate: "",
-        endDate: "",
-        numPractices: 0,
-        numOfApprovedPractices: 0,
-        numOfUnderGroups: 2,
-      },
-      underGroups: [
-        {
-          index: 0,
-          inputNumOfPractices: 0,
-          inputNumOfApproved: 0,
-        },
-      ],
+      course: {},
+      underGroups: [],
       errors: {
         courseCode: "",
         name: "",
@@ -223,7 +209,6 @@ export default {
         })
         .catch((error) => {
           error.inner.forEach((error) => {
-            console.log(error);
             this.errors = { ...this.errors, [error.path]: error.message };
           });
         });
@@ -232,7 +217,6 @@ export default {
      * method that sends course to database
      */
     sendCourse: async function () {
-      try {
         await AXI.postNewCourse(
           this.$store.state.typeOfUser,
           this.course.courseCode,
@@ -244,9 +228,6 @@ export default {
           this.underGroups
         );
         await this.getCourses();
-      } catch (error) {
-        console.log(error);
-      }
     },
     validate(field) {
       validationSchema

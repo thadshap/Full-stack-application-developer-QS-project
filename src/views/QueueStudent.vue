@@ -53,28 +53,8 @@ export default {
   components: { Footer, Header },
   data() {
     return {
-      students: [
-        {
-          name: "Sander Hansen",
-          id: "1",
-          location: "Realfagsbygget A4 112 6",
-          type: "Godkjenning",
-        },
-        {
-          name: "Hanne Hansen",
-          studentId: "2",
-          location: "digital",
-          type: "Hjelp",
-        },
-        {
-          name: "Sogne fri",
-          studentId: "3",
-          location: "digital",
-          type: "Hjelp",
-          statusInQueue: "BUSY",
-        },
-      ],
-      amountOfStudentsInQueue: 0,
+      students: [],
+      amountOfStudentsInQueue: null,
     };
   },
   created: async function () {

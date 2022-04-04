@@ -137,20 +137,7 @@ export default {
         assignmentNumber: null,
         assessmentType: "",
       },
-      assignments: [
-        {
-          number: 1,
-          approved: "Ikke godkjent",
-        },
-        {
-          number: 2,
-          approved: "Ikke godkjent",
-        },
-        {
-          number: 3,
-          approved: "Ikke godkjent",
-        },
-      ],
+      assignments: [],
     };
   },
   created: async function () {

@@ -69,40 +69,8 @@ export default {
       showAmountOfOvingerDetails: false,
       assignmentsList: [],
       idCheckedStudent: null,
-      //TODO REMOVE EVERYTHING INSIDE COURSE
-      course: [
-        {
-          subjectName: "Fullstack",
-          subjectCode: "IDATT2101",
-        },
-      ],
-      //TODO REMOVE EVERYTHING INSIDE STUDENT
-      students: [
-        {
-          name: "Sander Hansen",
-          index: 1,
-          assigments: [
-            {
-              name: "Øving 1",
-              approved: false,
-            },
-            {
-              name: "Øving 2",
-              approved: false,
-            },
-          ],
-        },
-        {
-          name: "Helene Hansen",
-          index: 2,
-          assigments: [
-            {
-              name: "Øving 1",
-              approved: true,
-            },
-          ],
-        },
-      ],
+      course: [],
+      students: [],
     };
   },
   created: async function () {
