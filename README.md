@@ -16,6 +16,8 @@ npm install
 ```
 npm run serve
 ```
+In order to use this application, use network URL
+![](../feature-student/Skjermbilde%202022-04-04%20kl.%2015.29.07.png)
 
 ### Compiles and minifies for production
 ```
