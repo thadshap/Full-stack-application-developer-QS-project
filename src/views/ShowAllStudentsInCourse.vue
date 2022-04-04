@@ -1,77 +1,79 @@
 <template>
   <Header></Header>
   <div id="studentsToShow">
-    <button id="goBack" v-on:click="goBack">Gå tilbake</button><br>
+    <button id="goBack" v-on:click="goBack">Gå tilbake</button><br />
     <button id="addStudent" v-on:click="addNewStudent">Legg til student</button>
     <button id="addTeacher" v-on:click="addNewTeacher">Legg til lærer</button>
     <button id="addStudentTeacher" v-on:click="addStudentTeacher">
-      Legg til studentassistent</button><br>
+      Legg til studentassistent
+    </button>
+    <br>
     <div id="showAddStudent" v-if="showAddPerson">
-      <br />
+      <br>
       fornavn:
       <input
-          @validate="validate('firstName')"
-          v-model="addPerson.firstName"
-          id="firstName"
-          class="inputFields"
-          type="text"
-          placeholder="fornavn"
-      /><br />
+        @validate="validate('firstName')"
+        v-model="addPerson.firstName"
+        id="firstName"
+        class="inputFields"
+        type="text"
+        placeholder="fornavn"
+      />
+      <br>
       etternavn:
       <input
-          @validate="validate('lastName')"
-          v-model="addPerson.lastName"
-          id="lastName"
-          class="inputFields"
-          type="text"
-          placeholder="etternavn"
-      /><br />
+        @validate="validate('lastName')"
+        v-model="addPerson.lastName"
+        id="lastName"
+        class="inputFields"
+        type="text"
+        placeholder="etternavn"
+      />
+      <br>
       email:
       <input
-          @validate="validate('email')"
-          v-model="addPerson.email"
-          id="email"
-          class="inputFields"
-          type="text"
-          placeholder="email"
-      /><br />
+        @validate="validate('email')"
+        v-model="addPerson.email"
+        id="email"
+        class="inputFields"
+        type="text"
+        placeholder="email"
+      />
+      <br>
       <div class="errorbox" v-if="showErrors">{{ errors.email }}</div>
       <div class="errorbox" v-if="showErrors">{{ errors.firstName }}</div>
       <div class="errorbox" v-if="showErrors">{{ errors.lastName }}</div>
-      <button id="sendStudent" v-on:click="validateStudent">
-        Send
-      </button><br>
+      <button id="sendStudent" v-on:click="validateStudent">Send</button>
+      <br>
     </div>
     Fjern student fra faget:
     <input
-        id="studentToDelete"
-        class="inputFields"
-        type="text"
-        v-model="deleteEmail"
-        v-on:click="deleteStudent"
-        placeholder="email"
+      id="studentToDelete"
+      class="inputFields"
+      type="text"
+      v-model="deleteEmail"
+      v-on:click="deleteStudent"
+      placeholder="email"
     />
     <button id="deleteStudent" v-on:click="deleteStudent">Fjern student</button>
-
     <p id="add-student-file-header">Legg til CSV fil med studenter:</p>
     <input
-        id="file"
-        class="inputFields"
-        type="file"
-        accept=".csv"
-        v-on:change="changeFile"
-        hidden
+      id="file"
+      class="inputFields"
+      type="file"
+      accept=".csv"
+      v-on:change="changeFile"
+      hidden
     />
-    <label id="file-button" for="file" v-on:click="changeFileDesign"
-    >Velg fil</label
-    >
+    <label id="file-button" for="file" v-on:click="changeFileDesign">
+      Velg fil
+    </label>
     <span id="file-chosen">No file chosen</span>
     <button id="sendFile" v-on:click="sendFile" v-if="showSendFile">
       Send
     </button>
-
     <h3>Studenter i emnet {{ course }}</h3>
-    <br />
+    <br>
     Øvingskrav i faget: {{ demandOnPractices }}
     <div id="tableStudents-wrapper">
       <table id="tableStudents">
@@ -86,9 +88,11 @@
           </td>
           <td>{{ student.firstName }} {{ student.lastName }}</td>
           <td>
-            <div  v-for="assign in student.assignments" :key="assign">
-            Øving : {{assign.assignmentNr}}<br>
-            Godkjent : {{assign.approved}}<br>
+            <div v-for="assign in student.assignments" :key="assign">
+              Øving : {{ assign.assignmentNr }}
+              <br>
+              Godkjent : {{ assign.approved }}
+              <br>
             </div>
           </td>
         </tr>
@@ -129,20 +133,20 @@ export default {
       course: "",
       students: [
         {
-          email : "e@cool.no",
-          firstName : "Eirin",
-          lastName : "svins",
-          assignments : [
+          email: "e@cool.no",
+          firstName: "Eirin",
+          lastName: "svins",
+          assignments: [
             {
-              assignmentNr : 1,
-              approved : false
+              assignmentNr: 1,
+              approved: false,
             },
             {
-              assignmentNr : 2,
-              approved : true
-            }
+              assignmentNr: 2,
+              approved: true,
+            },
           ],
-        }
+        },
       ],
       fileInput: "",
       help: "",
@@ -153,20 +157,24 @@ export default {
       },
     };
   },
-  created : async function() {
+  created: async function () {
     await this.getAllStudents();
-    await this.getPracticeDemandsForCourse()
+    await this.getPracticeDemandsForCourse();
   },
   methods: {
     /**
      * Method that gets how many assignments a course have, and how many who need to be approved
      */
-    getPracticeDemandsForCourse: async function(){
+    getPracticeDemandsForCourse: async function () {
       await AXI.getCourseById().then(
         function (response) {
-          this.demandOnPractice = response.data.minApprovedAssignments + " av " + response.data.numberOfAssignment + "må være godkjent";
-          }.bind(this));
-
+          this.demandOnPractice =
+            response.data.minApprovedAssignments +
+            " av " +
+            response.data.numberOfAssignment +
+            "må være godkjent";
+        }.bind(this)
+      );
     },
 
     /**
@@ -175,21 +183,25 @@ export default {
      */
     getAllStudents: async function () {
       await AXI.getAllStudentsInCourse(this.$store.state.courseId).then(
-          function (response) {
-            this.students = response.data;
-          }.bind(this)
-        );
+        function (response) {
+          this.students = response.data;
+        }.bind(this)
+      );
       await this.addAssignmentsAndApprovedOrNot();
     },
     /**
      * method to get the courses assignments, and whether the assignments are approved or not for all students
      */
-    addAssignmentsAndApprovedOrNot: async function(){
-      for(let i=0; i<this.students.length; i++){
-        await AXI.getAllAssignmentsInCourseForStudentAndIfApproved(this.$store.state.courseId, this.students[i].studentId).then(
-            function (response) {
-              this.students[i].assignments = response.data;
-            }.bind(this));
+    addAssignmentsAndApprovedOrNot: async function () {
+      for (let i = 0; i < this.students.length; i++) {
+        await AXI.getAllAssignmentsInCourseForStudentAndIfApproved(
+          this.$store.state.courseId,
+          this.students[i].studentId
+        ).then(
+          function (response) {
+            this.students[i].assignments = response.data;
+          }.bind(this)
+        );
       }
     },
     changeFileDesign() {
@@ -208,23 +220,23 @@ export default {
       });
     },
     addNewStudent() {
-      this.currentAddUserType = "student"
+      this.currentAddUserType = "student";
       this.showAddPerson = true;
     },
     addNewTeacher() {
-      this.currentAddUserType = "teacher"
+      this.currentAddUserType = "teacher";
       this.showAddPerson = true;
     },
     addStudentTeacher() {
-      this.currentAddUserType = "studentTeacher"
+      this.currentAddUserType = "studentTeacher";
       this.showAddPerson = true;
     },
     deleteStudent: async function () {
-        await AXI.deleteStudentFromCourse(
-          this.$store.state.courseId,
-          this.deleteEmail
-        );
-        await this.getAllStudents();
+      await AXI.deleteStudentFromCourse(
+        this.$store.state.courseId,
+        this.deleteEmail
+      );
+      await this.getAllStudents();
     },
     /**
      * Add a student, student teacher or teacher to the course
@@ -232,42 +244,49 @@ export default {
      * @returns {Promise<void>}
      */
     sendPerson: async function () {
-      if (this.currentAddUserType === "student"){
+      if (this.currentAddUserType === "student") {
         await AXI.addStudentToCourse(
+          this.$store.state.courseId,
+          this.addPerson.email,
+          this.addPerson.firstName,
+          this.addPerson.lastName
+        );
+        await this.getAllStudents();
+      }
+      if (this.currentAddUserType === "teacher") {
+        await AXI.addTeacherToCourse(
+          this.$store.state.courseId,
+          this.addPerson.email,
+          this.addPerson.firstName,
+          this.addPerson.lastName
+        );
+        await this.getAllStudents();
+
+        if (this.currentAddUserType === "studentTeacher") {
+          await AXI.addTeacherToCourse(
             this.$store.state.courseId,
             this.addPerson.email,
             this.addPerson.firstName,
             this.addPerson.lastName
           );
           await this.getAllStudents();
-
-      }
-      if (this.currentAddUserType === "teacher"){
-          await AXI.addTeacherToCourse(
-              this.$store.state.courseId,
-              this.addPerson.email,
-              this.addPerson.firstName,
-              this.addPerson.lastName
-          );
-          await this.getAllStudents();
-
-        if (this.currentAddUserType === "studentTeacher") {
-            await AXI.addTeacherToCourse(
-                this.$store.state.courseId,
-                this.addPerson.email,
-                this.addPerson.firstName,
-                this.addPerson.lastName
-            );
-            await this.getAllStudents();
-
         }
       }
     },
-    sendStudentsFromFile : async function(lastname, firstname, email){
-      this.students.push({email : email, firstName : firstname, lastName : lastname})
-      await AXI.addStudentToCourse(this.$store.state.courseId, email, firstname, lastname);
+    sendStudentsFromFile: async function (lastname, firstname, email) {
+      this.students.push({
+        email: email,
+        firstName: firstname,
+        lastName: lastname,
+      });
+      await AXI.addStudentToCourse(
+        this.$store.state.courseId,
+        email,
+        firstname,
+        lastname
+      );
     },
-    validateStudent: async function() {
+    validateStudent: async function () {
       this.showErrors = true;
       validationSchema
         .validate(this.addPerson, { abortEarly: false })
@@ -281,14 +300,14 @@ export default {
           });
         });
     },
-    sendFile : async function() {
+    sendFile: async function () {
       const lines = this.fileInput.split("\r\n");
       console.log(lines);
       for (let i = 0; i < lines.length; i++) {
         this.help = lines[i].toString();
         let student = this.help.split(",");
         console.log(student);
-        await this.sendStudentsFromFile(student[0], student[1], student[2])
+        await this.sendStudentsFromFile(student[0], student[1], student[2]);
       }
     },
     changeFile(e) {
