@@ -34,48 +34,74 @@ public class CourseController {
      * name, code, how many students take the course
      */
     @ApiOperation(value = "Gets all registered courses",
-                  notes = "All courses registered by an administrator will be returned in this method",
+                  notes = "All courses registered in database",
                   response = CourseController.class)
     @GetMapping()
     public ResponseEntity<Object> getAllCourses() {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Gets all the courses to a teacher",
+            notes = "Gets all the courses that a teacher is teaching in",
+            response = CourseController.class)
     @GetMapping("/teachers/{teacherId}")
     public ResponseEntity<Object> getAllCoursesForTeacher(@ApiParam(value = "ID value for the teacher you need to retrieve all courses to")
                                                               @PathVariable("teacherId") long id) {
         return courseService.getAllCoursesByTeacherId(id);
     }
 
+    @ApiOperation(value = "Gets all the courses to a student",
+            notes = "Gets all the courses that a student is registered in",
+            response = CourseController.class)
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<Object> getAllCoursesForStudent(@PathVariable("studentId") long id) {
+    public ResponseEntity<Object> getAllCoursesForStudent(@ApiParam(value = "ID value for the student you need to retrieve all courses to")
+                                                            @PathVariable("studentId") long id) {
         return courseService.getAllCoursesForStudent(id);
     }
 
+    @ApiOperation(value = "Gets all the students registered in a course",
+            notes = "Gets all the students has been registered in a course",
+            response = CourseController.class)
     @GetMapping("/students/{courseId}")
-    public ResponseEntity<Object> getAllStudentsInCourse(@PathVariable("courseId") long courseId){
+    public ResponseEntity<Object> getAllStudentsInCourse(@ApiParam(value = "ID value for the course you need to retrieve all students from")
+                                                             @PathVariable("courseId") long courseId){
         return courseService.getAllStudentsInCourse(courseId);
     }
 
+    @ApiOperation(value = "Gets all the courses to a student assistant",
+            notes = "Gets all the courses that a student is student assistant in",
+            response = CourseController.class)
     @GetMapping("/studentAssistants/{studentId}")
-    public ResponseEntity<Object> getAllCoursesForStudentAssistant(@PathVariable("studentId") long id) {
+    public ResponseEntity<Object> getAllCoursesForStudentAssistant(@ApiParam(value = "ID value for the student assistant you need to retrieve all the courses to")
+                                                                       @PathVariable("studentId") long id) {
         return courseService.getAllCoursesForStudentAssistant(id);
     }
 
     // assignmentNr, approved
+    @ApiOperation(value = "Gets all assignments in a course for a student",
+            notes = "When a student enters a course, the student will receive all the assignment in the course and whether they are approved or not",
+            response = CourseController.class)
     @PostMapping("/assignments")
-    public ResponseEntity<Object> getAllAssignmentsInCourseForStudentAndIfApproved(@RequestBody CourseIn dto){
+    public ResponseEntity<Object> getAllAssignmentsInCourseForStudentAndIfApproved(@ApiParam(value = "CourseIn dto")
+                                                                                       @RequestBody CourseIn dto){
         return courseService.getAllAssignmentsForStudentInCourse(dto.getPersonId(),dto.getCourseId());
     }
 
+    @ApiOperation(value = "Gets course by id",
+            notes = "Gets all the info about a course when sending its id to the method",
+            response = CourseController.class)
     @GetMapping("/{courseId}")
-    public ResponseEntity<Object> getCourseById(@PathVariable("courseId") long courseId){
+    public ResponseEntity<Object> getCourseById(@ApiParam(value = "ID value of the course")
+                                                    @PathVariable("courseId") long courseId){
         return courseService.getCourse(courseId);
     }
 
-
+    @ApiOperation(value = "Register new course",
+            notes = "Post method to register a new course in database",
+            response = CourseController.class)
     @PostMapping("/addNew")
-    public ResponseEntity<Object> postNewCourse(@RequestBody CourseIn dto) {
+    public ResponseEntity<Object> postNewCourse(@ApiParam(value = "CourseIn dto")
+                                                    @RequestBody CourseIn dto) {
         return courseService.createCourse(dto);
     }
 
@@ -86,8 +112,16 @@ public class CourseController {
      *
      * @param dto contains the assignments that are to be placed in the group
      */
+    @ApiOperation(value = "Register a set of assignment under a course",
+            notes = "A course can have a lot of assignments and those assignments can be divided in groups. " +
+                    "This is due to that for example a course can have ten assignments and to pass that course you have " +
+                    "to get three out of the four first assignment approved. Then the other assignment group will " +
+                    "be from the fifth assignment to the eighth assignment, and two out of thee assignments need to be " +
+                    "approved and so goes on. So that's why under group of assignment is needed",
+            response = CourseController.class)
     @PostMapping("/newGroup")
-    public ResponseEntity<Object> postUnderGroupCourse(@RequestBody GroupIn dto) {
+    public ResponseEntity<Object> postUnderGroupCourse(@ApiParam(value = "GroupIn dto")
+                                                           @RequestBody GroupIn dto) {
         try {
             courseService.addGroupOfAssignmentToCourse(dto);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -103,8 +137,12 @@ public class CourseController {
      *
      * @return HttpStatus OK or NOT_FOUND
      */
+    @ApiOperation(value = "Delete course",
+            notes = "Deletes a course from the database by the course id",
+            response = CourseController.class)
     @DeleteMapping("/{courseId}")
-    public ResponseEntity<Object> deleteCourse(@PathVariable("courseId") long courseId){
+    public ResponseEntity<Object> deleteCourse(@ApiParam(value = "ID value of the course")
+                                                   @PathVariable("courseId") long courseId){
         return courseService.deleteCourse(courseId);
     }
 
@@ -113,27 +151,48 @@ public class CourseController {
      * @param dto
      * @return
      */
+    @ApiOperation(value = "Archive a course",
+            notes = "If a semester is over, the course will be archived which means that the attribute under course called archive set to true",
+            response = CourseController.class)
     @PostMapping("/archive")
-    public ResponseEntity<Object> archiveCourse(@RequestBody CourseIn dto){
+    public ResponseEntity<Object> archiveCourse(@ApiParam(value = "CourseIn dto")
+                                                    @RequestBody CourseIn dto){
         return courseService.archiveCourse(dto.getCourseId());
     }
+
+    @ApiOperation(value = "Archive a course",
+            notes = "If a semester is over, the course will be archived which means that the attribute under course called archive set to true",
+            response = CourseController.class)
     @PostMapping("/addStudent")
-    public ResponseEntity<Object> addStudentToCourse(@RequestBody PersonIn dto){
+    public ResponseEntity<Object> addStudentToCourse(@ApiParam(value = "PersonIn dto")
+                                                         @RequestBody PersonIn dto){
         return courseService.addStudentToCourse(dto);
     }
 
+    @ApiOperation(value = "Add teacher to course",
+            notes = "Adds a teacher to a specific course",
+            response = CourseController.class)
     @PostMapping("/addTeacher")
-    public ResponseEntity<Object> addTeacherToCourse(@RequestBody PersonIn dto){
+    public ResponseEntity<Object> addTeacherToCourse(@ApiParam(value = "PersonIn dto")
+                                                         @RequestBody PersonIn dto){
         return courseService.addTeacherToCourse(dto);
     }
 
+    @ApiOperation(value = "Add student assistant to course",
+            notes = "Adds a student assistant to a specific course",
+            response = CourseController.class)
     @PostMapping("/addStudentAssistant")
-    public ResponseEntity<Object> addStudentAssistantToCourse(@RequestBody PersonIn dto){
+    public ResponseEntity<Object> addStudentAssistantToCourse(@ApiParam(value = "PersonIn dto")
+                                                                  @RequestBody PersonIn dto){
         return courseService.addStudentAssistantToCourse(dto);
     }
 
+    @ApiOperation(value = "Remove student from course",
+            notes = "Removes a student from a specific course",
+            response = CourseController.class)
     @DeleteMapping("/removeStudent")
-    public ResponseEntity<Object> deleteStudentFromCourse(@RequestBody PersonIn student){
+    public ResponseEntity<Object> deleteStudentFromCourse(@ApiParam(value = "PersonIn student")
+                                                              @RequestBody PersonIn student){
         return courseService.removeStudentFromCourse(student.getCourseId(), student.getEmail());
     }
 }

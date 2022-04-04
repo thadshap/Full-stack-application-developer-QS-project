@@ -22,6 +22,6 @@ public class Administrator extends Person {
 
     // One-to-one relationship with AdminUser
     @OneToOne(mappedBy = "administrator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ApiModelProperty("AdminUser object")
+    @ApiModelProperty("A user that is an admin")
     private AdminUser adminUser;
 }
