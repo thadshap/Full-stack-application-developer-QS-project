@@ -130,6 +130,7 @@ export default {
       showErrors: false,
       addPerson: { firstName: "", lastName: "", email: "" },
       demandOnPractices: "",
+      numAssign : 0,
       course: "",
       students: [
         {
@@ -147,22 +148,19 @@ export default {
   },
   created: async function () {
     await this.getAllStudents();
-    await this.getPracticeDemandsForCourse();
+    this.getPracticeDemandsForCourse();
   },
   methods: {
     /**
      * Method that gets how many assignments a course have, and how many who need to be approved
      */
-    getPracticeDemandsForCourse: async function () {
-      await AXI.getCourseById().then(
-        function (response) {
-          this.demandOnPractice =
-            response.data.minApprovedAssignments +
-            " av " +
-            response.data.numberOfAssignment +
-            "må være godkjent";
-        }.bind(this)
-      );
+    getPracticeDemandsForCourse() {
+      console.log(this.$store.state.course);
+      this.demandOnPractices =
+          (this.$store.state.course.minApprovedAssignments +
+          " av " +
+          this.$store.state.course.numberOfAssignments +
+          "må være godkjent").toString();
     },
 
     /**
@@ -170,7 +168,7 @@ export default {
      * @returns {Promise<void>}
      */
     getAllStudents: async function () {
-      await AXI.getAllStudentsInCourse(this.$store.state.courseId).then(
+      await AXI.getAllStudentsInCourse(this.$store.state.course.id).then(
         function (response) {
           this.students = response.data;
         }.bind(this)
@@ -183,8 +181,8 @@ export default {
     addAssignmentsAndApprovedOrNot: async function () {
       for (let i = 0; i < this.students.length; i++) {
         await AXI.getAllAssignmentsInCourseForStudentAndIfApproved(
-          this.$store.state.courseId,
-          this.students[i].studentId
+          this.$store.state.course.id,
+          this.students[i].id
         ).then(
           function (response) {
             this.students[i].assignments = response.data;
