@@ -14,12 +14,12 @@
               <th>Startdato</th>
               <th>Forventet sluttdato</th>
             </tr>
-            <tr  class="row" v-for="course in courses" v-on:click="select($event)" v-bind:id="course.index" :key="course">
+            <tr  class="row" v-for="course in courses" v-on:click="select($event)" v-bind:id="course.id" :key="course">
               <td id="linkStyle">
-                {{ course.courseCode }}
+                {{ course.code }}
               </td>
               <td>
-                {{course.courseName}}
+                {{course.name}}
               </td>
               <td>
                 {{course.startDate}}
@@ -42,6 +42,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MenuBarAdministrator from "@/components/menuBarAdministrator";
 import AXI from "../services/axiosService";
+import store from "@/store";
+
 export default {
   name: "HomeAdministrator",
   components: { MenuBarAdministrator, Footer, Header },
@@ -63,19 +65,21 @@ export default {
      * else it is a teacher, who will get the courses the teacher is registered on
      */
     getCourses: async function () {
+      console.log(this.$store.state.userId);
       if (this.$store.state.typeOfUser === 3) {
           await AXI.getAllCourses().then(
             function (response) {
-              this.courses = response.data;
+              store.state.courses = response.data;
             }.bind(this)
           );
       } else{
         await AXI.getAllCoursesForTeacher(this.$store.state.userId).then(function (response) {
-          this.courses = response.data;
+          console.log(response.data);
+          store.state.courses = response.data;
         }.bind(this))
       }
-      }
-    },
+      this.courses = this.$store.state.courses;
+      },
     /**
      * method to delete a course
      */
@@ -108,6 +112,7 @@ export default {
       }
       document.getElementById(e.currentTarget.id).style.backgroundColor = '#4682B493';
     }
+}
 }
 </script>
 
