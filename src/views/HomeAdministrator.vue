@@ -105,8 +105,12 @@ export default {
      */
     select: function (e) {
       this.disableButton = false;
-      this.$store.commit("SET_COURSEID", e.currentTarget.id);
       let rows = document.getElementsByClassName("row");
+      for(let i = 0; i<this.courses.length; i++){
+        if(this.courses[i].toString() === e.currentTarget.id){
+          this.$store.commit("SET_COURSE", this.courses[i]);
+        }
+      }
       for (let i = 0; i < rows.length; i++) {
         rows[i].style.backgroundColor = "#202020";
       }
