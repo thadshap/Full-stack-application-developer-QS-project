@@ -76,6 +76,23 @@ export default {
   },
   methods: {
     /**
+     * changes the status bare based on how many assignments the student has approved
+     */
+    statusOfAssignmentApproval(){
+      let aprovalAssignments = 0
+      for (let i = 0; i<this.assigments.length; i++){
+        if (this.assignments[i].approved===true){
+          aprovalAssignments += 1
+        }
+      }
+      if (this.minimumAssignmentsApproved>aprovalAssignments){
+        this.status = "Ikke godkjent"
+      }
+      else{
+        this.status = "Godkjent"
+      }
+    },
+    /**
      * method to get all assignments in current course for a student,
      * as well as getting whether they are approved or not
      */

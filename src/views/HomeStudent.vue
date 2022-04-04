@@ -29,8 +29,8 @@
           <div
             class="active-subject-container"
             v-for="course in coursess"
-            v-bind:id="course.courseId"
-            :key="course.courseId"
+            v-bind:id="course.id"
+            :key="course.id"
           >
             <div id="sub-name-container">
               <p id="sub-name">{{ course.name }}</p>

@@ -69,7 +69,7 @@ export default {
      */
     getAllStudentsCurrentlyInQueue: async function () {
       await axiosService
-        .getAllStudentsInQueue(this.$store.state.course.courseId)
+        .getAllStudentsInQueue(this.$store.state.course.id)
         .then(
           function (response) {
             store.state.students = response.data;
@@ -107,7 +107,7 @@ export default {
       if (this.$store.state.isStudentAssistant) {
         await axiosService.changeStateInQueueForStudent(
           event.currentTarget.id,
-          this.$store.state.course.courseId,
+          this.$store.state.course.id,
           "BUSY"
         );
         for (let i = 0; i < this.students.length; i++) {

@@ -151,7 +151,7 @@ export default {
      */
     getAssignmentsInCourse: async function () {
       await AXI.getAllAssignmentsInCourseForStudentAndIfApproved(
-        this.$store.state.course.courseId,
+        this.$store.state.course.id,
         this.$store.state.userId
       ).then(
         function (response) {
@@ -173,7 +173,7 @@ export default {
      */
     sendQueueRegistration: async function () {
       await axiosService.postStudentInQueue(
-        this.$store.state.course.courseId,
+        this.$store.state.course.id,
         this.$store.state.userId,
         Boolean(this.studentInQueue.location),
         Boolean(this.studentInQueue.assessmentType),
