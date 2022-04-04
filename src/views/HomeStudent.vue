@@ -49,6 +49,7 @@
                 class="studentButtons"
                 v-bind:id="course.courseId"
                 v-on:click="goToQueue($event)"
+                @change="disableQueueBtnIfNotActive($event)"
               >
                 <img id="in-to-que-img" src="./../assets/in-to-que.png" />
                 Til kø
@@ -93,6 +94,20 @@ export default {
     this.$store.commit("SET_ISSTUDENTASSISTANT", false);
   },
   methods: {
+    /**
+     * Disable the queue button if the queue is not active and the button will be abled if the queue is active
+     * @param event course id
+     * @returns {Promise<void>}
+     */
+    disableQueueBtnIfNotActive: async function(event){
+      const targetId = event.currentTarget.id;
+      if (await axiosService.getTypeActiveQueue(targetId) === false){
+        document.getElementById(targetId).disable = false
+      }
+      else {
+        document.getElementById(targetId).disable = true
+      }
+    },
     /**
      * method to get all courses registered for a student from database
      */
