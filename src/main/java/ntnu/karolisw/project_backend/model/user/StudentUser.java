@@ -7,6 +7,7 @@ import lombok.Setter;
 import ntnu.karolisw.project_backend.model.Student;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 /**
  * Class for use during login
@@ -37,7 +38,25 @@ public class StudentUser {
     // one-to-one between user account and the person entity
     // One-to-one connection with student
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
     private Student student;
 
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    @Override
+    public String toString() {
+        return "StudentUser{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password=" + Arrays.toString(password) +
+                ", salt=" + Arrays.toString(salt) +
+                ", student=" + student +
+                '}';
+    }
 }

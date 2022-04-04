@@ -36,6 +36,6 @@ public class TeacherUser {
     // one-to-one between user account and the person entity
     // One-to-one connection with student
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     private Teacher teacher;
 }

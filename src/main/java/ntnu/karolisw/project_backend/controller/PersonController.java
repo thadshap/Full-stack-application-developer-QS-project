@@ -23,7 +23,6 @@ public class PersonController {
      */
     @PostMapping("/getPronouns")
     public ResponseEntity<Object> getPronouns(@RequestBody PersonIn dto) {
-        System.out.println(userService.getPronouns(dto));
         return userService.getPronouns(dto);
     }
 

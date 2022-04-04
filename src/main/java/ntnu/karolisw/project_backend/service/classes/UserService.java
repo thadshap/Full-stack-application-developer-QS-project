@@ -1,5 +1,6 @@
 package ntnu.karolisw.project_backend.service.classes;
 
+import com.opencsv.CSVWriter;
 import ntnu.karolisw.project_backend.dto.in.PersonIn;
 import ntnu.karolisw.project_backend.dto.out.PersonOut;
 import ntnu.karolisw.project_backend.model.Administrator;
@@ -20,12 +21,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UserService implements UserServiceI {
@@ -90,7 +95,9 @@ public class UserService implements UserServiceI {
     public void saveNewUser(String email, String password, long personId, int userBit) throws Exception {
         // Generate a hashed password
         byte[] randomSalt = generateRandomSalt();
-        byte[] hashedPassword = hashPassword(password, generateRandomSalt());
+        System.out.println("Newly created salt: " + randomSalt);
+        // byte[] hashedPassword = hashPassword(password, generateRandomSalt());
+        byte[] hashedPassword = hashPassword(password, randomSalt);
 
         // If student
         if(userBit == 1) {
@@ -242,27 +249,33 @@ public class UserService implements UserServiceI {
         // Get the user
         if (userBit == 1) {
             Optional<StudentUser> studentUser = studentUserRepository.findByEmail(email);
-
             // If the user is present
             if (studentUser.isPresent()) {
+
                 // Get the salt
                 byte[] hashingSalt = studentUser.get().getSalt();
+
                 // Apply the salt to the password
                 byte[] hashedPassword = hashPassword(password, hashingSalt);
+
                 // Get the password from the db
                 byte[] actualPassword = studentUser.get().getPassword();
+
                 // If the passwords match
                 if (Arrays.toString(actualPassword).equals(Arrays.toString(hashedPassword))) {
 
                     // Create dto
                     PersonOut dto = new PersonOut();
-                    dto.setPersonId(studentUser.get().getStudent().getId());
+
+                    // Get student user
+                    Student student = studentUserRepository.getStudentByUserId(studentUser.get().getId());
+                    dto.setPersonId(student.getId());
                     dto.setLoggedIn(true);
                     return dto;
                 } else {
                     throw new IllegalAccessException("The passwords did not match. " +
-                            "\n The db password was: " + new String(actualPassword, StandardCharsets.UTF_8) +
-                            "\n The input password was: " + password);
+                            "\n The db password was: " +  Arrays.toString(actualPassword) +
+                            "\n The input password was: " + Arrays.toString(hashedPassword));
                 }
             }
             // If the user is not present
@@ -282,8 +295,10 @@ public class UserService implements UserServiceI {
                 byte[] actualPassword = teacherUser.get().getPassword();
                 // If the passwords match
                 if (Arrays.toString(actualPassword).equals(Arrays.toString(hashedPassword))) {
+
                     // Create a dto
                     PersonOut dto = new PersonOut();
+
                     dto.setPersonId(teacherUser.get().getTeacher().getId());
                     dto.setLoggedIn(true);
 
@@ -337,10 +352,36 @@ public class UserService implements UserServiceI {
         }
     }
 
+    private static void writeUserToFile(String filePath, long userId, int typeOfUser, String password) {
+        try {
+            // Create FileWriter object with file as parameter
+            FileWriter fileWriter = new FileWriter(filePath, true);
+
+            // Create CSVWriter (dependency = openCsv)
+            CSVWriter writer = new CSVWriter(fileWriter);
+
+            // Adding header to csv
+            String[] header = {"id", "type", "password"};
+
+            // Write the header to csv
+            writer.writeNext(header);
+
+            // add data to csv
+            String[] data1 = {String.valueOf(userId), String.valueOf(typeOfUser), password};
+            writer.writeNext(data1);
+
+            // closing writer connection
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public ResponseEntity<Object> addNewStudent(PersonIn dto) {
+
         // Generate random password using salt method...
-        String password = generateRandomPassword();
+        String password = (generateRandomPassword());
 
         // Generate the salt
         byte [] salt = generateRandomSalt();
@@ -353,7 +394,7 @@ public class UserService implements UserServiceI {
 
         // Create user account for that student
         StudentUser studentUser = new StudentUser();
-        studentUser.setSalt(generateRandomSalt());
+        studentUser.setSalt(salt);
         studentUser.setPassword(hashPassword(password, salt));
         studentUser.setEmail(dto.getEmail());
 
@@ -361,15 +402,22 @@ public class UserService implements UserServiceI {
         studentRepository.save(student);
         studentUserRepository.save(studentUser);
 
+        // Write the password to file!
+        writeUserToFile("src/main/resources/static/users.csv",
+                studentRepository.findByEmail(dto.getEmail()).get().getId(),
+                1, password);
+
+        studentUser.setStudent(student);
+        studentUserRepository.save(studentUser);
+
         // Set the foreign keys
         student.setStudentUser(studentUser);
-        studentUser.setStudent(student);
-
-        // Save the entities
         studentRepository.save(student);
-        studentUserRepository.save(studentUser);
+
         System.out.println(studentUserRepository.getById(studentUser.getId()).getStudent().getId());
         System.out.println(studentRepository.getById(student.getId()).getStudentUser().getId());
+        System.out.println(studentRepository.getById(student.getId()));
+        System.out.println(studentUserRepository.getById(studentUser.getId()));
 
         // And vice versa
         return new ResponseEntity<>(HttpStatus.OK);
@@ -391,7 +439,7 @@ public class UserService implements UserServiceI {
 
         // Create user account for that teacher
         TeacherUser teacherUser = new TeacherUser();
-        teacherUser.setSalt(generateRandomSalt());
+        teacherUser.setSalt(salt);
         teacherUser.setPassword(hashPassword(password, salt));
         teacherUser.setEmail(dto.getEmail());
 
@@ -401,6 +449,12 @@ public class UserService implements UserServiceI {
 
         teacherRepository.save(teacher);
         teacherUserRepository.save(teacherUser);
+
+        // Write the password to file!
+        writeUserToFile("src/main/resources/static/users.csv",
+                teacherRepository.findByEmail(dto.getEmail()).get().getId(),
+                2, password);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -420,8 +474,8 @@ public class UserService implements UserServiceI {
 
         // Create user account for that administrator
         AdminUser adminUser = new AdminUser();
-        adminUser.setSalt(generateRandomSalt());
-        adminUser.setPassword(hashPassword(password, salt));
+        adminUser.setSalt(salt);
+        adminUser.setPassword(hashPassword(String.valueOf(password), salt));
         adminUser.setEmail(dto.getEmail());
 
         // Set the foreign keys
@@ -430,12 +484,23 @@ public class UserService implements UserServiceI {
 
         administratorRepository.save(administrator);
         adminUserRepository.save(adminUser);
+
+        // Write the password to file!
+        writeUserToFile("src/main/resources/static/users.csv",
+                administratorRepository.findByEmail(dto.getEmail()).getId(),
+                3, String.valueOf(password));
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private String generateRandomPassword() {
-        byte[] password = generateRandomSalt();
-        return new String(password, StandardCharsets.UTF_8);
+        Random randomizer = new Random();
+        int upperbound = 35000;
+
+        // Return random value
+        // return randomizer.nextInt(upperbound);
+        return "hei";
+
     }
 
     @Override

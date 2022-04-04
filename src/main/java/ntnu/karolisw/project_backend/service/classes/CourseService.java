@@ -38,7 +38,12 @@ public class CourseService implements CourseServiceI {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    // setArchived --> when course is archived --> the queue must be deleted!
+    /**
+     * Archives a course
+     * @param courseId the course to archive
+     *
+     * @return
+     */
     @Override
     public ResponseEntity<Object> archiveCourse(long courseId) {
         // Get the course
@@ -106,10 +111,6 @@ public class CourseService implements CourseServiceI {
 
                     // Add each individual group to the course object
                     course.addGroupOfAssignment(groupOfAssignment);
-
-                    // Add each group to the GroupOfAssignmentRepository
-                    // todo check that group is created
-                    // groupOfAssignmentRepository.save(groupOfAssignment);
                 }
             }
 
@@ -146,10 +147,6 @@ public class CourseService implements CourseServiceI {
 
             queue.setCourse(course);
             queueRepository.save(queue);
-
-
-            System.out.println("The teacher(s) in the course are: ");
-            System.out.println(course.getTeachers().toString());
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -188,6 +185,7 @@ public class CourseService implements CourseServiceI {
                 PersonOut so = new PersonOut();
                 so.setFirstName(student.getFirstName());
                 so.setLastName(student.getLastName());
+                so.setPersonId(student.getId());
                 try {
                     so.setApprovedAssignmentsInCourse(getNumberOfApprovedAssignmentsForStudent(student.getId()));
                 } catch (Exception e) {
@@ -594,6 +592,8 @@ public class CourseService implements CourseServiceI {
                 courseOut.setId(course.getCourseId());
                 courseOut.setCode(course.getCourseCode());
                 courseOut.setName(course.getName());
+                courseOut.setMinApprovedAssignments(course.getMinApprovedAssignments());
+                courseOut.setNumberOfAssignments(course.getNumberOfAssignments());
 
                 // Add dto to list
                 coursesOut.add(courseOut);
@@ -634,6 +634,8 @@ public class CourseService implements CourseServiceI {
                         courseDto.setId(course.getCourseId());
                         courseDto.setName(course.getName());
                         courseDto.setCode(course.getCourseCode());
+                        courseDto.setMinApprovedAssignments(course.getMinApprovedAssignments());
+                        courseDto.setNumberOfAssignments(course.getNumberOfAssignments());
 
                         // Add the course to list of courses that this student is TA in
                         taCourses.add(courseDto);
@@ -687,6 +689,8 @@ public class CourseService implements CourseServiceI {
             courseOut.setId(course.getCourseId());
             courseOut.setCode(course.getCourseCode());
             courseOut.setName(course.getName());
+            courseOut.setMinApprovedAssignments(course.getMinApprovedAssignments());
+            courseOut.setNumberOfAssignments(course.getNumberOfAssignments());
 
             // Add dto to list
             coursesOut.add(courseOut);

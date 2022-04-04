@@ -36,6 +36,6 @@ public class AdminUser {
     // one-to-one between user account and the person entity
     // One-to-one connection with student
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "administrator_id", referencedColumnName = "id" )
     private Administrator administrator;
 }

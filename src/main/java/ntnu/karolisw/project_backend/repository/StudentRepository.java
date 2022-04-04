@@ -25,4 +25,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // get all assignments where student id = y
     @Query("SELECT s.assignments FROM Student s WHERE s.id = :id")
     Set<Assignment> getAssignmentsByStudentId(@Param("id") long id);
+
+    // get studentUser by email
+    @Query("SELECT s.studentUser FROM Student s WHERE s.email = :email")
+    StudentUser getStudentUser(@Param("email") String email);
+
 }

@@ -18,6 +18,7 @@ import javax.persistence.*;
 public class Administrator extends Person {
 
     // One-to-one relationship with AdminUser
-    @OneToOne(mappedBy = "administrator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_user_id", referencedColumnName = "id")
     private AdminUser adminUser;
 }

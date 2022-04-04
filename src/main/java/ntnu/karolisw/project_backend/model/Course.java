@@ -73,7 +73,7 @@ public class Course {
 
     // Queue is child, course is parent
     // If the course is deleted, the queue is also deleted
-    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "course")
+    @OneToOne(mappedBy = "course", cascade = CascadeType.REMOVE)
     private Queue queue;
 
     // Add a group of assignment to the list of groups of assignments

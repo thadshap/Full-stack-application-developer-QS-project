@@ -167,7 +167,7 @@ public class QueueService implements QueueServiceI {
 
             // Get all the assignments that the student has
             Set<Assignment> studentsAssignments = studentRepository.getAssignmentsByStudentId(studentId);
-
+            System.out.println(studentsAssignments.toString());
             // For each assignment
             for(Assignment assignment : studentsAssignments) {
 
@@ -270,8 +270,27 @@ public class QueueService implements QueueServiceI {
     @Override
     public ResponseEntity<Object> getAllStudentsInQueue(long courseId) {
         List<StudentInQueue> students = queueRepository.findAllStudentsInQueueByCourseId(courseId);
+        List<StudentInQueueOut> studentsOut = new ArrayList<>();
+        for(StudentInQueue student : students) {
+            StudentInQueueOut dto = new StudentInQueueOut();
+            dto.setQueue(student.getQueue().getQueueId());
+            dto.setStudentId(student.getStudent().getId());
+            dto.setDigital(student.isDigital());
+            if(!dto.isDigital()) {
+                dto.setCampus(student.getCampus());
+                dto.setBuilding(student.getBuilding());
+                dto.setRoom(student.getRoom());
+                dto.setTableNumber(dto.getTableNumber());
+            }
+            dto.setAssessmentHelp(student.isAssessmentHelp());
+            dto.setStatusInQueue(student.getStatusInQueue().toString());
+            dto.setPlacementInQueue(student.getPlacementInQueue());
+            dto.setStudentInQueueId(student.getStudentInQueueId());
+
+            studentsOut.add(dto);
+        }
         if(students != null) {
-            return new ResponseEntity<>(students, HttpStatus.OK);
+            return new ResponseEntity<>(studentsOut, HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

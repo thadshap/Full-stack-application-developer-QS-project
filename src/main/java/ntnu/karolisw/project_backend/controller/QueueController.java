@@ -21,12 +21,12 @@ public class QueueController {
      * @return
      */
     @PostMapping("/students/assignments")
-    public ResponseEntity<Object> approveAssignmentForStudent(CourseIn dto) {
+    public ResponseEntity<Object> approveAssignmentForStudent(@RequestBody CourseIn dto) {
         return queueService.approveStudent(dto.getPersonId(),
                 dto.getAssignmentNumber(), dto.getCourseId());
     }
 
-    @GetMapping("/students/queues/{courseId}")
+    @GetMapping("/students/{courseId}")
     public ResponseEntity<Object> getAllStudentsInQueue(@PathVariable("courseId") long courseId){
         return queueService.getAllStudentsInQueue(courseId);
     }
@@ -46,6 +46,12 @@ public class QueueController {
     @PostMapping("/newSiq")
     ResponseEntity<Object> postStudentInQueue(@RequestBody StudentInQueueIn dto){
         return queueService.createStudentInQueueEntity(dto);
+    }
+
+    // DTO = studentId,
+    @PostMapping("/deleteStudent")
+    ResponseEntity<Object> deleteStudentFromQueue(@RequestBody StudentInQueueIn dto) {
+        return queueService.deleteStudentInQueueEntity(dto);
     }
 
     /**
@@ -68,14 +74,9 @@ public class QueueController {
         return queueService.setStudentState(dto.getStudentId(),dto.getCourseId(),dto.getStatusInQueue());
     }
 
-    @PostMapping("/getState")
-    ResponseEntity<Object> getStateInQueueForStudent(@RequestBody StudentInQueueIn dto) {
-        return queueService.getStudentState(dto.getStudentId());
-    }
 
-    // DTO = studentId,
-    @PostMapping("/deleteStudent")
-    ResponseEntity<Object> deleteStudentFromQueue(@RequestBody StudentInQueueIn dto) {
-        return queueService.deleteStudentInQueueEntity(dto);
+    @GetMapping("/getState/{studentId}")
+    ResponseEntity<Object> getStateInQueueForStudent(@PathVariable("studentId") long studentId) {
+        return queueService.getStudentState(studentId);
     }
 }

@@ -60,7 +60,8 @@ public class Student extends Person {
 
     // One-to-one relationship with studentUser
     // If student is removed, so is the StudentUser entity
-    @OneToOne(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_user_id", referencedColumnName = "id")
     private StudentUser studentUser;
 
     public void addCourse(Course course) {
@@ -68,5 +69,9 @@ public class Student extends Person {
     }
     public void addTaInCourse(Course course) {
         taInCourses.add(course);
+    }
+
+    public void setStudentUser(StudentUser studentUser) {
+        this.studentUser = studentUser;
     }
 }

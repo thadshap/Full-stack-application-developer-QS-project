@@ -32,7 +32,7 @@ public class Queue {
 
     // One-to-one relationship with course where queue is deleted if the course is deleted.
     // There is no cascade from this class to course, meaning that the deletion cascade only goes one way
-    @OneToOne( fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     /**
     @JoinTable(
             name = "queue_course",

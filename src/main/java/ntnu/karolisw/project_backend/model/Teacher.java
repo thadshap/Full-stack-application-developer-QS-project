@@ -31,7 +31,8 @@ public class Teacher extends Person{
     private Set<Course> courses = new HashSet<>();
 
     // One-to-one relationship with TeacherUser
-    @OneToOne(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "teacher_user_id", referencedColumnName = "id")
     private TeacherUser teacherUser;
 
     @Override

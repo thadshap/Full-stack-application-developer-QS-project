@@ -27,10 +27,6 @@ public class CourseController {
     QueueServiceI queueService;
 
 
-    /**
-     * Retrieves all courses that are not archived
-     * name, code, how many students take the course
-     */
     @GetMapping()
     public ResponseEntity<Object> getAllCourses() {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
