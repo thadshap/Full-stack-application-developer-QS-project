@@ -261,8 +261,8 @@ public class UserService implements UserServiceI {
                     return dto;
                 } else {
                     throw new IllegalAccessException("The passwords did not match. " +
-                            "\n The db password was: " + Arrays.toString(actualPassword) +
-                            "\n The input password was: " + Arrays.toString(hashedPassword));
+                            "\n The db password was: " + new String(actualPassword, StandardCharsets.UTF_8) +
+                            "\n The input password was: " + password);
                 }
             }
             // If the user is not present
