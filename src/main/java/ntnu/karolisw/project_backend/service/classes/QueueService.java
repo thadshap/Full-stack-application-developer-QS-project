@@ -442,7 +442,7 @@ public class QueueService implements QueueServiceI {
         studentInQueueRepository.save(newSIQ);
 
         // Entity successfully created
-        return new ResponseEntity<>(newSiqOut, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**

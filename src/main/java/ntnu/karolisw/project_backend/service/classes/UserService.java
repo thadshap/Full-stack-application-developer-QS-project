@@ -273,14 +273,18 @@ public class UserService implements UserServiceI {
                     dto.setLoggedIn(true);
                     return dto;
                 } else {
-                    throw new IllegalAccessException("The passwords did not match. " +
-                            "\n The db password was: " +  Arrays.toString(actualPassword) +
-                            "\n The input password was: " + Arrays.toString(hashedPassword));
+                    // Create a dto
+                    PersonOut dto = new PersonOut();
+                    dto.setLoggedIn(false);
+                    return dto;
                 }
             }
             // If the user is not present
             else {
-                throw new IllegalArgumentException("There is no student with email: " + email + " in db. ");
+                // Create a dto
+                PersonOut dto = new PersonOut();
+                dto.setLoggedIn(false);
+                return dto;
             }
         } else if (userBit == 2) {
             Optional<TeacherUser> teacherUser = teacherUserRepository.findByEmail(email);
@@ -305,14 +309,19 @@ public class UserService implements UserServiceI {
                     // Return dto
                     return dto;
                 } else {
-                    throw new IllegalAccessException("The passwords did not match. " +
-                            "\n The db password was: " + Arrays.toString(actualPassword) +
-                            "\n The input password was: " + Arrays.toString(hashedPassword));
+                    // Create a dto
+                    PersonOut dto = new PersonOut();
+                    dto.setLoggedIn(false);
+                    return dto;
                 }
             }
             // If the user is not present
             else {
-                throw new IllegalArgumentException("There is no teacher with email: " + email + " in db. ");
+                // Create a dto
+                PersonOut dto = new PersonOut();
+                dto.setLoggedIn(false);
+                return dto;
+
             }
         } else if (userBit == 3) {
             Optional<AdminUser> adminUser = adminUserRepository.findByEmail(email);
@@ -336,19 +345,26 @@ public class UserService implements UserServiceI {
                     // Return dto
                     return dto;
                 } else {
-                    throw new IllegalAccessException("The passwords did not match. " +
-                            "\n The db password was: " + Arrays.toString(actualPassword) +
-                            "\n The input password was: " + Arrays.toString(hashedPassword));
+                    // Create a dto
+                    PersonOut dto = new PersonOut();
+                    dto.setLoggedIn(false);
+                    return dto;
                 }
             }
             // If the user is not present
             else {
-                throw new IllegalArgumentException("There is no administrator with email: " + email + " in db. ");
+                // Create a dto
+                PersonOut dto = new PersonOut();
+                dto.setLoggedIn(false);
+                return dto;
             }
         }
         // The userBit was not a valid number
         else {
-            throw new IllegalArgumentException("The user bit did not hold a number 1-3, but: " + userBit);
+            // Create a dto
+            PersonOut dto = new PersonOut();
+            dto.setLoggedIn(false);
+            return dto;
         }
     }
 
