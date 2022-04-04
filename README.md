@@ -1,5 +1,7 @@
 # qs_backend
 
+#### THIS APPLICATION CAN ONLY BE USED WITH JAVA 17
+
 ## Add maven
 - If your pom.xml file does not look like this (Project-QS/pom.xml)
    ![](../main-backend/Skjermbilde%202022-04-04%20kl.%2014.38.58.png)
