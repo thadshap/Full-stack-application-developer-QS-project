@@ -159,7 +159,7 @@ export default {
       showInput: false,
       showErrors: false,
       course: {},
-      underGroups: [],
+      underGroups: {},
       errors: {
         courseCode: "",
         name: "",
@@ -219,15 +219,16 @@ export default {
     sendCourse: async function () {
         await AXI.postNewCourse(
           this.$store.state.typeOfUser,
+          this.$store.state.userId,
           this.course.courseCode,
           this.course.name,
           this.course.startDate,
           this.course.endDate,
           this.course.numPractices,
           this.course.numOfApprovedPractices,
-          this.underGroups
+          //this.underGroups
         );
-        await this.getCourses();
+        //JSON.stringify(this.underGroups), works if this.undergroups is object and not array
     },
     validate(field) {
       validationSchema

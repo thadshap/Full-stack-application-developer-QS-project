@@ -29,8 +29,8 @@
           <div
             class="active-subject-container"
             v-for="course in coursess"
-            v-bind:id="course.courseId"
-            :key="course.courseId"
+            v-bind:id="course.id"
+            :key="course.id"
           >
             <div id="sub-name-container">
               <p id="sub-name">{{ course.name }}</p>
@@ -47,8 +47,9 @@
               </button>
               <button
                 class="studentButtonsQueue"
-                v-bind:id="course.courseId"
+                v-bind:id="course.id"
                 v-on:click="goToQueue($event)"
+                @change="disableQueueBtnIfNotActive($event)"
               >
                 <img id="in-to-que-img" src="./../assets/in-to-que.png" />
                 Til kø
@@ -92,6 +93,20 @@ export default {
   },
   methods: {
     /**
+     * Disable the queue button if the queue is not active and the button will be abled if the queue is active
+     * @param event course id
+     * @returns {Promise<void>}
+     */
+    disableQueueBtnIfNotActive: async function(event){
+      const targetId = event.currentTarget.id;
+      if (await axiosService.getTypeActiveQueue(targetId) === false){
+        document.getElementById(targetId).disable = false
+      }
+      else {
+        document.getElementById(targetId).disable = true
+      }
+    },
+    /**
      * method to get all courses registered for a student from database
      */
     getAllCoursesForStudent: async function () {
@@ -113,9 +128,9 @@ export default {
      */
     goToQueue: function (event) {
       const targetId = event.currentTarget.id;
-      for (let i = 0; i < this.courses.length; i++) {
-        if (this.courses[i].courseId.toString() === targetId) {
-          this.$store.commit("SET_COURSE", this.courses[i]);
+      for (let i = 0; i < this.coursess.length; i++) {
+        if (this.coursess[i].id.toString() === targetId) {
+          this.$store.commit("SET_COURSE", this.coursess[i]);
         }
       }
       this.$router.push({
@@ -129,9 +144,9 @@ export default {
      */
     showAssignments: function (event) {
       const targetId = event.currentTarget.id;
-      for (let i = 0; i < this.courses.length; i++) {
-        if (this.courses[i].courseId.toString() === targetId) {
-          this.$store.commit("SET_COURSE", this.courses[i]);
+      for (let i = 0; i < this.coursess.length; i++) {
+        if (this.coursess[i].id.toString() === targetId) {
+          this.$store.commit("SET_COURSE", this.coursess[i]);
         }
       }
       this.$store.commit("SET_COURSEID", targetId);
@@ -204,7 +219,6 @@ export default {
 }
 .active-subject-container {
   width: 295px;
-  height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
   margin: 20px 0 0 0;
   border-radius: 0.3em;

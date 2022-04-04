@@ -25,9 +25,9 @@
           v-for="student in students"
           v-on:click="selectRow($event)"
           v-bind:id="student.id"
-          :key="student.studentId"
+          :key="student.id"
         >
-          <td id="name-column">{{ student.name }}</td>
+          <td id="name-column">{{ student.firstName }} {{student.lastName}}</td>
           <td>{{ student.statusInQueue }}</td>
           <td id="digital-column">{{ student.digital }}</td>
           <td id="room-column">
@@ -47,6 +47,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import RegisterInLine from "./RegisterInLine";
 import axiosService from "@/services/axiosService";
+import store from "@/store";
 
 export default {
   name: "QueueStudent",
@@ -68,24 +69,26 @@ export default {
      */
     getAllStudentsCurrentlyInQueue: async function () {
       await axiosService
-        .getAllStudentsInQueue(this.$store.state.course.courseId)
+        .getAllStudentsInQueue(this.$store.state.course.id)
         .then(
           function (response) {
-            this.students = response.data;
-            for (let i = 0; i < this.students.length; i++) {
-              if (this.students[i].assessmentHelp) {
-                this.students[i].assessmentHelp = "Godkjenning";
-              } else {
-                this.students[i].assessmentHelp = "Hjelp";
-              }
-              if (this.students[i].digital) {
-                this.students[i].digital = "Digitalt";
-              } else {
-                this.students[i].digital = "På campus";
-              }
-            }
-          }.bind(this)
-        );
+            store.state.students = response.data;
+
+          }.bind(this));
+      this.students = this.$store.state.students;
+      for (let i = 0; i < this.students.length; i++) {
+        if (this.students[i].assessmentHelp) {
+          this.students[i].assessmentHelp = "Godkjenning";
+        } else {
+          this.students[i].assessmentHelp = "Hjelp";
+        }
+        if (this.students[i].digital) {
+          this.students[i].digital = "Digitalt";
+        } else {
+          this.students[i].digital = "På campus";
+        }
+      }
+
     },
     backToPreviousPage() {
       this.$router.go(-1);
@@ -104,7 +107,7 @@ export default {
       if (this.$store.state.isStudentAssistant) {
         await axiosService.changeStateInQueueForStudent(
           event.currentTarget.id,
-          this.$store.state.course.courseId,
+          this.$store.state.course.id,
           "BUSY"
         );
         for (let i = 0; i < this.students.length; i++) {

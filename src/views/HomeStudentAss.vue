@@ -32,17 +32,17 @@
             class="active-subject-container"
             v-on:click="statusBtnClickedFunc(e)"
             v-for="course in courses"
-            v-bind:id="course.index"
-            :key="course.index"
+            v-bind:id="course.id"
+            :key="course.id"
           >
             <div id="sub-name-container">
-              <p id="sub-name">{{ course.courseName }}</p>
-              <p id="sub-code">{{ course.courseCode }}</p>
+              <p id="sub-name">{{ course.name }}</p>
+              <p id="sub-code">{{ course.code }}</p>
             </div>
             <div id="sub-feature-tabs">
               <button
                 class="assigment-btn"
-                v-bind:id="course.index"
+                v-bind:id="course.id"
                 v-on:click="assignBtn($event)"
               >
                 <img id="assigment-img" src="./../assets/assigment.png" />
@@ -50,7 +50,7 @@
               </button>
               <button
                 class="que-btn"
-                v-bind:id="course.index"
+                v-bind:id="course.id"
                 v-on:click="queueBtn($event)"
               >
                 <img id="in-to-que-img" src="./../assets/in-to-que.png" />
@@ -94,17 +94,17 @@ export default {
      * @returns {Promise<void>}
      */
     queueStatusInDatabase: async function () {
-      await AXI.getTypeActiveQueue(this.$store.state.courseId).then(function (
+      await AXI.getTypeActiveQueue(this.$store.state.course.id).then(function (
         response
       ) {
         this.statusBtnClickedDatabase = response.data;
       });
       for (let i = 0; i < this.courses.length; i++) {
         if (this.courses[i].active === true) {
-          document.getElementById(this.courses[i].index).style.backgroundColor =
+          document.getElementById(this.courses[i].id).style.backgroundColor =
             "rgba(3,164,3,0.25)";
         } else {
-          document.getElementById(this.courses[i].index).style.backgroundColor =
+          document.getElementById(this.courses[i].id).style.backgroundColor =
             "rgba(133,0,10,0.36)";
         }
       }
@@ -116,7 +116,7 @@ export default {
      */
     statusBtnClickedFunc: async function (e) {
       this.idCheckedCourse = e.currentTarget.id;
-      await AXI.getTypeActiveQueue(this.$store.state.courseId).then(function (
+      await AXI.getTypeActiveQueue(this.$store.state.course.id).then(function (
         response
       ) {
         this.statusBtnClicked = response.data;
@@ -143,7 +143,7 @@ export default {
      * get all courses this given student is student assistant in
      */
     getAllCourses: async function () {
-      await AXI.getAllCoursesForStudentAssistant().then(function (response) {
+      await AXI.getAllCoursesForStudentAssistant(this.$store.state.userId).then(function (response) {
         this.courses = response.data;
       });
     },
@@ -234,7 +234,6 @@ export default {
 }
 .active-subject-container {
   width: 295px;
-  height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
   margin: 20px 0 0 0;
   border-radius: 0.3em;

@@ -17,12 +17,12 @@
         v-for="assigment in assigments"
         :key="assigment"
       >
-        <p id="oving-header">{{ assigment.name }}</p>
+        <p id="oving-header">{{ assigment.assignmentNumber }}</p>
         <input
           type="radio"
           class="approve-checkbox"
           name="oving"
-          v-bind:id="assigment.index"
+          v-bind:id="assigment.id"
           @change="onChange($event)"
         />
         <hr class="line-under-oving" />
@@ -63,9 +63,9 @@ export default {
      * sets student's firstname, lastname, subject name and subject code
      */
     setStudentName() {
-      this.studentFirstName = this.$store.state.student.firstName;
-      this.studentLastName = this.$store.state.student.lastName;
-      this.subCode = this.$store.state.course.courseId;
+      this.studentFirstName = this.$store.state.students.firstName;
+      this.studentLastName = this.$store.state.students.lastName;
+      this.subCode = this.$store.state.course.id;
       this.subName = this.$store.state.course.name;
     },
     /**
@@ -90,15 +90,14 @@ export default {
      */
     approveBtn: async function () {
       await AXI.approveAssignmentForStudent(
-        this.$store.state.courseId,
-        this.$store.state.student.id,
-        this.$store.state.student.id,
+        this.$store.state.course.id,
+        this.$store.state.students.id,
+        this.$store.state.students.id,
         this.ovingId
       );
       await AXI.deleteStudentFromQueue(
-        this.$store.state.courseId,
-        this.$store,
-        this.$store.state.student.id
+        this.$store.state.students.id,
+        this.$store.state.course.id
       );
       await this.$router.push({
         name: "queueStudent",
@@ -113,9 +112,9 @@ export default {
      */
     deleteBtn: async function () {
       await AXI.deleteStudentFromQueue(
-        this.$store.state.courseId,
-        this.$store.state.student.id,
-        this.$store.state.student.id
+        this.$store.state.course.id,
+        this.$store.state.students.id,
+        this.$store.state.students.id
       );
       await this.$router.push({
         name: "queueStudent",
@@ -130,9 +129,9 @@ export default {
      */
     studentWaitBtn: async function () {
       await AXI.changeStateInQueueForStudent(
-        this.$store.state.student.id,
+        this.$store.state.students.id,
         this.$store.state.courseId,
-        this.$store.state.student.id,
+        this.$store.state.students.id,
         "TAKEN"
       );
       await this.$router.push({

@@ -6,8 +6,8 @@
         <img id="back-to-queue-btn-img" src="./../assets/back-to-queue.png" />
       </button>
       <div id="sub-header-container">
-        <p id="sub-name">{{ course.subjectName }}</p>
-        <p id="sub-code">{{ course.subjectCode }}</p>
+        <p id="sub-name">{{ course.name }}</p>
+        <p id="sub-code">{{ course.code }}</p>
       </div>
       <div id="table-container">
         <table id="tableStudents">
@@ -17,19 +17,19 @@
           <tr
             v-for="student in students"
             v-on:click="select($event)"
-            v-bind:id="student.index"
-            :key="student.index"
+            v-bind:id="student.id"
+            :key="student.id"
           >
             <td>
-              {{ student.name }}
+              {{ student.firstName }} {{ student.lastName }}
               <div
                 v-if="
                   showAmountOfOvingerDetails &&
-                  student.index == this.idCheckedStudent
+                  student.id == this.idCheckedStudent
                 "
               >
                 <div
-                  v-bind:id="student.index"
+                  v-bind:id="student.id"
                   v-for="assigment in student.assigments"
                   :key="assigment"
                 >
@@ -43,7 +43,7 @@
                     class="oving-approval-header"
                     v-if="assigment.approved == false"
                   >
-                    {{ assigment.name }}: ikke godkjent
+                    øving {{ assigment.assignmentNumber }}: ikke godkjent
                   </p>
                 </div>
               </div>
@@ -83,7 +83,7 @@ export default {
      * @returns {Promise<void>}
      */
     getSubjectHeader: async function () {
-      await AXI.getCourseById(this.$store.state.courseId).then(function (
+      await AXI.getCourseById(this.$store.state.course.id).then(function (
         response
       ) {
         this.course = response.data;
@@ -94,7 +94,7 @@ export default {
      * @returns {Promise<void>}
      */
     getAllStudent: async function () {
-      await AXI.getAllStudentsInCourse(this.$store.state.courseId).then(
+      await AXI.getAllStudentsInCourse(this.$store.state.course.id).then(
         function (response) {
           this.students = response.data;
         }

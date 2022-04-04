@@ -84,14 +84,14 @@ export default {
      * method to delete a course
      */
     deleteCourse: async function () {
-        await AXI.deleteCourse(this.$store.state.courseId);
+        await AXI.deleteCourse(this.$store.state.course.id);
         await this.getCourses();
     },
     /**
      * method to archive a course
      */
     archiveCourse: async function () {
-        await AXI.archiveCourse(this.$store.state.courseId);
+        await AXI.archiveCourse(this.$store.state.course.id);
         await this.getCourses();
     },
     showStudents() {
@@ -105,8 +105,12 @@ export default {
      */
     select: function (e) {
       this.disableButton = false;
-      this.$store.commit("SET_COURSEID", e.currentTarget.id);
       let rows = document.getElementsByClassName("row");
+      for(let i = 0; i<this.courses.length; i++){
+        if(this.courses[i].id.toString() === e.currentTarget.id){
+          store.state.course = this.courses[i];
+        }
+      }
       for (let i = 0; i < rows.length; i++) {
         rows[i].style.backgroundColor = "#202020";
       }
