@@ -47,3 +47,16 @@
 ```
 http://localhost:8080/swagger-ui.html
 ```
+
+## Database
+The project backend uses MySql (local) database. Therefore, the database solution will have to be edited in the file "application.properties" in such a way that the user of the backend may persist/get/delete etc. using their own db. Other DBMS are also usable with this solution, but one must account for this by adding the correct dependencies to the POM.xml file.
+
+### Back-end methods
+The backend consists of a multitude of methods. Only those present in the four controllers are implemented in the solution. Those that aren't are not purposfully, bbut part of the future work of the queue application. All methods in the controllers work and are tested. 
+
+#### Hierarchy explained
+- Repositories connect to the database.
+- The services consist of methods were each service utilized upwards of 4 repositories. Gathering the mess of multiple dependency injections at the service level helps maintain a high level of cohesion at the controller level.
+- The services are abstracted away through the use of interfaces. This lowers the coupling of the connection between controller and service, meaning less work has to be done upon changes to methods at the service-layer. 
+- Each controller only autowires one service, namingly the service interface that corresponds to the name of the given controller. The controller holds the endpoints.
+- The endpoints are the only ways the backend connect to the frontend, effectively using all layers of a RESTful application.
