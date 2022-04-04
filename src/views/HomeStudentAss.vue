@@ -234,7 +234,6 @@ export default {
 }
 .active-subject-container {
   width: 295px;
-  height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
   margin: 20px 0 0 0;
   border-radius: 0.3em;
