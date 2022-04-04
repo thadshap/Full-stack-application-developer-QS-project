@@ -12,5 +12,11 @@ describe('store', () => {
     const received = store.state.userId;
     expect(received).toStrictEqual(courseID)
   })
+  test('setting course', async() => {
+    const course = {courseId : 2, courseName : "Statistikk", courseCode : "ISTT1001"};
+    await store.commit('SET_COURSE', course)
+    const received = store.state.course;
+    expect(received).toStrictEqual(course)
+  })
 })
 

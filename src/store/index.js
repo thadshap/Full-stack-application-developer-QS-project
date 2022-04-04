@@ -4,18 +4,19 @@ export default createStore({
   state: {
     isStudentAssistant : true,
     studentassistant : {},
+    students : {},
     typeOfUser : 0, // 1 is student, 2 is teacher, 3 is admin
     userId : 0,
     courseId : 0,
     email : '',
     course: {},
-    studentInQueueApproval:[], //this array is for the info about a student that has been taken out of the queue for approval
-    studentInQueueWait:[], //this array is for the info about a student that has waitlisted for approval
-    allSubjectsToAStudent:[],
-    allSubjectsToAStudentAss: [],
     queueStatus: false, //status of the queue, aka if the queue is activated or deactivated
+    assignments: {}
   },
   mutations: {
+    SET_COURSES(state, courses) {
+      state.courses = courses;
+    },
     SET_ISSTUDENTASSISTANT(state, aBoolean) {
       state.isStudentAssistant = aBoolean;
     },
