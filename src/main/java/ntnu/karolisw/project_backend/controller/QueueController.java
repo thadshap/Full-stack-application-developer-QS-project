@@ -1,5 +1,7 @@
 package ntnu.karolisw.project_backend.controller;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import ntnu.karolisw.project_backend.dto.in.CourseIn;
 import ntnu.karolisw.project_backend.dto.in.StudentInQueueIn;
 import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
@@ -9,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/queues")
-@CrossOrigin("http://192.168.1.80:8081/") // Vue address
+//@CrossOrigin("http://192.168.1.80:8081/") // Vue address
+@CrossOrigin
 public class QueueController {
 
     @Autowired
@@ -20,14 +23,21 @@ public class QueueController {
      * @param dto contains courseId, userId, assignmentNumber
      * @return
      */
+    @ApiOperation(value = "Approve assignment for student",
+            notes = "Sets boolean approved true for a single assignment in one course for one student",
+            response = QueueController.class)
     @PostMapping("/students/assignments")
     public ResponseEntity<Object> approveAssignmentForStudent(@RequestBody CourseIn dto) {
         return queueService.approveStudent(dto.getPersonId(),
                 dto.getAssignmentNumber(), dto.getCourseId());
     }
 
-    @GetMapping("/students/{courseId}")
-    public ResponseEntity<Object> getAllStudentsInQueue(@PathVariable("courseId") long courseId){
+    @ApiOperation(value = "Get all students in a queue",
+            notes = "Sends a list of all the students currently registered in a queue for a course",
+            response = QueueController.class)
+    @GetMapping("/students/queues/{courseId}")
+    public ResponseEntity<Object> getAllStudentsInQueue(@ApiParam(value = "ID value of the course")
+                                                            @PathVariable("courseId") long courseId){
         return queueService.getAllStudentsInQueue(courseId);
     }
 
@@ -43,14 +53,20 @@ public class QueueController {
      *            - table
      * @return
      */
+    @ApiOperation(value = "Add a student to a queue",
+            notes = "Registrating a student in a queue for a course",
+            response = QueueController.class)
     @PostMapping("/newSiq")
     ResponseEntity<Object> postStudentInQueue(@RequestBody StudentInQueueIn dto){
         return queueService.createStudentInQueueEntity(dto);
     }
 
-    // DTO = studentId,
+    @ApiOperation(value = "removing a student from a queue in a course",
+            notes = "removing a student by the studentId from a specific queue in a course",
+            response = QueueController.class)
     @PostMapping("/deleteStudent")
-    ResponseEntity<Object> deleteStudentFromQueue(@RequestBody StudentInQueueIn dto) {
+    ResponseEntity<Object> deleteStudentFromQueue(@ApiParam(value = "StudentInQueueIn dto, contains studentId")
+                                                  @RequestBody StudentInQueueIn dto) {
         return queueService.deleteStudentInQueueEntity(dto);
     }
 
@@ -59,22 +75,33 @@ public class QueueController {
      * @param dto contains: courseId, active (boolean for the queue)
      * @return
      */
+    @ApiOperation(value = "Change if a queue is active or not",
+            notes = "Changing a boolean to show if a queue is active or not, meaning if a student can register itself in it or not",
+            response = QueueController.class)
     @PostMapping("/status")
     ResponseEntity<Object> changeTypeOfActiveQueue(@RequestBody StudentInQueueIn dto){
         return queueService.setQueueActive(dto);
     }
 
+    @ApiOperation(value = "Get status of queue (active or not)",
+            notes = "Sending a boolean to show if a queue is active or not",
+            response = QueueController.class)
     @GetMapping("/status/{courseId}")
     ResponseEntity<Object> getTypeActiveQueue(@PathVariable("courseId") long courseId) {
         return queueService.isQueueActive(courseId);
     }
 
+    @ApiOperation(value = "changing what state a student has in the queue",
+            notes = "changing the state, either 'BUSY', 'WAITING' or 'AVAILIBLE' for the state of the student in the queue",
+            response = QueueController.class)
     @PostMapping("/changeState")
     ResponseEntity<Object> changeStateInQueueForStudent(@RequestBody StudentInQueueIn dto) {
         return queueService.setStudentState(dto.getStudentId(),dto.getCourseId(),dto.getStatusInQueue());
     }
 
-
+    @ApiOperation(value = "getting what state a student has in the queue",
+            notes = "Sending back a string, either 'BUSY', 'WAITING' or 'AVAILIBLE' for the state of the student in the queue",
+            response = QueueController.class)
     @GetMapping("/getState/{studentId}")
     ResponseEntity<Object> getStateInQueueForStudent(@PathVariable("studentId") long studentId) {
         return queueService.getStudentState(studentId);

@@ -1,5 +1,7 @@
 package ntnu.karolisw.project_backend.dto.out;
 
+import java.util.Date;
+
 public class CourseOut {
     // id, name, code
     private long id;
@@ -7,6 +9,9 @@ public class CourseOut {
     private String code;
     private int numberOfAssignments;
     private int minApprovedAssignments;
+    private Date startDate;
+    private Date expectedEndDate;
+
 
 
     public long getId() {
@@ -15,6 +20,22 @@ public class CourseOut {
 
     public int getNumberOfAssignments() {
         return numberOfAssignments;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getExpectedEndDate() {
+        return expectedEndDate;
+    }
+
+    public void setExpectedEndDate(Date expectedEndDate) {
+        this.expectedEndDate = expectedEndDate;
     }
 
     public void setNumberOfAssignments(int numberOfAssignments) {

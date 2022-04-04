@@ -8,13 +8,16 @@ import ntnu.karolisw.project_backend.dto.out.CourseOut;
 import ntnu.karolisw.project_backend.dto.out.PersonOut;
 import ntnu.karolisw.project_backend.model.*;
 import ntnu.karolisw.project_backend.model.Queue;
+import ntnu.karolisw.project_backend.model.user.StudentUser;
 import ntnu.karolisw.project_backend.repository.*;
 import ntnu.karolisw.project_backend.service.interfaces.CourseServiceI;
+import ntnu.karolisw.project_backend.service.interfaces.UserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
@@ -114,6 +117,19 @@ public class CourseService implements CourseServiceI {
                 }
             }
 
+            // Set all assignments for the course
+            for (int i = 0; i < newCourse.getNumberOfAssignments(); i++) {
+
+                // Create a new assignment
+                Assignment newAssignment = new Assignment();
+                newAssignment.setAssignmentNumber(i);
+                newAssignment.setApproved(false);
+                newAssignment.setCreateDate(new Date());
+
+                // CascadeType == PERSIST!
+                assignmentRepository.save(newAssignment);
+            }
+
             // Course and Queue has a one-to-one connection, where their lifespan is the same
             Queue queue = new Queue();
             queue.setNumberOfWaitingStudents(0);
@@ -148,7 +164,7 @@ public class CourseService implements CourseServiceI {
             queue.setCourse(course);
             queueRepository.save(queue);
 
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>( HttpStatus.CREATED);
         }
         // If the dto did not contain the proper attributes (parameters)
         else {
@@ -186,6 +202,7 @@ public class CourseService implements CourseServiceI {
                 so.setFirstName(student.getFirstName());
                 so.setLastName(student.getLastName());
                 so.setPersonId(student.getId());
+                so.setEmail(student.getEmail());
                 try {
                     so.setApprovedAssignmentsInCourse(getNumberOfApprovedAssignmentsForStudent(student.getId()));
                 } catch (Exception e) {
@@ -210,12 +227,14 @@ public class CourseService implements CourseServiceI {
         if(course.isPresent() && student.isPresent()) {
             course.get().addStudentAssistant(student.get());
             student.get().addTaInCourse(course.get());
+            student.get().addCourse(course.get());
 
             courseRepository.save(course.get());
             studentRepository.save(student.get());
             return new ResponseEntity<>( HttpStatus.OK);
         }
         else if(course.isPresent()) {
+            // Create the student
             Student newStudent = new Student();
             newStudent.setEmail(dto.getEmail());
             newStudent.setFirstName(dto.getFirstName());
@@ -224,6 +243,7 @@ public class CourseService implements CourseServiceI {
 
             // Add the student
             studentRepository.save(newStudent);
+
             course.get().addStudent(newStudent);
             course.get().addStudentAssistant(newStudent);
 
@@ -298,6 +318,15 @@ public class CourseService implements CourseServiceI {
             newStudent.setFirstName(dto.getFirstName());
             newStudent.setLastName(dto.getLastName());
             course.get().addStudent(newStudent);
+
+            // Add the course to the new teacher
+            newStudent.addCourse(course.get());
+            studentRepository.save(newStudent);
+
+            // Add the student to the course
+            course.get().addStudent(newStudent);
+            courseRepository.save(course.get());
+
             return new ResponseEntity<>( HttpStatus.CREATED);
         }
         // If there is no course with the specified id
@@ -674,6 +703,11 @@ public class CourseService implements CourseServiceI {
     }
 
 
+    /**
+     * Method finds all courses that are not archived and the teacher is given (params)
+     * @param teacherId the given teacher
+     * @return list of courses that fit the criteria (as DTO)
+     */
     @Override
     public ResponseEntity<Object> getAllCoursesByTeacherId(long teacherId) {
         Set<Course> courses = teacherRepository.getCoursesByTeacherId(teacherId);
@@ -681,19 +715,22 @@ public class CourseService implements CourseServiceI {
         List<CourseOut> coursesOut = new ArrayList<>();
 
         for (Course course : courses) {
+            if (!course.isArchived()) {
+                // Create dto object
+                CourseOut courseOut = new CourseOut();
 
-            // Create dto object
-            CourseOut courseOut = new CourseOut();
+                // Set necessary attributes
+                courseOut.setId(course.getCourseId());
+                courseOut.setCode(course.getCourseCode());
+                courseOut.setName(course.getName());
+                courseOut.setMinApprovedAssignments(course.getMinApprovedAssignments());
+                courseOut.setNumberOfAssignments(course.getNumberOfAssignments());
+                courseOut.setStartDate(course.getStartDate());
+                courseOut.setExpectedEndDate(course.getExpectedEndDate());
 
-            // Set necessary attributes
-            courseOut.setId(course.getCourseId());
-            courseOut.setCode(course.getCourseCode());
-            courseOut.setName(course.getName());
-            courseOut.setMinApprovedAssignments(course.getMinApprovedAssignments());
-            courseOut.setNumberOfAssignments(course.getNumberOfAssignments());
-
-            // Add dto to list
-            coursesOut.add(courseOut);
+                // Add dto to list
+                coursesOut.add(courseOut);
+            }
         }
         return new ResponseEntity<>(coursesOut, HttpStatus.OK);
     }
@@ -791,6 +828,23 @@ public class CourseService implements CourseServiceI {
         Optional<Course> course = courseRepository.findById(courseId);
         if(course.isPresent()) {
             // Due to cascade.remove, there should not be any need to set foreign keys == null...
+            Set<Teacher> teachers = courseRepository.getTeachersByCourseId(courseId);
+
+            // For all teachers --> remove foreign key!
+            for(Teacher teacher : teachers) {
+                Set<Course> teachersCourses = teacher.getCourses();
+
+                // for all courses
+                for(Course teachersCourse : teachersCourses) {
+                    if(teachersCourse.getCourseId() == courseId) {
+                        teacher.getCourses().remove(teachersCourse); //todo Set null if this does not work
+                    }
+                }
+                // Update the teacher
+                teacherRepository.save(teacher);
+            }
+
+            course.get().setTeachers(null);
             courseRepository.delete(course.get());
             return new ResponseEntity<>(HttpStatus.OK);
         }

@@ -1,5 +1,6 @@
 package ntnu.karolisw.project_backend.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,23 +26,28 @@ public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "assignment_id", nullable = false)
+    @ApiModelProperty("Autoincremented assignment id")
     private Long assignmentId;
 
     @Column(name = "assignment_number", nullable = false)
+    @ApiModelProperty("The number of the assignment")
     private int assignmentNumber;
 
     @Column(name = "approved", nullable = false)
+    @ApiModelProperty("If that assignment is approved or not shown by a boolean")
     private boolean approved;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date")
+    @ApiModelProperty("When the assignment was created")
     private Date createDate;
 
     // Shows when the assignment was updated last (for use with approved)
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_date")
+    @ApiModelProperty("The number of the assignment")
     private Date modifyDate;
 
     // Many-to-many relationship with student --> middle table = assignment_student
