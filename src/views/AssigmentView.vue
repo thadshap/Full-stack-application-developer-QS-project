@@ -34,8 +34,9 @@
             v-for="assigment in assigments"
             :key="assigment"
           >
-            <p id="oving-header">{{ assigment.name }}</p>
-            <p id="approve-header">{{ assigment.approved }}</p>
+            <p id="oving-header">Øving {{ assigment.assignmentNumber }}</p>
+            <p class="approve-header" v-if="assigment.approved === true">Godkjent</p>
+            <p class="approve-header" v-else>Ikke godkjent</p>
             <hr class="line-under-oving" />
           </div>
         </div>
@@ -66,7 +67,7 @@ export default {
   },
   created: async function () {
     this.subjectName = this.$store.state.course.name;
-    this.subjectCode = this.$store.state.course.courseCode;
+    this.subjectCode = this.$store.state.course.code;
     this.totalAmountOfAssignments =
       this.$store.state.course.numberOfAssignments;
     this.minimumAssignmentsApproved =
@@ -179,16 +180,14 @@ export default {
   border: none;
 }
 #oving-header,
-#approve-header {
+.approve-header {
   display: inline;
   margin: 0 10% 0 10%;
   font-size: 20px;
+  float: right;
 }
 #oving-header {
   width: 70px;
-}
-#approve-header {
-  float: right;
 }
 #oving-rules-container {
   text-align: center;

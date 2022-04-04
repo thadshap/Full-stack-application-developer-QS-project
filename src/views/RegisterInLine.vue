@@ -121,10 +121,12 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import axiosService from "@/services/axiosService";
 import AXI from "@/services/axiosService";
+import store from "@/store";
 
 export default {
   name: "RegisterInLine",
   components: { Footer, Header },
+
   data() {
     return {
       showCampusDetails: false,
@@ -153,9 +155,9 @@ export default {
         this.$store.state.userId
       ).then(
         function (response) {
-          this.assignments = response.data;
-        }.bind(this)
-      );
+          store.state.assignments = response.data;
+        }.bind(this));
+        this.assignments = store.state.assignments
     },
     campusChosen() {
       this.showCampusDetails = true;

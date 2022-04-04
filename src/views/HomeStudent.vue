@@ -128,9 +128,9 @@ export default {
      */
     goToQueue: function (event) {
       const targetId = event.currentTarget.id;
-      for (let i = 0; i < this.courses.length; i++) {
-        if (this.courses[i].courseId.toString() === targetId) {
-          this.$store.commit("SET_COURSE", this.courses[i]);
+      for (let i = 0; i < this.coursess.length; i++) {
+        if (this.coursess[i].id.toString() === targetId) {
+          this.$store.commit("SET_COURSE", this.coursess[i]);
         }
       }
       this.$router.push({
@@ -144,9 +144,9 @@ export default {
      */
     showAssignments: function (event) {
       const targetId = event.currentTarget.id;
-      for (let i = 0; i < this.courses.length; i++) {
-        if (this.courses[i].courseId.toString() === targetId) {
-          this.$store.commit("SET_COURSE", this.courses[i]);
+      for (let i = 0; i < this.coursess.length; i++) {
+        if (this.coursess[i].id.toString() === targetId) {
+          this.$store.commit("SET_COURSE", this.coursess[i]);
         }
       }
       this.$store.commit("SET_COURSEID", targetId);

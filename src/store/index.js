@@ -4,13 +4,14 @@ export default createStore({
   state: {
     isStudentAssistant : true,
     studentassistant : {},
-    students : [],
+    students : {},
     typeOfUser : 0, // 1 is student, 2 is teacher, 3 is admin
     userId : 0,
     courseId : 0,
     email : '',
     course: {},
     queueStatus: false, //status of the queue, aka if the queue is activated or deactivated
+    assignments: {}
   },
   mutations: {
     SET_COURSES(state, courses) {
