@@ -106,4 +106,21 @@ public class StudentInQueueIn {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    @Override
+    public String toString() {
+        return "StudentInQueueIn{" +
+                "studentInQueueId=" + studentInQueueId +
+                ", studentId=" + studentId +
+                ", courseId=" + courseId +
+                ", tableNumber=" + tableNumber +
+                ", campus='" + campus + '\'' +
+                ", digital=" + digital +
+                ", building='" + building + '\'' +
+                ", room='" + room + '\'' +
+                ", assessmentHelp=" + assessmentHelp +
+                ", statusInQueue='" + statusInQueue + '\'' +
+                ", active=" + active +
+                '}';
+    }
 }

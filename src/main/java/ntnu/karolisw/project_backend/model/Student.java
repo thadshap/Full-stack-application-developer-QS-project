@@ -55,7 +55,7 @@ public class Student extends Person {
 
     // One-to-one relationship with student_in_queue
     // If student is removed, so is the student in queue entity
-    @OneToOne(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private StudentInQueue studentInQueue;
 
     // One-to-one relationship with studentUser
@@ -66,5 +66,7 @@ public class Student extends Person {
     public void addCourse(Course course) {
         courses.add(course);
     }
-
+    public void addTaInCourse(Course course) {
+        taInCourses.add(course);
+    }
 }

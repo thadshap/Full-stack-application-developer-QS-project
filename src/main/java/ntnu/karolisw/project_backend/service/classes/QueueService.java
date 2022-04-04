@@ -1,6 +1,7 @@
 package ntnu.karolisw.project_backend.service.classes;
 
 import ntnu.karolisw.project_backend.dto.in.StudentInQueueIn;
+import ntnu.karolisw.project_backend.dto.out.StudentInQueueOut;
 import ntnu.karolisw.project_backend.model.*;
 import ntnu.karolisw.project_backend.repository.*;
 import ntnu.karolisw.project_backend.service.interfaces.QueueServiceI;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -305,55 +307,49 @@ public class QueueService implements QueueServiceI {
      * @return the new StudentInQueue entity created in this method
      */
     @Override
-    public ResponseEntity<Object> createStudentInQueueEntity(StudentInQueueIn dto) {
+    public ResponseEntity<Object> createStudentInQueueEntity(StudentInQueueIn dto) { //todo contains student id
         StudentInQueue newSIQ = new StudentInQueue();
+        StudentInQueueOut newSiqOut = new StudentInQueueOut();
 
+        System.out.println(dto.toString());
+
+        long queueId = 0;
         // Get the queue
-        Optional<Queue> queue = queueRepository.getQueueByCourseId(dto.getCourseId());
+        queueId = queueRepository.getQueueByCourseId(dto.getCourseId());
+
+        // Not instantiated, but here for use after if-check
+        Optional<Queue> queue;
 
         // If the queue exists, we set it for the new siq entity
-        if(queue.isPresent()){
-            newSIQ.setQueue(queue.get());
-            newSIQ.setAssessmentHelp(dto.isAssessmentHelp());
+        if(queueId != 0){
+
+            // Get the queue
+            queue = queueRepository.findById(queueId);
+
+            // If present
+            if(queue.isPresent()) {
+                // Set for the SIQ entity
+                newSIQ.setQueue(queue.get());
+                newSIQ.setAssessmentHelp(dto.isAssessmentHelp());
+
+                // Set for the DTO entity
+                newSiqOut.setQueue(queue.get().getQueueId());
+                newSiqOut.setAssessmentHelp(dto.isAssessmentHelp());
+            }
         }
         else {
-            throw new IllegalStateException("There was no queue connected to the course with id: "
+            throw new IllegalStateException("There was no queue id connected to the course: "
                     + dto.getCourseId());
         }
 
-        // This student will be placed last in queue
-        int previousPlacement = queue.get().getNumberOfWaitingStudents();
-        newSIQ.setPlacementInQueue(previousPlacement + 1);
-
-        /**
-        newSIQ.setPlacementInQueue(queueRepository.
-                findAllStudentsInQueueByCourseId(dto.getCourseId()).
-                size() + 1 );
-
-
-        // 1 =  AVAILABLE; 2 = TAKEN; 3 = WAITING;
-        int status = dto.getStatusInQueue();
-
-        if(status == 1) {
-            newSIQ.setStatusInQueue(Status.AVAILABLE);
-        }
-        else if(status == 2) {
-            newSIQ.setStatusInQueue(Status.TAKEN);
-        }
-        else if(status == 3) {
-            newSIQ.setStatusInQueue(Status.WAITING);
-        }
-        else {
-            throw new IllegalArgumentException("The status was not numbers 1-3, but: " + status);
-        }
-         */
-
         // Automatically available upon creation
         newSIQ.setStatusInQueue(Status.AVAILABLE);
+        newSiqOut.setStatusInQueue(Status.AVAILABLE.toString());
 
         // If digital help/assessment requested
         if(dto.isDigital()) {
             newSIQ.setDigital(true);
+            newSiqOut.setDigital(true);
         }
 
         // Else, set digital and add the school attributes (campus, building etc.)
@@ -363,17 +359,62 @@ public class QueueService implements QueueServiceI {
             newSIQ.setBuilding(dto.getBuilding());
             newSIQ.setRoom(dto.getRoom());
             newSIQ.setTableNumber(dto.getTableNumber());
+
+            newSiqOut.setDigital(false);
+            newSiqOut.setCampus(dto.getCampus());
+            newSiqOut.setBuilding(dto.getBuilding());
+            newSiqOut.setRoom(dto.getRoom());
+            newSiqOut.setTableNumber(dto.getTableNumber());
         }
 
         // Assign the foreign keys ( student and queue )
+        // Only iff there does not exist a student in queue entity with that student id
+        List<StudentInQueue> students = studentInQueueRepository.findAll();
+
+        // For all the students in queue
+        for(StudentInQueue student : students) {
+
+            // If the student has the student id of the given params
+            if(student.getStudent().getId() == dto.getStudentId()) {
+
+                // Create dto object with necessary information to delete student in queue row
+                StudentInQueueIn dto2 = new StudentInQueueIn();
+                dto2.setStudentId(dto.getStudentId());
+                dto2.setStudentInQueueId(student.getStudentInQueueId());
+
+                // Delete using the new dto
+                deleteStudentInQueueEntity(dto2);
+            }
+        }
+
+        // Update the number of waiting students in the queue
+        queue.get().setNumberOfWaitingStudents(queueRepository.
+                        findAllStudentsInQueueByQueueId(queue.get().getQueueId()).size());
+
+        // This student will be placed last in queue
+        int previousPlacement = queue.get().getNumberOfWaitingStudents();
+        // Set for both SIQ and DTO entity/object
+        newSIQ.setPlacementInQueue(previousPlacement + 1);
+        newSiqOut.setPlacementInQueue(previousPlacement +1);
+
+
+        // When we know that there are not any duplicate one-to-one connections, we can add
         Optional<Student> student = studentRepository.findById(dto.getStudentId());
         if(student.isPresent()) {
             newSIQ.setStudent(student.get());
             newSIQ.setQueue(queue.get());
+
+            newSiqOut.setStudentId(student.get().getId());
+            newSiqOut.setQueue(queue.get().getQueueId());
+
+        }
+        // If the student is not present, then we do not add this siq entity
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         // Set the new number of waiting students (increment by one)
-        queue.get().setNumberOfWaitingStudents(previousPlacement + 1);
+        queue.get().setNumberOfWaitingStudents(previousPlacement + 1); // TODO FIX THIS THROUGH USE OF A COUNT
 
         // Update
         queueRepository.save(queue.get());
@@ -382,7 +423,7 @@ public class QueueService implements QueueServiceI {
         studentInQueueRepository.save(newSIQ);
 
         // Entity successfully created
-        return new ResponseEntity<>(newSIQ, HttpStatus.OK);
+        return new ResponseEntity<>(newSiqOut, HttpStatus.OK);
     }
 
     /**
@@ -415,7 +456,9 @@ public class QueueService implements QueueServiceI {
 
     @Override
     public ResponseEntity<Object> setQueueActive(StudentInQueueIn dto) {
-        Optional<Queue> queue = queueRepository.getQueueByCourseId(dto.getCourseId());
+        long queueId = queueRepository.getQueueByCourseId(dto.getCourseId());
+        Optional<Queue> queue = queueRepository.findById(queueId);
+
         if(queue.isPresent()) {
             queue.get().setActive(dto.isActive());
             queueRepository.save(queue.get());
@@ -428,7 +471,9 @@ public class QueueService implements QueueServiceI {
 
     @Override
     public ResponseEntity<Object> isQueueActive(long courseId) {
-        Optional<Queue> queue = queueRepository.getQueueByCourseId(courseId);
+        long queueId = queueRepository.getQueueByCourseId(courseId);
+        Optional<Queue> queue = queueRepository.findById(queueId);
+
         if(queue.isPresent()) {
             boolean active = queue.get().isActive();
             return new ResponseEntity<>(active,HttpStatus.OK);

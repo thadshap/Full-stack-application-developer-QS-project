@@ -51,7 +51,6 @@ public class CourseController {
         return courseService.getAllStudentsInCourse(courseId);
     }
 
-    // TODO TEST THIS
     @GetMapping("/studentAssistants/{studentId}")
     public ResponseEntity<Object> getAllCoursesForStudentAssistant(@PathVariable("studentId") long id) {
         return courseService.getAllCoursesForStudentAssistant(id);
@@ -122,7 +121,6 @@ public class CourseController {
         return courseService.addTeacherToCourse(dto);
     }
 
-    // TODO RESTART DB FIRST
     @PostMapping("/addStudentAssistant")
     public ResponseEntity<Object> addStudentAssistantToCourse(@RequestBody PersonIn dto){
         return courseService.addStudentAssistantToCourse(dto);

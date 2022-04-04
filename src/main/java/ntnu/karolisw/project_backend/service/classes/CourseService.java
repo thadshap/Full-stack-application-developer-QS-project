@@ -211,9 +211,10 @@ public class CourseService implements CourseServiceI {
 
         if(course.isPresent() && student.isPresent()) {
             course.get().addStudentAssistant(student.get());
+            student.get().addTaInCourse(course.get());
 
-            // Cascade type = persist!
             courseRepository.save(course.get());
+            studentRepository.save(student.get());
             return new ResponseEntity<>( HttpStatus.OK);
         }
         else if(course.isPresent()) {
@@ -630,6 +631,7 @@ public class CourseService implements CourseServiceI {
 
                         // Convert the course to a dto in order to get as little information as possible
                         CourseOut courseDto = new CourseOut();
+                        courseDto.setId(course.getCourseId());
                         courseDto.setName(course.getName());
                         courseDto.setCode(course.getCourseCode());
 

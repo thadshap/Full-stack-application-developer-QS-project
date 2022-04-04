@@ -21,10 +21,13 @@ public interface QueueRepository extends JpaRepository<Queue, Long> {
 
     // get queue id by course id // todo "long queueId" could be more appropriate to return
     @Query("SELECT q.queueId FROM Queue q WHERE q.course.courseId = :id")
-    Optional<Queue> getQueueByCourseId(@Param("id") long courseId);
+    long getQueueByCourseId(@Param("id") long courseId);
 
 
     // get all StudentInQueue objects where course id = x
     @Query("SELECT q.studentInQueues FROM Queue q WHERE q.course.courseId = :id")
     List<StudentInQueue> findAllStudentsInQueueByCourseId(@Param("id") long courseId);
+
+    @Query("SELECT q.studentInQueues FROM Queue q WHERE q.queueId = :id")
+    Set<StudentInQueue> findAllStudentsInQueueByQueueId(@Param("id") long queueId);
 }
