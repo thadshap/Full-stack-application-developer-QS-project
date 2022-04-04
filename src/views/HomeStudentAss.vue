@@ -82,13 +82,13 @@ export default {
         {
           courseCode: "IDATT2102",
           courseName: "Nettverk",
-          activityStatus: true,
+          active: true,
           index: 1,
         },
         {
           courseCode: "IDATT2103",
           courseName: "Fullstack",
-          activityStatus: false,
+          active: false,
           index: 2,
         },
       ],
@@ -114,7 +114,7 @@ export default {
         this.statusBtnClickedDatabase = response.data;
       });
       for (let i = 0; i < this.courses.length; i++) {
-        if (this.courses[i].activityStatus === true) {
+        if (this.courses[i].active === true) {
           document.getElementById(this.courses[i].index).style.backgroundColor =
             "rgba(3,164,3,0.25)";
         } else {
