@@ -1,5 +1,7 @@
 package ntnu.karolisw.project_backend.controller;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import ntnu.karolisw.project_backend.dto.in.CourseIn;
 import ntnu.karolisw.project_backend.dto.in.GroupIn;
 import ntnu.karolisw.project_backend.dto.in.PersonIn;
@@ -31,13 +33,17 @@ public class CourseController {
      * Retrieves all courses that are not archived
      * name, code, how many students take the course
      */
+    @ApiOperation(value = "Gets all registered courses",
+                  notes = "All courses registered by an administrator will be returned in this method",
+                  response = CourseController.class)
     @GetMapping()
     public ResponseEntity<Object> getAllCourses() {
         return new ResponseEntity<>(courseService.getAllCourses(), HttpStatus.OK);
     }
 
     @GetMapping("/teachers/{teacherId}")
-    public ResponseEntity<Object> getAllCoursesForTeacher(@PathVariable("teacherId") long id) {
+    public ResponseEntity<Object> getAllCoursesForTeacher(@ApiParam(value = "ID value for the teacher you need to retrieve all courses to")
+                                                              @PathVariable("teacherId") long id) {
         return courseService.getAllCoursesByTeacherId(id);
     }
 
