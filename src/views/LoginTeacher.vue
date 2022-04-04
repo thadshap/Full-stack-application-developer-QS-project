@@ -74,8 +74,11 @@ export default {
 </script>
 
 <style scoped>
-@import "./../styles/navBar.css";
-#logo {
-  margin: 30px 0 0 0;
-}
+  @import './../styles/navBar.css';
+  #logo{
+    margin: 30px 0 0 0;
+  }
+  button{
+    cursor: pointer;
+  }
 </style>

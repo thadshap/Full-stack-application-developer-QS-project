@@ -104,8 +104,8 @@
         /><br />
 
         <div v-for="input in underGroups" :key="input">
-          <div id="inputFieldsVisible" v-if="input.index > 0">
-            Hvor mange øvinger er det i undergruppe nummer {{ input.index }} ?
+          <div id="inputFieldsVisible" v-if="input.courseId > 0">
+            Hvor mange øvinger er det i undergruppe nummer {{ input.courseId }} ?
             <input
               v-model="input.inputNumOfPractices"
               class="inputFields"
@@ -158,22 +158,8 @@ export default {
       showGroupDetails: false,
       showInput: false,
       showErrors: false,
-      course: {
-        courseCode: "",
-        name: "",
-        startDate: "",
-        endDate: "",
-        numPractices: 0,
-        numOfApprovedPractices: 0,
-        numOfUnderGroups: 0,
-      },
-      underGroups: [
-        {
-          index: 0,
-          inputNumOfPractices: 0,
-          inputNumOfApproved: 0,
-        },
-      ],
+      course: {},
+      underGroups: [],
       errors: {
         courseCode: "",
         name: "",
@@ -223,7 +209,6 @@ export default {
         })
         .catch((error) => {
           error.inner.forEach((error) => {
-            console.log(error);
             this.errors = { ...this.errors, [error.path]: error.message };
           });
         });
@@ -232,7 +217,6 @@ export default {
      * method that sends course to database
      */
     sendCourse: async function () {
-      try {
         await AXI.postNewCourse(
           this.$store.state.typeOfUser,
           this.course.courseCode,
@@ -244,9 +228,6 @@ export default {
           this.underGroups
         );
         await this.getCourses();
-      } catch (error) {
-        console.log(error);
-      }
     },
     validate(field) {
       validationSchema
@@ -268,7 +249,7 @@ export default {
   color: white;
   text-align: center;
 }
-.inputFields {
+.inputFields, .inputFieldsUndergroup {
   background-color: #2d2c2c;
   border-width: 0 0 2px 0;
   border-color: steelblue;

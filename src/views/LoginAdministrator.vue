@@ -52,32 +52,30 @@ export default {
      * */
     loggingIn: async function () {
       this.$store.commit("SET_EMAIL", this.user.email);
-      await AXI.getTrueIfLoginSuccess(
-        this.user.email,
-        this.user.password,
-        3
-      ).then(
-        function (response) {
+      await AXI.getTrueIfLoginSuccess(this.user.email, this.user.password, 3).then(function (response) {
+        if (response.data.loggedIn){
+          this.$store.commit("SET_USERID", response.data.id);
           this.$store.commit("SET_EMAIL", this.user.email);
-          if (response.data.loggedIn) {
-            this.$store.commit("SET_USERID", response.data.personId);
-            this.$store.commit("SET_EMAIL", this.user.email);
-            this.$router.push({
-              name: "administrator",
-            });
-          } else {
-            this.header = "Login failed";
-          }
-        }.bind(this)
-      );
-    },
-  },
-};
+          this.$router.push({
+            name: 'administrator'
+          })
+        } else{
+          this.header = "Login failed";
+        }
+      }.bind(this))
+
+
+    }
+  }
+}
 </script>
 
 <style scoped>
 @import "./../styles/navBar.css";
 #logo {
   margin: 30px 0 0 0;
+}
+button{
+  cursor: pointer;
 }
 </style>

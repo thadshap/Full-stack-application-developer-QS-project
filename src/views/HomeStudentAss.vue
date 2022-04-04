@@ -77,24 +77,10 @@ export default {
   components: { Footer, Header },
   data() {
     return {
-      //TODO REMOVE EVERYTHING INSIDE COURSE
-      courses: [
-        {
-          courseCode: "IDATT2102",
-          courseName: "Nettverk",
-          active: true,
-          index: 1,
-        },
-        {
-          courseCode: "IDATT2103",
-          courseName: "Fullstack",
-          active: false,
-          index: 2,
-        },
-      ],
+      courses: [],
       statusBtnClicked: true,
       statusBtnClickedDatabase: true,
-      idCheckedCourse: 0,
+      idCheckedCourse: null,
     };
   },
   created: async function () {
@@ -159,7 +145,6 @@ export default {
     getAllCourses: async function () {
       await AXI.getAllCoursesForStudentAssistant().then(function (response) {
         this.courses = response.data;
-        console.log(response.data); //TODO REMOVE THIS IF THIS METHOD WORKS
       });
     },
     /**
@@ -234,17 +219,18 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
 }
-#left-btn,
+#left-btn{
+  position: relative;
+  top: -7px;
+}
 #middle-btn {
   position: relative;
   top: -7px;
+  background-color: #011c39;
 }
 #adjust-archive {
   position: relative;
   top: -3px;
-}
-#left-btn {
-  background-color: #011c39;
 }
 .active-subject-container {
   width: 295px;

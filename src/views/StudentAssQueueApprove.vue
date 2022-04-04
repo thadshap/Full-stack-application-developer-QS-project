@@ -51,34 +51,8 @@ export default {
       subCode: "",
       studentFirstName: "",
       studentLastName: "",
-      ovingId: 0,
-      assigments: [
-        {
-          name: "Øving 1",
-          approved: "Ikke godkjent",
-          index: 1,
-        },
-        {
-          name: "Øving 2",
-          approved: "Ikke godkjent",
-          index: 2,
-        },
-        {
-          name: "Øving 3",
-          approved: "Ikke godkjent",
-          index: 3,
-        },
-        {
-          name: "Øving 4",
-          approved: "Ikke godkjent",
-          index: 4,
-        },
-        {
-          name: "Øving 5",
-          approved: "Ikke godkjent",
-          index: 5,
-        },
-      ],
+      ovingId: null,
+      assigments: [],
     };
   },
   created() {

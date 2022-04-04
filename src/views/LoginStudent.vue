@@ -34,7 +34,8 @@ import AXI from "../services/axiosService";
 export default {
   data() {
     return {
-      header: "Please log in as student",
+      logInSuccess : false,
+      header: 'Please log in as student',
       user: {
         email: "",
         password: "",
@@ -49,33 +50,31 @@ export default {
      * method that calls on backend to check if email and password matches
      * if the user info is correct, userid and email will be stored in state
      * */
-    loggingIn: async function () {
-      await AXI.getTrueIfLoginSuccess(
-        this.user.email,
-        this.user.password,
-        1
-      ).then(
-        function (response) {
-          if (response.data.loggedIn) {
-            this.$store.commit("SET_USERID", response.data.personId);
-            this.$store.commit("SET_EMAIL", this.user.email);
-            this.$router.push({
-              name: "student",
-            });
-          } else {
-            this.header = "Login failed";
-          }
-        }.bind(this)
-      );
-    },
-  },
-};
+    loggingIn:async function() {
+      await AXI.getTrueIfLoginSuccess(this.user.email, this.user.password, 1).then(function (response) {
+        if (response.data.loggedIn){
+          this.$store.commit("SET_USERID", response.data.personId);
+          this.$store.commit("SET_EMAIL", this.user.email);
+          this.$router.push({
+            name: 'student'
+          })
+        } else{
+          this.header = "Login failed";
+        }
+      }.bind(this))
+    }
+  }
+}
 </script>
 
 <style scoped>
 @import "./../styles/navBar.css";
 
-#logo {
-  margin: 30px 0 0 0;
+  #logo{
+    margin: 30px 0 0 0;
+  }
+button{
+  cursor: pointer;
 }
+
 </style>

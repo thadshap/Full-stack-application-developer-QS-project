@@ -1,7 +1,7 @@
 <template>
   <Header></Header>
   <div id="studentsToShow">
-    <button id="goBack" v-on:click="goBack">Gå tilbake</button><br />
+    <button id="goBack" v-on:click="goBack">Gå tilbake</button><br>
     <button id="addStudent" v-on:click="addNewStudent">Legg til student</button>
     <button id="addTeacher" v-on:click="addNewTeacher">Legg til lærer</button>
     <button id="addStudentTeacher" v-on:click="addStudentTeacher">
@@ -133,19 +133,7 @@ export default {
       course: "",
       students: [
         {
-          email: "e@cool.no",
-          firstName: "Eirin",
-          lastName: "svins",
-          assignments: [
-            {
-              assignmentNr: 1,
-              approved: false,
-            },
-            {
-              assignmentNr: 2,
-              approved: true,
-            },
-          ],
+          assignments: [],
         },
       ],
       fileInput: "",
@@ -263,28 +251,19 @@ export default {
         await this.getAllStudents();
 
         if (this.currentAddUserType === "studentTeacher") {
-          await AXI.addTeacherToCourse(
-            this.$store.state.courseId,
-            this.addPerson.email,
-            this.addPerson.firstName,
-            this.addPerson.lastName
-          );
-          await this.getAllStudents();
+            await AXI.addStudentAssistant(
+                this.$store.state.courseId,
+                this.addPerson.email,
+                this.addPerson.firstName,
+                this.addPerson.lastName
+            );
+            await this.getAllStudents();
+
         }
       }
     },
-    sendStudentsFromFile: async function (lastname, firstname, email) {
-      this.students.push({
-        email: email,
-        firstName: firstname,
-        lastName: lastname,
-      });
-      await AXI.addStudentToCourse(
-        this.$store.state.courseId,
-        email,
-        firstname,
-        lastname
-      );
+    sendStudentsFromFile : async function(lastname, firstname, email){
+      await AXI.addStudentToCourse(this.$store.state.courseId, email, firstname, lastname);
     },
     validateStudent: async function () {
       this.showErrors = true;
@@ -302,11 +281,9 @@ export default {
     },
     sendFile: async function () {
       const lines = this.fileInput.split("\r\n");
-      console.log(lines);
       for (let i = 0; i < lines.length; i++) {
         this.help = lines[i].toString();
         let student = this.help.split(",");
-        console.log(student);
         await this.sendStudentsFromFile(student[0], student[1], student[2]);
       }
     },

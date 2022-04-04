@@ -55,34 +55,13 @@ export default {
   components: { Footer, Header },
   data() {
     return {
-      status: "Ikke godkjent",
-      totalAmountOfAssignments: 6,
-      minimumAssignmentsApproved: 5,
+      status: "",
+      totalAmountOfAssignments: null,
+      minimumAssignmentsApproved: null,
       subjectName: "",
       subjectCode: "",
       showOvingRules: false,
-      assigments: [
-        {
-          name: "Øving 1",
-          approved: "Ikke godkjent",
-        },
-        {
-          name: "Øving 2",
-          approved: "Ikke godkjent",
-        },
-        {
-          name: "Øving 3",
-          approved: "Ikke godkjent",
-        },
-        {
-          name: "Øving 4",
-          approved: "Ikke godkjent",
-        },
-        {
-          name: "Øving 5",
-          approved: "Ikke godkjent",
-        },
-      ],
+      assigments: []
     };
   },
   created: async function () {

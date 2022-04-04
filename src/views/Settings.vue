@@ -54,7 +54,6 @@ export default {
      * method to get pronouns for user
      */
     getPronomen: async function () {
-      try {
         await AXI.getPronouns(
           this.$store.state.userId,
           this.$store.state.typeOfUser
@@ -63,9 +62,6 @@ export default {
             this.pronouns = response.data.pronouns;
           }.bind(this)
         );
-      } catch (error) {
-        console.log(error);
-      }
     },
     /**
      * method to post pronouns for user

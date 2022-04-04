@@ -3,49 +3,37 @@
   <menu-bar-administrator></menu-bar-administrator>
   <div id="HomePage">
     <div id="container">
-      <button v-on:click="archiveCourse" :disabled="disableButton">
-        Arkiver fag
-      </button>
-      <button v-on:click="showStudents" :disabled="disableButton">
-        Rediger
-      </button>
-      <button v-on:click="deleteCourse" :disabled="disableButton">
-        Slett fag
-      </button>
-      <div id="courseTable">
-        <table id="tableStudents">
-          <tr>
-            <th>Emnekode</th>
-            <th>Emne navn</th>
-            <th>Startdato</th>
-            <th>Forventet sluttdato</th>
-          </tr>
-          <tr
-            class="row"
-            v-for="course in courses"
-            v-on:click="select($event)"
-            v-bind:id="course.index"
-            :key="course"
-          >
-            <td id="linkStyle">
-              {{ course.courseCode }}
-            </td>
-            <td>
-              {{ course.courseName }}
-            </td>
-            <td>
-              {{ course.startDate }}
-            </td>
-            <td>
-              {{ course.expectedEndDate }}
-            </td>
-          </tr>
-        </table>
-        <div id="sub-feature-tabs"></div>
+        <button id="archive" v-on:click="archiveCourse" :disabled="disableButton"> Arkiver fag</button>
+        <button id="edit" v-on:click="showStudents" :disabled="disableButton" > Rediger</button>
+        <button id="delete" v-on:click="deleteCourse" :disabled="disableButton">Slett fag</button>
+        <div id="courseTable">
+          <table id="tableStudents">
+            <tr>
+              <th>Emnekode</th>
+              <th>Emne navn</th>
+              <th>Startdato</th>
+              <th>Forventet sluttdato</th>
+            </tr>
+            <tr  class="row" v-for="course in courses" v-on:click="select($event)" v-bind:id="course.index" :key="course">
+              <td id="linkStyle">
+                {{ course.courseCode }}
+              </td>
+              <td>
+                {{course.courseName}}
+              </td>
+              <td>
+                {{course.startDate}}
+              </td>
+              <td>
+                {{course.expectedEndDate}}
+              </td>
+            </tr>
+          </table>
+            <div id="sub-feature-tabs">
+            </div>
+          </div>
+        </div><br>
       </div>
-    </div>
-    <br />
-  </div>
   <Footer></Footer>
 </template>
 
@@ -65,21 +53,7 @@ export default {
       courses: [],
     };
   },
-  created: async function () {
-    //testing
-    this.courses.push({
-      courseName: "statistikk",
-      courseCode: "ISTT1001",
-      index: 20,
-      startDate: "22.03.2022",
-    });
-    this.courses.push({
-      courseName: "statistikk",
-      courseCode: "ISTT1001",
-      index: 21,
-      startDate: "22.03.2022",
-    });
-
+  created : async function() {
     await this.getCourses();
   },
   methods: {
@@ -90,49 +64,31 @@ export default {
      */
     getCourses: async function () {
       if (this.$store.state.typeOfUser === 3) {
-        try {
           await AXI.getAllCourses().then(
             function (response) {
               this.courses = response.data;
-              console.log(response.data);
             }.bind(this)
           );
-        } catch (error) {
-          console.log(error);
-        }
-      } else {
-        try {
-          await AXI.getAllCoursesForTeacher(this.$store.state.userId).then(
-            function (response) {
-              this.courses = response.data;
-            }.bind(this)
-          );
-        } catch (error) {
-          console.log(error);
-        }
+      } else{
+        await AXI.getAllCoursesForTeacher(this.$store.state.userId).then(function (response) {
+          this.courses = response.data;
+        }.bind(this))
+      }
       }
     },
     /**
      * method to delete a course
      */
     deleteCourse: async function () {
-      try {
         await AXI.deleteCourse(this.$store.state.courseId);
         await this.getCourses();
-      } catch (error) {
-        console.log(error);
-      }
     },
     /**
      * method to archive a course
      */
     archiveCourse: async function () {
-      try {
         await AXI.archiveCourse(this.$store.state.courseId);
         await this.getCourses();
-      } catch (error) {
-        console.log(error);
-      }
     },
     showStudents() {
       this.$router.push({
@@ -150,11 +106,9 @@ export default {
       for (let i = 0; i < rows.length; i++) {
         rows[i].style.backgroundColor = "#202020";
       }
-      document.getElementById(e.currentTarget.id).style.backgroundColor =
-        "#4682B493";
-    },
-  },
-};
+      document.getElementById(e.currentTarget.id).style.backgroundColor = '#4682B493';
+    }
+}
 </script>
 
 <style scoped>
