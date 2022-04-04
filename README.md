@@ -45,5 +45,5 @@
 ## Swagger documentaion
  To check out the swagger documentation, you must go to this link after you have run the project:
 ```
-http://localhost:3306/swagger-ui.html
+http://localhost:8080/swagger-ui.html
 ```
