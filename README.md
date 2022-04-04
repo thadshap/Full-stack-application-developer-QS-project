@@ -1,4 +1,4 @@
-# qs_frontend
+# qs_feature-administrator
 
 ## Project setup
 ```
