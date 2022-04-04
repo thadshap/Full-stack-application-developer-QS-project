@@ -20,7 +20,7 @@ export default {
         return apiClient.get('/courses')
     },
     getAllCoursesForTeacher(teacherId){
-        return apiClient.get('/courses/teachers' + teacherId)
+        return apiClient.get('/courses/teachers/' + teacherId)
     },
     postNewCourse(typeOfUser, courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices,undergroupsArray){
         return apiClient.post('/courses/addNew', {
@@ -106,7 +106,7 @@ export default {
 
     },
     getTypeActiveQueue(courseId){
-        return apiClient.get('/courses/queue/status' + courseId)
+        return apiClient.get('/courses/queue/status/' + courseId)
     },
     approveAssignmentForStudent(courseId, userId, assignmentNumber){
         return apiClient.post('/students/assignments', {courseId : courseId, id : userId, assignmentNumber : assignmentNumber})

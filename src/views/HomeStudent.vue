@@ -68,6 +68,7 @@ import HomeStudentAss from "./HomeStudentAss";
 import AssigmentView from "./AssigmentView";
 import QueueStudent from "./QueueStudent";
 import axiosService from "@/services/axiosService";
+import store from "@/store";
 
 export default {
   name: "Student",
@@ -96,18 +97,9 @@ export default {
     getAllCoursesForStudent: async function () {
       await axiosService.getAllCoursesForStudent(this.$store.state.userId).then(
         function (response) {
-          console.log(response.data);
-          for(let i = 0; i<response.data.length; i++){
-            this.coursess.push(
-                {
-                  id : response[i].data.id,
-                  name : response[i].data.name,
-                  code : response[i].data.code,
-                  minApprovedAssignments: response[i].data.minApprovedAssignments,
-                  numberOfAssignments: response[i].data.numberOfAssignments
-                })
-          }
+          store.state.courses = response.data;
         }.bind());
+      this.coursess = this.$store.state.courses;
     },
     showPageForStudentAssistant() {
       this.$router.push({
