@@ -1,30 +1,64 @@
 <template>
   <div id="container">
-  <Header></Header><br>
-  <div id="student-home-page">
-    <div id="tabs-bar-wrapper">
-    <div id="tabs-bar">
-      <button id="left-btn"><img id="student-img" src="./../assets/student.png">Student</button>
-      <button id="middle-btn" v-on:click="showPageForStudentAssistant"><img id="student-ass-img" src="./../assets/student-ass.png">Student.ass.</button>
-      <button id="right-btn"><div id="adjust-archive"><img id="archive-img" src="./../assets/archive.png">Arkivert</div></button>
+    <Header></Header>
+    <br>
+    <div id="student-home-page">
+      <div id="tabs-bar-wrapper">
+        <div id="tabs-bar">
+          <button id="left-btn">
+            <img id="student-img" src="./../assets/student.png" />
+            Student
+          </button>
+          <button id="middle-btn" v-on:click="showPageForStudentAssistant">
+            <img
+              id="student-ass-img"
+              src="./../assets/student-ass.png"
+            />
+            Student.ass.
+          </button>
+          <button id="right-btn">
+            <div id="adjust-archive">
+              <img id="archive-img" src="./../assets/archive.png" />
+              Arkivert
+            </div>
+          </button>
+        </div>
+      </div>
+      <div id="active-subject-container-table-wrapper">
+        <div id="active-subject-container-wrapper">
+          <div
+            class="active-subject-container"
+            v-for="course in courses"
+            v-bind:id="course.courseId"
+            :key="course.courseId"
+          >
+            <div id="sub-name-container">
+              <p id="sub-name">{{ course.courseName }}</p>
+              <p id="sub-code">{{ course.courseCode }}</p>
+            </div>
+            <div id="sub-feature-tabs">
+              <button
+                class="studentButtons"
+                v-bind:id="course.courseId"
+                v-on:click="showAssignments($event)"
+              >
+                <img id="assigment-img" src="./../assets/assigment.png" />
+                Øvinger
+              </button>
+              <button
+                class="studentButtons"
+                v-bind:id="course.courseId"
+                v-on:click="goToQueue($event)"
+              >
+                <img id="in-to-que-img" src="./../assets/in-to-que.png" />
+                Til kø
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-    <div id="active-subject-container-table-wrapper">
-    <div id="active-subject-container-wrapper">
-    <div class="active-subject-container" v-for="course in courses" v-bind:id="course.courseId" :key="course.courseId">
-     <div id="sub-name-container">
-       <p id="sub-name">{{course.courseName}}</p>
-       <p id="sub-code">{{course.courseCode}}</p>
-     </div>
-     <div id="sub-feature-tabs">
-       <button class="studentButtons" v-bind:id="course.courseId" v-on:click="showAssignments($event)"><img id="assigment-img" src="./../assets/assigment.png"> Øvinger</button>
-       <button class="studentButtons" v-bind:id="course.courseId" v-on:click="goToQueue($event)"><img id="in-to-que-img" src="./../assets/in-to-que.png"> Til kø</button>
-     </div>
-    </div>
-    </div>
-    </div>
-  </div>
-  <Footer></Footer>
+    <Footer></Footer>
   </div>
 </template>
 <script>
@@ -37,24 +71,24 @@ import axiosService from "@/services/axiosService";
 
 export default {
   name: "Student",
-  components: {Footer, Header},
-  data(){
-    return{
-      courses:[
+  components: { Footer, Header },
+  data() {
+    return {
+      courses: [
         {
-          courseCode:"IDATT2102",
-          courseName:"Nettverk",
-          courseId:1,
+          courseCode: "IDATT2102",
+          courseName: "Nettverk",
+          courseId: 1,
         },
         {
-          courseCode:"IDATT2102",
-          courseName:"Nettverk",
-          courseId:2,
+          courseCode: "IDATT2102",
+          courseName: "Nettverk",
+          courseId: 2,
         },
       ],
-    }
+    };
   },
-  created : async function() {
+  created: async function () {
     await this.getAllCoursesForStudent();
     this.$store.commit("SET_ISSTUDENTASSISTANT", false);
   },
@@ -62,81 +96,83 @@ export default {
     /**
      * method to get all courses registered for a student from database
      */
-    getAllCoursesForStudent : async function(){
+    getAllCoursesForStudent: async function () {
       await axiosService.getAllCoursesForStudent(this.$store.state.userId).then(
-          function (response) {
-            this.courses = response.data;
-          }.bind());
+        function (response) {
+          this.courses = response.data;
+        }.bind()
+      );
     },
-    showPageForStudentAssistant(){
-        this.$router.push({
-          name: 'studentAss',
-          component: HomeStudentAss,
-        })
+    showPageForStudentAssistant() {
+      this.$router.push({
+        name: "studentAss",
+        component: HomeStudentAss,
+      });
     },
     /**
      * method to change view to 'QueueStudent'
      * saves selected course to store
      */
-    goToQueue: function(event){
+    goToQueue: function (event) {
       const targetId = event.currentTarget.id;
-      for(let i = 0; i<this.courses.length; i++){
-        if(this.courses[i].courseId.toString() === targetId){
+      for (let i = 0; i < this.courses.length; i++) {
+        if (this.courses[i].courseId.toString() === targetId) {
           this.$store.commit("SET_COURSE", this.courses[i]);
         }
       }
       this.$router.push({
-        name:'queueStudent',
-        component: QueueStudent
-      })
+        name: "queueStudent",
+        component: QueueStudent,
+      });
     },
     /**
      * method to change view to 'AssignmentView'
      * saves selected course to store
      */
-    showAssignments: function(event) {
+    showAssignments: function (event) {
       const targetId = event.currentTarget.id;
-      for(let i = 0; i<this.courses.length; i++){
-        if(this.courses[i].courseId.toString() === targetId){
+      for (let i = 0; i < this.courses.length; i++) {
+        if (this.courses[i].courseId.toString() === targetId) {
           this.$store.commit("SET_COURSE", this.courses[i]);
         }
       }
       this.$store.commit("SET_COURSEID", targetId);
       this.$router.push({
-        name:'assigmentView',
-        component: AssigmentView
-      })
-      }
+        name: "assigmentView",
+        component: AssigmentView,
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-.studentButtons{
-
+.studentButtons {
 }
-#container{
+#container {
   height: 100%;
 }
-#student-home-page{
+#student-home-page {
   height: 410px;
   overflow: auto;
   object-fit: cover;
 }
-#tabs-bar-wrapper{
+#tabs-bar-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
 }
-#active-subject-container-wrapper{
+#active-subject-container-wrapper {
   display: table;
 }
-#tabs-bar{
+#tabs-bar {
   height: 47px;
   margin: 10px 10px 0 10px;
   background-color: #011c39;
 }
-#left-btn,#middle-btn,#right-btn {
+#left-btn,
+#middle-btn,
+#right-btn {
   display: inline;
   height: 46px;
   background: rgb(40, 40, 40);
@@ -146,7 +182,7 @@ export default {
   cursor: pointer;
   outline: inherit;
   color: white;
-  border-radius: .2em;
+  border-radius: 0.2em;
   font-size: 1rem;
   font-family: sans-serif;
   position: relative;
@@ -154,56 +190,60 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
 }
-#left-btn,#middle-btn{
-  position: relative; 
+#left-btn,
+#middle-btn {
+  position: relative;
   top: -7px;
- }
-#adjust-archive{
-  position: relative; 
+}
+#adjust-archive {
+  position: relative;
   top: -3px;
 }
-#left-btn{
+#left-btn {
   background-color: #011c39;
 }
-.active-subject-container{
+.active-subject-container {
   width: 295px;
   height: 130px;
   background-color: rgba(255, 255, 255, 0.82);
   margin: 20px 0 0 0;
-  border-radius: .3em;
+  border-radius: 0.3em;
   border-style: solid;
   border-color: #0a64c2;
   border-width: 2.5px;
   font-family: sans-serif;
   padding: 30px;
 }
-#sub-name,#sub-code,#que-details{
+#sub-name,
+#sub-code,
+#que-details {
   margin: 3px;
   letter-spacing: 1px;
   font-weight: lighter;
 }
-#sub-name,#sub-code{
+#sub-name,
+#sub-code {
   font-size: 22px;
 }
 
-#sub-name{
+#sub-name {
   color: #011c39;
 }
-#sub-name-container, #que-details-container{
+#sub-name-container,
+#que-details-container {
   width: 140px;
   height: 80px;
   display: inline-block;
 }
-#sub-name-container{
+#sub-name-container {
   margin-right: 10px;
 }
 
-#sub-feature-tabs{
+#sub-feature-tabs {
   height: 40px;
   position: relative;
-  
 }
-.studentButtons{
+.studentButtons {
   border-color: #0a64c2;
   padding: 0;
   margin: 10px;
@@ -214,42 +254,45 @@ export default {
   background-color: rgba(255, 255, 255, 0.01);
   border-style: solid;
   border-width: 2px;
-  border-radius: .3em;
+  border-radius: 0.3em;
   font-weight: lighter;
   font-size: 14px;
 }
-#assigment-btn{
+#assigment-btn {
   margin-left: 15px;
   margin-right: 37px;
   border-color: rgba(1, 28, 57, 0.75);
   width: 92px;
 }
-#que-btn{
+#que-btn {
   margin-left: 60px;
   margin-right: 10px;
   border-color: green;
   width: 72px;
 }
-#assigment-img,#in-to-que-img{
+#assigment-img,
+#in-to-que-img {
   width: 15px;
   position: relative;
   top: 2px;
 }
-#student-img,#student-ass-img,#archive-img{
+#student-img,
+#student-ass-img,
+#archive-img {
   width: 23px;
   margin-right: 5px;
 }
-#archive-img{
-    position: relative;
-    top: 5px;
+#archive-img {
+  position: relative;
+  top: 5px;
 }
-#active-subject-container-table-wrapper{
+#active-subject-container-table-wrapper {
   display: flex;
   width: 100%;
   justify-content: center;
 }
 @media only screen and (min-height: 800px) {
-  #student-home-page{
+  #student-home-page {
     height: 710px;
   }
 }

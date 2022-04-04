@@ -1,4 +1,4 @@
-# qs_frontend
+# qs_feature-student
 
 ## Project setup
 ```

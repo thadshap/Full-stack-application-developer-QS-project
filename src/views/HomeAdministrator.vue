@@ -1,7 +1,7 @@
 <template>
   <Header></Header>
   <menu-bar-administrator></menu-bar-administrator>
-    <div id="HomePage">
+  <div id="HomePage">
     <div id="container">
         <button id="archive" v-on:click="archiveCourse" :disabled="disableButton"> Arkiver fag</button>
         <button id="edit" v-on:click="showStudents" :disabled="disableButton" > Rediger</button>
@@ -35,7 +35,6 @@
         </div><br>
       </div>
   <Footer></Footer>
-
 </template>
 
 <script>
@@ -45,15 +44,14 @@ import MenuBarAdministrator from "@/components/menuBarAdministrator";
 import AXI from "../services/axiosService";
 export default {
   name: "HomeAdministrator",
-  components: {MenuBarAdministrator, Footer, Header},
+  components: { MenuBarAdministrator, Footer, Header },
   data() {
     return {
-      disableButton : true,
-      checkedCourseId : null,
-      hei:"",
-      courses:[
-      ],
-    }
+      disableButton: true,
+      checkedCourseId: null,
+      hei: "",
+      courses: [],
+    };
   },
   created : async function() {
     this.$store.commit("SET_USERID", 44);
@@ -61,7 +59,7 @@ export default {
     //this.courses.push({courseName: "statistikk", courseCode: "ISTT1001", index : 20, startDate : "22.03.2022"})
     //this.courses.push({courseName: "statistikk", courseCode: "ISTT1001",index : 21, startDate : "22.03.2022"})
 
-    await this.getCourses()
+    await this.getCourses();
   },
   methods: {
     /**
@@ -69,52 +67,47 @@ export default {
      * if it is an administrator it gets all courses in database
      * else it is a teacher, who will get the courses the teacher is registered on
      */
-    getCourses: async function(){
-      if (this.$store.state.typeOfUser === 3){
+    getCourses: async function () {
+      if (this.$store.state.typeOfUser === 3) {
         try {
-          await AXI.getAllCourses().then(function (response) {
-            this.courses = response.data
-            console.log(response.data)
-          }.bind(this))
-        }catch (error) {
-          console.log(error)
+          await AXI.getAllCourses().then(
+            function (response) {
+              this.courses = response.data;
+              console.log(response.data);
+            }.bind(this)
+          );
+        } catch (error) {
+          console.log(error);
         }
       } else{
-          try{
-            await AXI.getAllCoursesForTeacher(this.$store.state.userId).then(function (response) {
-              this.courses = response.data;
-            }.bind(this))
-          }catch (error) {
-            console.log(error)
-          }
+        await AXI.getAllCoursesForTeacher(this.$store.state.userId).then(function (response) {
+          this.courses = response.data;
+        }.bind(this))
+      }
       }
     },
     /**
      * method to delete a course
      */
-    deleteCourse: async function() {
-      try{
+    deleteCourse: async function () {
+      try {
         await AXI.deleteCourse(this.$store.state.courseId);
         await this.getCourses();
-      }catch (error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
     },
     /**
      * method to archive a course
      */
-    archiveCourse: async function() {
-      try{
+    archiveCourse: async function () {
         await AXI.archiveCourse(this.$store.state.courseId);
         await this.getCourses();
-      }catch (error) {
-        console.log(error)
-      }
     },
-    showStudents(){
+    showStudents() {
       this.$router.push({
-        name: 'allStudents'
-      })
+        name: "allStudents",
+      });
     },
     /**
      * setting current courseid and styling rows when activated
@@ -124,8 +117,8 @@ export default {
       this.disableButton = false;
       this.$store.commit("SET_COURSEID", e.currentTarget.id);
       let rows = document.getElementsByClassName("row");
-      for (let i = 0; i < rows.length; i++){
-        rows[i].style.backgroundColor = '#202020';
+      for (let i = 0; i < rows.length; i++) {
+        rows[i].style.backgroundColor = "#202020";
       }
       document.getElementById(e.currentTarget.id).style.backgroundColor = '#4682B493';
     }
@@ -134,20 +127,20 @@ export default {
 </script>
 
 <style scoped>
-@import './../styles/navBar.css';
-@import './../styles/courses.css';
+@import "./../styles/navBar.css";
+@import "./../styles/courses.css";
 
-#HomePage{
+#HomePage {
   color: white;
   display: grid;
   justify-items: center;
 }
-#container{
+#container {
   text-align: center;
 }
 
 button:disabled,
-button[disabled]{
+button[disabled] {
   border: 1px solid #999999;
   background-color: #cccccc;
   color: #666666;
@@ -169,7 +162,7 @@ table {
   width: auto;
   margin-top: 20px;
 }
-td{
+td {
   cursor: pointer;
 }
 td,
@@ -185,9 +178,8 @@ th {
   background-color: #011c39;
   color: white;
 }
-#linkStyle{
-  color:blue;
-  text-decoration:underline;
+#linkStyle {
+  color: blue;
+  text-decoration: underline;
 }
-
 </style>

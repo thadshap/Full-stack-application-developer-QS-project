@@ -9,26 +9,23 @@
       <router-view />
       <br>
     </div>
-    <img id="logo" alt="logo" src="./../assets/logo_white_qs.png"/><br>
+    <img id="logo" alt="logo" src="./../assets/logo_white_qs.png" /><br />
     <h3 id="head">{{ header }}</h3>
-    Email:<br>
-    <input
-        id="email"
-        type="text"
-        placeholder="Email"
-        v-model="user.email"
-    />
+    Email:
+    <br>
+    <input id="email" type="text" placeholder="Email" v-model="user.email" />
     <p></p>
     Password:
     <br>
     <input
-        id="password"
-        placeholder="Password"
-        type="password"
-        v-model.lazy="user.password"
+      id="password"
+      placeholder="Password"
+      type="password"
+      v-model.lazy="user.password"
     />
     <p></p>
-    <button id="logging" v-on:click="loggingIn">Log in</button><p></p>
+    <button id="logging" v-on:click="loggingIn">Log in</button>
+    <p></p>
   </div>
 </template>
 <script>
@@ -40,15 +37,15 @@ export default {
       logInSuccess : false,
       header: 'Please log in as student',
       user: {
-        email: '',
-        password: ''
-      }
-    }
+        email: "",
+        password: "",
+      },
+    };
   },
   created() {
     this.$store.commit("SET_TYPEOFUSER", 1);
   },
-  methods : {
+  methods: {
     /**
      * method that calls on backend to check if email and password matches
      * if the user info is correct, userid and email will be stored in state
@@ -71,7 +68,7 @@ export default {
 </script>
 
 <style scoped>
-@import './../styles/navBar.css';
+@import "./../styles/navBar.css";
 
   #logo{
     margin: 30px 0 0 0;
