@@ -181,8 +181,8 @@ export default {
     addAssignmentsAndApprovedOrNot: async function () {
       for (let i = 0; i < this.students.length; i++) {
         await AXI.getAllAssignmentsInCourseForStudentAndIfApproved(
-          this.$store.state.courseId,
-          this.students[i].studentId
+          this.$store.state.course.id,
+          this.students[i].id
         ).then(
           function (response) {
             this.students[i].assignments = response.data;

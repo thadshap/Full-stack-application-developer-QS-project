@@ -107,8 +107,8 @@ export default {
       this.disableButton = false;
       let rows = document.getElementsByClassName("row");
       for(let i = 0; i<this.courses.length; i++){
-        if(this.courses[i].toString() === e.currentTarget.id){
-          this.$store.commit("SET_COURSE", this.courses[i]);
+        if(this.courses[i].id.toString() === e.currentTarget.id){
+          store.state.course = this.courses[i];
         }
       }
       for (let i = 0; i < rows.length; i++) {
