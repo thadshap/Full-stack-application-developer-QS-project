@@ -22,9 +22,10 @@ export default {
     getAllCoursesForTeacher(teacherId){
         return apiClient.get('/courses/teachers/' + teacherId)
     },
-    postNewCourse(typeOfUser, courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices,undergroupsArray){
+    postNewCourse(typeOfUser, userId, courseCode, courseName, startDate, endDate, numOfPractices, numOfApprovedPractices,undergroupsArray){
         return apiClient.post('/courses/addNew', {
             typeOfUser : typeOfUser,
+            personId : userId,
             courseCode : courseCode,
             name : courseName,
             startDate : startDate,

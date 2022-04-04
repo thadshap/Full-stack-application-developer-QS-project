@@ -232,7 +232,7 @@ export default {
     sendPerson: async function () {
       if (this.currentAddUserType === "student") {
         await AXI.addStudentToCourse(
-          this.$store.state.courseId,
+          this.$store.state.course.id,
           this.addPerson.email,
           this.addPerson.firstName,
           this.addPerson.lastName
@@ -241,7 +241,7 @@ export default {
       }
       if (this.currentAddUserType === "teacher") {
         await AXI.addTeacherToCourse(
-          this.$store.state.courseId,
+          this.$store.state.course.id,
           this.addPerson.email,
           this.addPerson.firstName,
           this.addPerson.lastName
@@ -250,7 +250,7 @@ export default {
 
         if (this.currentAddUserType === "studentTeacher") {
             await AXI.addStudentAssistant(
-                this.$store.state.courseId,
+                this.$store.state.course.id,
                 this.addPerson.email,
                 this.addPerson.firstName,
                 this.addPerson.lastName
@@ -261,7 +261,7 @@ export default {
       }
     },
     sendStudentsFromFile : async function(lastname, firstname, email){
-      await AXI.addStudentToCourse(this.$store.state.courseId, email, firstname, lastname);
+      await AXI.addStudentToCourse(this.$store.state.course.id, email, firstname, lastname);
     },
     validateStudent: async function () {
       this.showErrors = true;

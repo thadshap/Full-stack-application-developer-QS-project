@@ -84,14 +84,14 @@ export default {
      * method to delete a course
      */
     deleteCourse: async function () {
-        await AXI.deleteCourse(this.$store.state.courseId);
+        await AXI.deleteCourse(this.$store.state.course.id);
         await this.getCourses();
     },
     /**
      * method to archive a course
      */
     archiveCourse: async function () {
-        await AXI.archiveCourse(this.$store.state.courseId);
+        await AXI.archiveCourse(this.$store.state.course.id);
         await this.getCourses();
     },
     showStudents() {
