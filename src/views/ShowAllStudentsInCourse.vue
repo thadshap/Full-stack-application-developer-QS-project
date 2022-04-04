@@ -252,7 +252,7 @@ export default {
           await this.getAllStudents();
 
         if (this.currentAddUserType === "studentTeacher") {
-            await AXI.addTeacherToCourse(
+            await AXI.addStudentAssistant(
                 this.$store.state.courseId,
                 this.addPerson.email,
                 this.addPerson.firstName,

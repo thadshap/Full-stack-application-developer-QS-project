@@ -55,7 +55,7 @@ export default {
     loggingIn:async function() {
       await AXI.getTrueIfLoginSuccess(this.user.email, this.user.password, 1).then(function (response) {
         if (response.data.loggedIn){
-          this.$store.commit("SET_USERID", response.data.personId);
+          this.$store.commit("SET_USERID", response.data.id);
           this.$store.commit("SET_EMAIL", this.user.email);
           this.$router.push({
             name: 'student'
@@ -75,5 +75,8 @@ export default {
   #logo{
     margin: 30px 0 0 0;
   }
+button{
+  cursor: pointer;
+}
 
 </style>

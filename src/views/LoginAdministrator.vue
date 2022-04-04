@@ -79,4 +79,7 @@ export default {
 #logo{
   margin: 30px 0 0 0;
 }
+button{
+  cursor: pointer;
+}
 </style>
