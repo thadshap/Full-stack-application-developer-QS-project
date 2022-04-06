@@ -66,12 +66,13 @@ export default {
     };
   },
   created: async function () {
+    this.statusOfAssignmentApproval()
     this.subjectName = this.$store.state.course.name;
     this.subjectCode = this.$store.state.course.code;
     this.totalAmountOfAssignments =
-      this.$store.state.course.numberOfAssignments;
+    this.$store.state.course.numberOfAssignments;
     this.minimumAssignmentsApproved =
-      this.$store.state.course.minApprovedAssignments;
+    this.$store.state.course.minApprovedAssignments;
     await this.getAssignments();
   },
   methods: {
@@ -81,7 +82,7 @@ export default {
     statusOfAssignmentApproval(){
       let aprovalAssignments = 0
       for (let i = 0; i<this.assigments.length; i++){
-        if (this.assignments[i].approved===true){
+        if (this.assigments[i].approved===true){
           aprovalAssignments += 1
         }
       }
@@ -201,6 +202,8 @@ export default {
   display: inline;
   margin: 0 10% 0 10%;
   font-size: 20px;
+}
+.approve-header{
   float: right;
 }
 #oving-header {
