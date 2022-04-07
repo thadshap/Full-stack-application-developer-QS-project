@@ -1,49 +1,19 @@
 version: 2 # use CircleCI 2.0
-image: docker:19.03.12
-services:
-  - docker:19.03.12-dind
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
 
-stages:
-  - build
-  - test
-  - release
-  - deploy
+    working_directory: ~/circleci-demo-java-spring # directory where steps will run
 
-variables:
-   
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
-  CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:latest
+    docker: # run the steps with Docker
+      - image: circleci/openjdk:11-stretch # ...with this image as the primary container; this is where all `steps` will run
 
-before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    steps: # a collection of executable commands
 
+      - store_test_results: # uploads the test metadata from the `target/surefire-reports` directory so that it can show up in the CircleCI dashboard.
+          # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: target/surefire-reports
 
-
-build:
-  stage: build
-  script:
-    - docker build -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
-
-test:
-  stage: test
-  script:
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker run $CONTAINER_TEST_IMAGE npm test
-
-
-release-image:
-  stage: release
-  script:
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
-    - docker push $CONTAINER_RELEASE_IMAGE
-  
-
-deploy:
-  stage: deploy
-  tags:
-    - local_docker
-  script:
-    - docker pull $CONTAINER_RELEASE_IMAGE
-    - docker run -d -p 3000:3000 $CONTAINER_RELEASE_IMAGE
+      - store_artifacts: # store the uberjar as an artifact
+          # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: target/demo-java-spring-0.0.1-SNAPSHOT.jar
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
